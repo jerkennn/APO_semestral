@@ -1,17 +1,3 @@
-/*******************************************************************
-  Simple program to check LCD functionality on MicroZed
-  based MZ_APO board designed by Petr Porazil at PiKRON
-
-  mzapo_lcdtest.c       - main and only file
-
-  (C) Copyright 2004 - 2017 by Pavel Pisa
-      e-mail:   pisa@cmp.felk.cvut.cz
-      homepage: http://cmp.felk.cvut.cz/~pisa
-      work:     http://www.pikron.com/
-      license:  any combination of GPL, LGPL, MPL or BSD licenses
-
- *******************************************************************/
-
 #define _POSIX_C_SOURCE 200112L
 
 #include "mzapo_parlcd.h"
@@ -25,11 +11,12 @@
 
 GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, GUI_set_menu menu_arr)
 {
-	
+	btn2 = 24;
 	int color1=0;
 	int color2=0;
 	if(menu_arr.colourGui==1) {color1=0x0000; color2=0xFFFF;}
 	else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
+
 	switch (( (int) ( (double)rotate2) %37)) 
 	{
 		case 0 ... 4:
@@ -161,6 +148,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		if(button2==1) {
 		time2 = getMicrotime();
 		if(time2>=time1+300000) {
+			btn2=btn2%72;
 			switch(btn2)
 			{
 				case 24:
@@ -170,10 +158,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
 					string2frame_menu("Invert color of GUI", 24, 40, color1, color2);
 					string2frame_menu(" -- ", 48, 40, color1, color2);
-					string2frame_menu(" -- ", 72, 40, color1, color2);
-					string2frame_menu(" -- ", 96, 40, color1, color2);
-					string2frame_menu(" -- ", 120, 40, color1, color2);
-					string2frame_menu("Back", 144, 40, color1, color2);
+					string2frame_menu("Back", 72, 40, color1, color2);
 					break;
 				
 				case 144:
@@ -190,10 +175,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	{
 		string2frame_menu(" Back ", 24, 40, color1, color2);
 		string2frame_menu(" Confirm exit ", 48, 40, color1, color2);
-		string2frame_menu(" -- ", 72, 40, color1, color2);
-		string2frame_menu(" -- ", 96, 40, color1, color2);
-		string2frame_menu(" -- ", 120, 40, color1, color2);
-		string2frame_menu(" -- ", 144, 40, color1, color2);
+		btn2 = btn2%48;
 		if(button2==1) {
 		time2 = getMicrotime();
 		if(time2>=time1+300000) {
@@ -211,32 +193,6 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			}
 		}
 	}
-
-/*
-	posun = 150-12+3*string2frame_menu("BUTTON_1: ", 32, 150, 0, 0x0FFF);
-	char button1_str[3]; sprintf(button1_str,"%d", button1);
-	string2frame_menu(button1_str, 32, posun+4, 0, 0x0FFF);
-
-
-	posun = -12+3*string2frame_menu("KNOB_2: ", 48, 0, 0, 0xFFF0);
-	char rotate2_str[3]; sprintf(rotate2_str,"%d", rotate2);
-	string2frame_menu("    ", 48, posun+4, 0, 0xFFF0);
-	string2frame_menu(rotate2_str, 48, posun+4, 0, 0xFFF0);
-
-	posun = 150-12+3*string2frame_menu("BUTTON_2: ", 48, 150, 0, 0x0FFF);
-	char button2_str[3]; sprintf(button2_str,"%d", button2);
-	string2frame_menu(button2_str, 48, posun+4, 0, 0x0FFF);
-
-
-	posun = -12+3*string2frame_menu("KNOB_3: ", 64, 0, 0, 0xFFF0);
-	char rotate3_str[3]; sprintf(rotate3_str,"%d", rotate3);
-	string2frame_menu("    ", 64, posun+4, 0, 0xFFF0);
-	string2frame_menu(rotate3_str, 64, posun+4, 0, 0xFFF0);
-
-	posun = 150-12+3*string2frame_menu("BUTTON_3: ", 64, 150, 0, 0x0FFF);
-	char button3_str[3]; sprintf(button3_str,"%d", button3);
-	string2frame_menu(button3_str, 64, posun+4, 0, 0x0FFF);*/
-	
 	return menu_arr;
 }
 
