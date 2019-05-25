@@ -23,7 +23,7 @@
 #include "convert_lib.h"
 #include "write2lcd_lib.h"
 
-menu_arr menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, int contrast_lcd, menu_arr menu_arr)
+GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, int contrast_lcd, GUI_set_menu menu_arr)
 {
 	int color1=0;
 	int color2=0;

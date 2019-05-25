@@ -23,8 +23,9 @@ typedef struct GUI_set
     int currentScreen;
     int colourGui;
     int exit;
-}menu_arr;
+}GUI_set_menu;
 
+GUI_set_menu menu_arr;
 
 //static int btn1=0;
 int btn2;
@@ -38,7 +39,7 @@ unsigned char *parlcd_mem_base;
 uint16_t frame[FRAME_H][FRAME_W];
 
 /* GUI_set: obrazovka GUI; barva gui; exit */
-menu_arr menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, int convert_lcd, menu_arr menu_arr);
+GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, int convert_lcd, GUI_set_menu menu_arr);
 void down_controll_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, double*leds, int convert_lcd);
 
 double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int convert_lcd);
