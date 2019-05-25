@@ -14,13 +14,10 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	btn2 = 24;
 	int color1=0;
 	int color2=0;
-	int rotate2_switch = 0;
 	if(menu_arr.colourGui==1) {color1=0x0000; color2=0xFFFF;}
 	else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
 
-	rotate2_switch = ((int) (((double)rotate2)/8.5));
-
-	switch (rotate2_switch) 
+	switch (((int) (6*(double)rotate2/10.2)%37))
 	{
 		case 0 ... 4:
 			btn2 = 1*24;
@@ -30,15 +27,22 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			break;
 		case 10 ... 14:
 			btn2 = 3*24;
+			if(menu_arr.currentScreen==6) btn2=24;
 			break;
 		case 15 ... 20:
 			btn2 = 4*24;
+			if(menu_arr.currentScreen==5) btn2=24;
+			else if(menu_arr.currentScreen==6) btn2=2*24;
 			break;
 		case 21 ... 25:
 			btn2 = 5*24;
+			if(menu_arr.currentScreen==5) btn2=2*24;
+			else if(menu_arr.currentScreen==6) btn2=24;
 			break;
 		case 26 ... 30:
 			btn2 = 6*24;
+			if(menu_arr.currentScreen==5) btn2=3*24;
+			else if(menu_arr.currentScreen==6) btn2=2*24;
 			break;
 		default:
 			break;
