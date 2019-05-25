@@ -1,5 +1,5 @@
-#ifndef _LCDFRAME_H_
-#define _LCDFRAME_H_
+#ifndef _LCD_MENU_LIB_H_
+#define _LCD_MENU_LIB_H_
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
@@ -15,11 +15,11 @@
 #define FRAME_H 320
 
 #ifdef __cplusplusplus
-extern "C" {
+extern "C"
 #endif
 
-#define Min(a, b) (a <= b ? a : b)
-#define Max(a, b) (a >= b ? a : b)
+//#define MIN(a, b) (a <= b ? a : b)
+//#define MAX(a, b) (a >= b ? a : b)
 
 //static int btn1=0;
 int btn2;
@@ -37,19 +37,18 @@ void frame2lcd();
 int string2frame_menu(char *s, int yrow, int xcolumn, uint16_t forecolor, uint16_t backcolor);
 void menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3);
 
-double* HSV_to_RGB(double h, double s, double v);
-double* RGB_to_HSV(double r, double g, double b);
+//double* HSV_to_RGB(double h, double s, double v);
+//double* RGB_to_HSV(double r, double g, double b);
 
-uint16_t RGB_to_hex(double r, double g, double b);
+//uint16_t RGB_to_hex(double r, double g, double b);
 
 double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2);
 void down_controll_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, double*leds);
 void delete_lcd();
 
-long getMicrotime();
+//long getMicrotime();
 
 #ifdef __cplusplus
-}
 
 #endif
 
