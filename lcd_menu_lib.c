@@ -25,7 +25,8 @@
 
 void menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, int contrast_lcd)
 {
-	int color1, color2 = 0;
+	int color1=0;
+	int color2=0;
 	if(contrast_lcd==1) {color1=0x0000; color2=0xFFFF;}
 	else if(contrast_lcd==0) {color1=0xFFFF; color2=0x0000;}
 
@@ -101,7 +102,8 @@ void menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 
 double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int contrast_lcd)
 {
-	int color1, color2 = 0;
+	int color1=0;
+	int color2=0;
 	if(contrast_lcd==1) {color1=0x0000; color2=0xFFFF;}
 	else if(contrast_lcd==0) {color1=0xFFFF; color2=0x0000;}
 
@@ -139,7 +141,8 @@ double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int contrast_
 
 void down_controll_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, double*leds, int contrast_lcd)
 {
-	int color1, color2 = 0;
+	int color1=0;
+	int color2=0;
 	if(contrast_lcd==1) {color1=0x0000; color2=0xFFFF;}
 	else if(contrast_lcd==0) {color1=0xFFFF; color2=0x0000;}
 
