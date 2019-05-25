@@ -12,7 +12,7 @@
 #include <sys/time.h>
 
 #ifdef __cplusplusplus
-extern "C"
+extern "C" 
 #endif
 
 #define MIN(a, b) (a <= b ? a : b)
@@ -25,6 +25,7 @@ uint16_t RGB_to_hex(double r, double g, double b);
 long getMicrotime();
 
 #ifdef __cplusplus
+
 
 #endif
 
