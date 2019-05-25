@@ -23,8 +23,12 @@
 #include "convert_lib.h"
 #include "write2lcd_lib.h"
 
-void menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3)
+void menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, int contrast_lcd)
 {
+	int color1, color2 = 0;
+	if(contrast_lcd==1) {color1=0x0000; color2=0xFFFF;}
+	else if(contrast_lcd==0) {color1=0xFFFF; color2=0x0000;}
+
 	switch (((int)(((double)6*rotate2)/10.2))%37)
 	{
 		case 0 ... 4:
@@ -57,10 +61,10 @@ void menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 		}
 	*/
 	//int posun=0;
-	string2frame_menu("******************** KOREK ********************", 0, 0, 0xFFFF, 0);
+	string2frame_menu("******************** KOREK ********************", 0, 0, color1, color2);
 
-	for(int i=1;i<=5;i++) string2frame_menu("   ", i*24, 10, 0xFFFF, 0);
-	string2frame_menu(">>", btn2, 10, 0xFFFF, 0);
+	for(int i=1;i<=5;i++) string2frame_menu("   ", i*24, 10, color1, color2);
+	string2frame_menu(">>", btn2, 10, color1, color2);
 	
 	
 	/*posun = -12+3*string2frame_menu("KNOB_1: ", 32, 0, 0, 0xFFF0);
@@ -95,8 +99,12 @@ void menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 
 
 
-double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2)
+double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int contrast_lcd)
 {
+	int color1, color2 = 0;
+	if(contrast_lcd==1) {color1=0x0000; color2=0xFFFF;}
+	else if(contrast_lcd==0) {color1=0xFFFF; color2=0x0000;}
+
 	static double returned[6];
 	posuvnik1 = (int)(((double)posuvnik1/255)*460);
 	posuvnik2 = (int)(((double)posuvnik2/255)*460);
@@ -109,7 +117,7 @@ double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2)
 		{
 			rgb = HSV_to_RGB(((double)x/460)*360, 1, 1);
 			hex = RGB_to_hex(rgb[0], rgb[1], rgb[2]);
-			if((int)(((double)x/460)*360) >= posuvnik1-1 && (int)(((double)x/460)*360) <= posuvnik1+1) frame[yrow + y][xcolumn + x] = 0;
+			if((int)(((double)x/460)*360) >= posuvnik1-1 && (int)(((double)x/460)*360) <= posuvnik1+1) frame[yrow + y][xcolumn + x] = color1;
 			else frame[yrow + y][xcolumn + x] = hex;
 			if((int)(((double)x/460)*360)==posuvnik1) {returned[0] = rgb[0]; returned[1] = rgb[1]; returned[2] = rgb[2];} 
 		}	
@@ -121,7 +129,7 @@ double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2)
 		{
 			rgb = HSV_to_RGB(((double)x/460)*360, 1, 1);
 			hex = RGB_to_hex(rgb[0], rgb[1], rgb[2]);
-			if((int)(((double)x/460)*360) >= posuvnik2-1 && (int)(((double)x/460)*360) <= posuvnik2+1) frame[yrow+16 + y][xcolumn + x] = 0;
+			if((int)(((double)x/460)*360) >= posuvnik2-1 && (int)(((double)x/460)*360) <= posuvnik2+1) frame[yrow+16 + y][xcolumn + x] = color1;
 			else frame[yrow+16 + y][xcolumn + x] = hex;
 			if((int)(((double)x/460)*360)==posuvnik2) {returned[3] = rgb[0]; returned[4] = rgb[1]; returned[5] = rgb[2];} 
 		}
@@ -129,53 +137,57 @@ double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2)
 	return returned;
 }
 
-void down_controll_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, double*leds)
+void down_controll_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, double*leds, int contrast_lcd)
 {
+	int color1, color2 = 0;
+	if(contrast_lcd==1) {color1=0x0000; color2=0xFFFF;}
+	else if(contrast_lcd==0) {color1=0xFFFF; color2=0x0000;}
+
 	int posun=0;
 	char str[255];
-	for(int i=0; i<480; i++) {frame[234][i] = 0xFFFF; frame[235][i] = 0xFFFF; frame[236][i] = 0xFFFF;}
+	for(int i=0; i<480; i++) {frame[234][i] = color1; frame[235][i] = color1; frame[236][i] = color1;}
 	
-	posun = -12+3*string2frame_menu("Led 1 (r, g, b): ", 237, 0, 0xFFFF, 0);
+	posun = -12+3*string2frame_menu("Led 1 (r, g, b): ", 237, 0, color1, color2);
 	sprintf(str, "%d", (int)leds[0]);
-	string2frame_menu("    ", 237, 160, 0xFFFF, 0);
-	posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 160, 0xFFFF, 0);
+	string2frame_menu("    ", 237, 160, color1, color2);
+	posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 160, color1, color2);
 	sprintf(str, "%d", (int)leds[1]);
-	string2frame_menu("    ", 237, 210, 0xFFFF, 0);
-	posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 210, 0xFFFF, 0);
+	string2frame_menu("    ", 237, 210, color1, color2);
+	posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 210, color1, color2);
 	sprintf(str, "%d", (int)leds[2]);
-	string2frame_menu("    ", 237, 260, 0xFFFF, 0);
-	posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 260, 0xFFFF, 0);
+	string2frame_menu("    ", 237, 260, color1, color2);
+	posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 260, color1, color2);
 
-	posun = -12+3*string2frame_menu("Led 2 (r, g, b): ", 253, 0, 0xFFFF, 0);
+	posun = -12+3*string2frame_menu("Led 2 (r, g, b): ", 253, 0, color1, color2);
 	sprintf(str, "%d", (int)leds[3]);
-	string2frame_menu("    ", 253, 160, 0xFFFF, 0);
-	posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 160, 0xFFFF, 0);
+	string2frame_menu("    ", 253, 160, color1, color2);
+	posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 160, color1, color2);
 	sprintf(str, "%d", (int)leds[4]);
-	string2frame_menu("    ", 253, 210, 0xFFFF, 0);
-	posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 210, 0xFFFF, 0);
+	string2frame_menu("    ", 253, 210, color1, color2);
+	posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 210, color1, color2);
 	sprintf(str, "%d", (int)leds[5]);
-	string2frame_menu("    ", 253, 260, 0xFFFF, 0);
-	posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 260, 0xFFFF, 0);
+	string2frame_menu("    ", 253, 260, color1, color2);
+	posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 260, color1, color2);
 	
 
 	sprintf(str, "%d", L_push);
-	string2frame_menu("    ", 270, 80, 0xFFFF, 0);
-	string2frame_menu(str, 270, 80, 0xFFFF, 0);
+	string2frame_menu("    ", 270, 80, color1, color2);
+	string2frame_menu(str, 270, 80, color1, color2);
 	sprintf(str, "%d", M_push);
-	string2frame_menu("    ", 270, 200, 0xFFFF, 0);
-	string2frame_menu(str, 270, 200, 0xFFFF, 0);
+	string2frame_menu("    ", 270, 200, color1, color2);
+	string2frame_menu(str, 270, 200, color1, color2);
 	sprintf(str, "%d", R_push);
-	string2frame_menu("    ", 270, 350, 0xFFFF, 0);
-	string2frame_menu(str, 270, 350, 0xFFFF, 0);	
+	string2frame_menu("    ", 270, 350, color1, color2);
+	string2frame_menu(str, 270, 350, color1, color2);
 
 	sprintf(str, "%d", L_rotate);
-	string2frame_menu("    ", 290, 80, 0xFFFF, 0);
-	string2frame_menu(str, 290, 80, 0xFFFF, 0);
+	string2frame_menu("    ", 290, 80, color1, color2);
+	string2frame_menu(str, 290, 80, color1, color2);
 	sprintf(str, "%d", M_rotate);
-	string2frame_menu("    ", 290, 200, 0xFFFF, 0);
-	string2frame_menu(str, 290, 200, 0xFFFF, 0);
+	string2frame_menu("    ", 290, 200, color1, color2);
+	string2frame_menu(str, 290, 200, color1, color2);
 	sprintf(str, "%d", R_rotate);
-	string2frame_menu("    ", 290, 350, 0xFFFF, 0);
-	string2frame_menu(str, 290, 350, 0xFFFF, 0);
+	string2frame_menu("    ", 290, 350, color1, color2);
+	string2frame_menu(str, 290, 350, color1, color2);
 }
 
