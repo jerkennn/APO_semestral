@@ -7,7 +7,7 @@ CXXFLAGS = -g -std=gnu++11 -O1 -Wall
 LDFLAGS = -lrt -lpthread
 
 SOURCES = main.c mzapo_phys.c mzapo_parlcd.c
-#SOURCES += lcdframe.c
+SOURCES += convert_lib.c
 SOURCES += lcd_menu_lib.c
 SOURCES += font_prop14x16.c font_rom8x16.c
 TARGET_EXE = main
