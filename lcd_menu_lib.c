@@ -18,9 +18,15 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	if(menu_arr.colourGui==1) {color1=0x0000; color2=0xFFFF;}
 	else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
 
-	if(menu_arr.currentScreen==5) rotate2_switch = (int) ( (double)rotate2)*(14/255);
-	else if(menu_arr.currentScreen==6) (rotate2_switch = (int) ( (double)rotate2)*(3/85));
-	else (rotate2_switch = ((int) ( (double)rotate2)*(2/17)));
+	if(menu_arr.currentScreen==5){
+		(rotate2_switch = (int) ((double)rotate2)%24);
+		if(rotate2_switch>14) rotate2_switch = rotate2_switch%14;
+	}
+	else if(menu_arr.currentScreen==6) (rotate2_switch = (int) ( (double)rotate2)%19);
+	else{ 
+		(rotate2_switch) = ((int) ( (double)10*rotate2)%37);
+		if(rotate2_switch>9) rotate2_switch = rotate2_switch%9;
+	}
 
 	switch (rotate2_switch) 
 	{
