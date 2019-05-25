@@ -4,7 +4,6 @@
 
 double* HSV_to_RGB(double h, double s, double v)
 {
-	static double rgb[3];
 	double r = 0, g = 0, b = 0;
 	if(s==0) {rgb[0] = v; rgb[1] = v; rgb[2] = v;}
 	else
@@ -53,8 +52,6 @@ double* RGB_to_HSV(double r, double g, double b)
 {
 	double delta, min;
 	double h = 0, s, v;
-
-	static double hsv[3];
 
 	min = MIN(MIN(r, g), b);
 	v = MAX(MAX(r, g), b);
