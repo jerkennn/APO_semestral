@@ -15,7 +15,7 @@
 extern "C"
 #endif
 
-#define MAX(a, b) (a <= b ? a : b)
+#define MIN(a, b) (a <= b ? a : b)
 #define MAX(a, b) (a >= b ? a : b)
 
 double* HSV_to_RGB(double h, double s, double v);
