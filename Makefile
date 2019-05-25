@@ -9,7 +9,9 @@ LDFLAGS = -lrt -lpthread
 SOURCES = main.c mzapo_phys.c mzapo_parlcd.c
 SOURCES += convert_lib.c
 SOURCES += lcd_menu_lib.c
+SOURCES += write2lcd_lib.c
 SOURCES += font_prop14x16.c font_rom8x16.c
+
 TARGET_EXE = main
 TARGET_IP ?= 192.168.202.214
 ifeq ($(TARGET_IP)$(filter run,$(MAKECMDGOALS)),run)
