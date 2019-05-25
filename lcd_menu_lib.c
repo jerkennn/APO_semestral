@@ -233,7 +233,7 @@ double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int contrast_
 	return returned;
 }
 
-void down_controll_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, double*leds, int contrast_lcd)
+void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, double*leds, int contrast_lcd)
 {
 	int color1=0;
 	int color2=0;
