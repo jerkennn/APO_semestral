@@ -14,10 +14,15 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	btn2 = 24;
 	int color1=0;
 	int color2=0;
+	int rotate2_switch = 0;
 	if(menu_arr.colourGui==1) {color1=0x0000; color2=0xFFFF;}
 	else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
 
-	switch (( (int) ( (double)rotate2) %37)) 
+	if(menu_arr.currentScreen==5) (rotate2_switch = (int) ( (double)rotate2) %24);
+	else if(menu_arr.currentScreen==6) (rotate2_switch = (int) ( (double)rotate2) %19);
+	else (rotate2_switch = (int) ( (double)rotate2) %37);
+
+	switch (rotate2_switch) 
 	{
 		case 0 ... 4:
 			btn2 = 1*24;
@@ -145,7 +150,6 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		if(button2==1) {
 		time2 = getMicrotime();
 		if(time2>=time1+300000) {
-			btn2=btn2%72;
 			switch(btn2)
 			{
 				case 24:
@@ -157,8 +161,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					string2frame_menu(" -- ", 48, 40, color1, color2);
 					string2frame_menu("Back", 72, 40, color1, color2);
 					break;
-				
-				case 144:
+				case 72:
 					menu_arr.currentScreen=0; break;
 				default:
 					break;
@@ -172,7 +175,6 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	{
 		string2frame_menu(" Back ", 24, 40, color1, color2);
 		string2frame_menu(" Confirm exit ", 48, 40, color1, color2);
-		btn2 = btn2%48;
 		if(button2==1) {
 		time2 = getMicrotime();
 		if(time2>=time1+300000) {
