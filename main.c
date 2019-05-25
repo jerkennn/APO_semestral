@@ -1,4 +1,4 @@
-
+;
 /*******************************************************************
   Simple program to check LCD functionality on MicroZed
   based MZ_APO board designed by Petr Porazil at PiKRON
@@ -23,6 +23,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <termios.h>
+#include <sys/time.h>
 
 
 #include "mzapo_parlcd.h"
@@ -30,6 +31,8 @@
 #include "mzapo_regs.h"
 #include "font_types.h"
 #include "lcd_menu_lib.h"
+#include "write2lcd_lib.h"
+#include "convert_lib.h"
 
 pthread_mutex_t mtx;
 unsigned char *parlcd_mem_base = NULL;
@@ -47,11 +50,16 @@ typedef struct{
 	//volatile int r_step, g_step, b_step;
 	//volatile int pos;
 	struct{
-		int red;
-		int green;
-		int blue;
-		} rgb;
-	
+		double red;
+		double green;
+		double blue;
+		} rgb_1;
+	struct{
+		double red;
+		double green;
+		double blue;
+		} rgb_2;
+	GUI_set_menu menu_arr;
 	bool quit;
 	} data_t;
 
@@ -82,12 +90,26 @@ int main(int argc, char *argv[])
 	parlcd_hx8357_init(parlcd_mem_base); //only after power up
 	//double *arr = 
 
+	delete_lcd(menu_arr.colourGui);
+	frame2lcd();
 
 	printf("Hello APO\n");
 	data_t data = {.quit = false, .rk = 0, .gk = 0, .bk = 0, .rb = 0, .gb = 0, .bb = 0};
-	data.rgb.red = 0;
-	data.rgb.green = 0;
-	data.rgb.blue = 0;
+	data.menu_arr.currentScreen = 0;
+	data.menu_arr.colourGui = 0;
+	data.menu_arr.exit = 0;
+	
+	menu_arr.currentScreen=0; 
+	menu_arr.colourGui=0;
+	menu_arr.exit=0;
+	
+	data.rgb_1.red = 0;
+	data.rgb_1.green = 0;
+	data.rgb_1.blue = 0;
+	
+	data.rgb_2.red = 0;
+	data.rgb_2.green = 0;
+	data.rgb_2.blue = 0;
 
 	pthread_mutex_init(&mtx, NULL);
 	pthread_t threads[2];
@@ -103,32 +125,74 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
+
 void *leds(void *d){
 	data_t *data = (data_t *)d;
 	int *led_1 = map_phys_address(SPILED_REG_BASE_PHYS + SPILED_REG_LED_RGB1_o, SPILED_REG_SIZE, 0); 
+	int *led_2 = map_phys_address(SPILED_REG_BASE_PHYS + SPILED_REG_LED_RGB2_o, SPILED_REG_SIZE, 0);
 	
-	//unsigned char *mem_base;
-	//mem_base = map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
-	//if (mem_base == NULL) exit(1);
-	
+
 	bool q = false;
-	uint32_t color_1;
-	//uint32_t color_2; 
-	//double *my_rgb = HSV_to_RGB((((double)data->rk/255)*360), 1, 1);
+	uint32_t color_1 = 0;
+	//uint32_t color_2 = 0;
+	double out_h; 
+	double s = 1;
+	double v = 1;
+	volatile double *hsv_1;
+	volatile double *hsv_2;
+	int animation = 0;
+	long int period = 10*1000*1000;
+	double h_1 = 0;
+	double h_2 = 0;
+	long int startTime = 0; 
 	while(!q)
 		{
 		//printf("%lf %lf %lf\n", my_rgb[0], my_rgb[1], my_rgb[2]);
-		color_1 = createRGB(data->rgb.red, data->rgb.green, data->rgb.blue); 
-		//printf("%d %d %d \n", data->rgb.red, data->rgb.green, data->rgb.blue);
-		//color_2 = color_1 ;
-		
-		//*(volatile uint32_t*)(leds_mem_base + SPILED_REG_LED_RGB1_o) = color_1;
+		if(data->rb == 1  && animation == 1)
+		{
+			animation = 0;
+			}
+		if(data->rb == 1 && animation != 1)
+		{
+			//printf("%lf %lf %lf\n", data->rgb_1.red, data->rgb_1.green, data->rgb_1.blue);
+			//printf("%lf %lf %lf\n", data->rgb_2.red, data->rgb_2.green, data->rgb_2.blue);
+			hsv_1 = RGB_to_HSV(data->rgb_1.red, data->rgb_1.green, data->rgb_1.blue);
+			h_1 = hsv_1[0];
+			hsv_2 = RGB_to_HSV(data->rgb_2.red, data->rgb_2.green, data->rgb_2.blue);
+		/*	printf("%lf %lf %lf\n", data->rgb_1.red, data->rgb_1.green, data->rgb_1.blue);
+			printf("%lf %lf %lf\n", data->rgb_2.red, data->rgb_2.green, data->rgb_2.blue);*/
+			h_2 = hsv_2[0];
+			//printf("%lf %lf \n", h_1, h_2 );
+			animation = 1;
+			startTime = getMicrotime();
+			  
+		}
+		/*		
 		*led_1 = color_1;
-		//*(volatile uint32_t*)(leds_mem_base + SPILED_REG_LED_RGB2_o) = color_2;
+		*led_2 = color_2;
+		*/
+		if(animation)
+		{
+			double c1 = 2*((getMicrotime() - startTime)%(period));
+			double c2 = (double)(period);
+			double absMe = (1-c1/c2); 
+			if(absMe<0){absMe = -absMe;}
+			double coef = 1-absMe;
+			out_h = h_1 + (h_2 - h_1)*coef; 
+			//hsv_rgb(&out, &out_f);
+			double *rgb_led_1 = HSV_to_RGB(out_h , s, v);
+			color_1 = createRGB(rgb_led_1[0], rgb_led_1[1], rgb_led_1[2]);
+			*led_1 = color_1;
+			*led_2 = color_1;
+		}
+		
 		q = data->quit;
+		
 		}
 	return NULL;
-	}
+}
+
+
 void *buttons(void *d){
 	data_t *data = (data_t *)d;
 	
@@ -146,13 +210,17 @@ void *buttons(void *d){
 	double *rgb_leds;
 	while(!q)
 	{	
-			rgb_leds = strip(200, 10, data->rk, data->bk); // !!!!!!
-			data->rgb.red = rgb_leds[0];
-			data->rgb.green = rgb_leds[1];
-			data->rgb.blue = rgb_leds[2];
-			down_controll_panel(0, 0, 0, 0, 0, 0, rgb_leds); // !!!!!
+			rgb_leds = strip(200, 10, data->rk, data->bk, menu_arr.colourGui); // !!!!!!
+			data->rgb_1.red = rgb_leds[0];
+			data->rgb_1.green = rgb_leds[1];
+			data->rgb_1.blue = rgb_leds[2];
+			
+			data->rgb_2.red = rgb_leds[3];
+			data->rgb_2.green = rgb_leds[4];
+			data->rgb_2.blue = rgb_leds[5];
+			down_controll_panel(0, 0, 0, 0, 0, 0, rgb_leds, menu_arr.colourGui); // !!!!!
 
-			menu(data->rk, data->gk, data->bk, data->rb, data->gb, data->bb);
+			menu_arr = menu(data->rk, data->gk, data->bk, data->rb, data->gb, data->bb, menu_arr.colourGui, menu_arr);
 			frame2lcd();
 			rgb_knobs_value = *(volatile uint32_t*)(buttons_mem_base + SPILED_REG_KNOBS_8BIT_o);
 			pthread_mutex_lock(&mtx);
@@ -170,9 +238,9 @@ void *buttons(void *d){
 			data->gk = gk;
 			data->rk = rk;
 			
-			data->rb = (rgb_knobs_value>>24) & 1;    // blue button
+			data->bb = (rgb_knobs_value>>24) & 1;    // blue button
 			data->gb = (rgb_knobs_value>>25) & 1;    // green button
-			data->bb = (rgb_knobs_value>>26) & 1;    // red buttom
+			data->rb = (rgb_knobs_value>>26) & 1;    // red buttom
 			pthread_mutex_unlock(&mtx);
 			
 
@@ -190,7 +258,7 @@ void *buttons(void *d){
 			data->quit = q;
 		}
 	printf("\n");
-	delete_lcd();
+	delete_lcd(0);
 	frame2lcd();
 	return NULL;
 	}
