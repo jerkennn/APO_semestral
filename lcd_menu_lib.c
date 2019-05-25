@@ -23,7 +23,7 @@
 #include "convert_lib.h"
 #include "write2lcd_lib.h"
 
-int *menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, int contrast_lcd, int*GUI_set)
+menu_arr menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, int contrast_lcd, menu_arr menu_arr)
 {
 	int color1=0;
 	int color2=0;
@@ -54,18 +54,18 @@ int *menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 			break;
 	}
 	
-	for(int i=0; i<144; i++)
+	for(int i=0; i<170; i++)
 	{
 		for(int j = 0; j<320; j++) frame[i][j] = color2;
 	}
 
-	int posun=0;
+	//int posun=0;
 	string2frame_menu("******************** KOREK ********************", 0, 0, color1, color2);
 
-	for(int i=1;i<=5;i++) string2frame_menu("   ", i*24, 10, color1, color2);
+	for(int i=1;i<=6;i++) string2frame_menu("   ", i*24, 10, color1, color2);
 	string2frame_menu(">>", btn2, 10, color1, color2);
 	
-	if(GUI_set[0]==0) // start menu
+	if(menu_arr.currentScreen==0) // start menu
 	{
 		string2frame_menu("Change only LED 1", 24, 40, color1, color2);
 		string2frame_menu("Change only LED 2", 48, 40, color1, color2);
@@ -76,13 +76,13 @@ int *menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 		if(button2==1) {
 		time2 = getMicrotime();
 		if(time2>=time1+300000) {
-			GUI_set[0]=btn2/24;
+			menu_arr.currentScreen=btn2/24;
 			btn2=24;
 			time2=0; time1 = getMicrotime();
 			}
 		}
 	}
-	else if(GUI_set[0]==1) // led 1 menu
+	else if(menu_arr.currentScreen==1) // led 1 menu
 	{
 		string2frame_menu("Change hue (H)", 24, 40, color1, color2);
 		string2frame_menu("Change saturation (S)", 48, 40, color1, color2);
@@ -93,13 +93,13 @@ int *menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 		if(button2==1) {
 		time2 = getMicrotime();
 		if(time2>=time1+300000) {
-			if(btn2==144) GUI_set[0]=0;
+			if(btn2==144) menu_arr.currentScreen=0;
 			btn2=24;
 			time2=0; time1 = getMicrotime();
 			}
 		}
 	}
-	else if(GUI_set[0]==2) //led2 menu
+	else if(menu_arr.currentScreen==2) //led2 menu
 	{
 		string2frame_menu("Change hue (H)", 24, 40, color1, color2);
 		string2frame_menu("Change saturation (S)", 48, 40, color1, color2);
@@ -110,13 +110,13 @@ int *menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 		if(button2==1) {
 		time2 = getMicrotime();
 		if(time2>=time1+300000) {
-			if(btn2==144) GUI_set[0]=0;
+			if(btn2==144) menu_arr.currentScreen=0;
 			btn2=24;
 			time2=0; time1 = getMicrotime();
 			}
 		}
 	}
-	else if(GUI_set[0]==3) //both leds menu
+	else if(menu_arr.currentScreen==3) //both leds menu
 	{
 		string2frame_menu(" -- ", 24, 40, color1, color2);
 		string2frame_menu(" -- ", 48, 40, color1, color2);
@@ -127,13 +127,13 @@ int *menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 		if(button2==1) {
 		time2 = getMicrotime();
 		if(time2>=time1+300000) {
-			if(btn2==144) GUI_set[0]=0;
+			if(btn2==144) menu_arr.currentScreen=0;
 			btn2=24;
 			time2=0; time1 = getMicrotime();
 			}
 		}
 	}
-	else if(GUI_set[0]==4) //ethernet
+	else if(menu_arr.currentScreen==4) //ethernet
 	{
 		string2frame_menu(" -- ", 24, 40, color1, color2);
 		string2frame_menu(" -- ", 48, 40, color1, color2);
@@ -144,13 +144,13 @@ int *menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 		if(button2==1) {
 		time2 = getMicrotime();
 		if(time2>=time1+300000) {
-			if(btn2==144) GUI_set[0]=0;
+			if(btn2==144) menu_arr.currentScreen=0;
 			btn2=24;
 			time2=0; time1 = getMicrotime();
 			}
 		}
 	}
-	else if(GUI_set[0]==5) // KOREK settings
+	else if(menu_arr.currentScreen==5) // KOREK settings
 	{
 		string2frame_menu("Invert color of GUI", 24, 40, color1, color2);
 		string2frame_menu(" -- ", 48, 40, color1, color2);
@@ -164,10 +164,10 @@ int *menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 			switch(btn2)
 			{
 				case 24:
-					GUI_set[1]=!GUI_set[1]; break;
+					menu_arr.colourGui=!menu_arr.colourGui; break;
 				
 				case 144:
-					GUI_set[0]=0; break;
+					menu_arr.currentScreen=0; break;
 				default:
 					break;
 			}
@@ -176,7 +176,7 @@ int *menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 			}
 		}
 	}
-	else if(GUI_set[0]==6) // Exit
+	else if(menu_arr.currentScreen==6) // Exit
 	{
 		string2frame_menu(" Back ", 24, 40, color1, color2);
 		string2frame_menu(" Confirm exit ", 48, 40, color1, color2);
@@ -190,9 +190,9 @@ int *menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 			switch(btn2)
 			{
 				case 24:
-					GUI_set[0]=0; break;
+					menu_arr.currentScreen=0; break;
 				case 48:
-					GUI_set[2]=1; break;
+					menu_arr.exit=1; break;
 				default:
 					break;
 			}
@@ -227,7 +227,7 @@ int *menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 	char button3_str[3]; sprintf(button3_str,"%d", button3);
 	string2frame_menu(button3_str, 64, posun+4, 0, 0x0FFF);*/
 	
-	return GUI_set;
+	return menu_arr;
 }
 
 
