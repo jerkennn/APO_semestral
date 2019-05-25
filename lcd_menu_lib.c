@@ -53,9 +53,12 @@ int *menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 		default:
 			break;
 	}
-	/*
-	if(btn2<24) btn2=24;
-	*/
+	
+	for(int i=0; i<144; i++)
+	{
+		for(int j = 0; j<320; j++) frame[i][j] = color2;
+	}
+
 	int posun=0;
 	string2frame_menu("******************** KOREK ********************", 0, 0, color1, color2);
 
