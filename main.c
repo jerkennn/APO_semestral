@@ -220,7 +220,7 @@ void *buttons(void *d){
 			data->rgb_2.blue = rgb_leds[5];
 			down_controll_panel(0, 0, 0, 0, 0, 0, rgb_leds, menu_arr.colourGui); // !!!!!
 
-			menu_arr = menu(data->rk, data->gk, data->bk, data->rb, data->gb, data->bb, menu_arr.colourGui, menu_arr);
+			menu_arr = menu(data->rk, data->gk, data->bk, data->rb, data->gb, data->bb, menu_arr);
 			frame2lcd();
 			rgb_knobs_value = *(volatile uint32_t*)(buttons_mem_base + SPILED_REG_KNOBS_8BIT_o);
 			pthread_mutex_lock(&mtx);
