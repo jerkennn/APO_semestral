@@ -23,12 +23,12 @@
 #include "convert_lib.h"
 #include "write2lcd_lib.h"
 
-GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, int contrast_lcd, GUI_set_menu menu_arr)
+GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, GUI_set_menu menu_arr)
 {
 	int color1=0;
 	int color2=0;
-	if(contrast_lcd==1) {color1=0x0000; color2=0xFFFF;}
-	else if(contrast_lcd==0) {color1=0xFFFF; color2=0x0000;}
+	if(menu_arr.currentScreen==1) {color1=0x0000; color2=0xFFFF;}
+	else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
 
 	switch (( (int) ( (double)rotate2) %37)) 
 	{
@@ -164,7 +164,9 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			switch(btn2)
 			{
 				case 24:
-					menu_arr.colourGui=!menu_arr.colourGui; break;
+					menu_arr.colourGui=!menu_arr.colourGui; 
+					delete_lcd(menu_arr.colourGui);
+					break;
 				
 				case 144:
 					menu_arr.currentScreen=0; break;
