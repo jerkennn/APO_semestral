@@ -29,7 +29,8 @@ unsigned char *parlcd_mem_base;
 
 uint16_t frame[FRAME_H][FRAME_W];
 
-void menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, int convert_lcd);
+/* GUI_set: obrazovka GUI; barva gui; exit */
+int *menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, int convert_lcd, int * GUI_set);
 void down_controll_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, double*leds, int convert_lcd);
 
 double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int convert_lcd);

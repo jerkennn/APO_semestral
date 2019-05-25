@@ -23,14 +23,14 @@
 #include "convert_lib.h"
 #include "write2lcd_lib.h"
 
-void menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, int contrast_lcd)
+int *menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, int contrast_lcd, int*GUI_set)
 {
 	int color1=0;
 	int color2=0;
 	if(contrast_lcd==1) {color1=0x0000; color2=0xFFFF;}
 	else if(contrast_lcd==0) {color1=0xFFFF; color2=0x0000;}
 
-	switch (((int)(((double)6*rotate2)/10.2))%37)
+	switch (( (int) ( (double)rotate2) %37)) 
 	{
 		case 0 ... 4:
 			btn2 = 1*24;
@@ -47,32 +47,159 @@ void menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 		case 21 ... 25:
 			btn2 = 5*24;
 			break;
+		case 26 ... 30:
+			btn2 = 6*24;
+			break;
 		default:
 			break;
 	}
 	/*
 	if(btn2<24) btn2=24;
-	if(button2==1) {
-		time2 = getMicrotime();
-		if(time2>=time1+300000) {
-			btn2+=24;
-			if(btn2>120) btn2=24;
-			time2=0; time1 = getMicrotime();
-			}
-		}
 	*/
-	//int posun=0;
+	int posun=0;
 	string2frame_menu("******************** KOREK ********************", 0, 0, color1, color2);
 
 	for(int i=1;i<=5;i++) string2frame_menu("   ", i*24, 10, color1, color2);
 	string2frame_menu(">>", btn2, 10, color1, color2);
 	
-	
-	/*posun = -12+3*string2frame_menu("KNOB_1: ", 32, 0, 0, 0xFFF0);
-	char rotate1_str[3]; sprintf(rotate1_str,"%d", rotate1);
-	string2frame_menu("    ", 32, posun+4, 0, 0xFFF0);
-	string2frame_menu(rotate1_str, 32, posun+4, 0, 0xFFF0);
+	if(GUI_set[0]==0) // start menu
+	{
+		string2frame_menu("Change only LED 1", 24, 40, color1, color2);
+		string2frame_menu("Change only LED 2", 48, 40, color1, color2);
+		string2frame_menu("Change both LEDs", 72, 40, color1, color2);
+		string2frame_menu("Ethernet settings", 96, 40, color1, color2);
+		string2frame_menu("KOREK settings", 120, 40, color1, color2);
+		string2frame_menu("Exit KOREK", 144, 40, color1, color2);
+		if(button2==1) {
+		time2 = getMicrotime();
+		if(time2>=time1+300000) {
+			GUI_set[0]=btn2/24;
+			btn2=24;
+			time2=0; time1 = getMicrotime();
+			}
+		}
+	}
+	else if(GUI_set[0]==1) // led 1 menu
+	{
+		string2frame_menu("Change hue (H)", 24, 40, color1, color2);
+		string2frame_menu("Change saturation (S)", 48, 40, color1, color2);
+		string2frame_menu("Change value (V)", 72, 40, color1, color2);
+		string2frame_menu("Change period", 96, 40, color1, color2);
+		string2frame_menu("Set color shift", 120, 40, color1, color2);
+		string2frame_menu("Back", 144, 40, color1, color2);
+		if(button2==1) {
+		time2 = getMicrotime();
+		if(time2>=time1+300000) {
+			if(btn2==144) GUI_set[0]=0;
+			btn2=24;
+			time2=0; time1 = getMicrotime();
+			}
+		}
+	}
+	else if(GUI_set[0]==2) //led2 menu
+	{
+		string2frame_menu("Change hue (H)", 24, 40, color1, color2);
+		string2frame_menu("Change saturation (S)", 48, 40, color1, color2);
+		string2frame_menu("Change value (V)", 72, 40, color1, color2);
+		string2frame_menu("Change period", 96, 40, color1, color2);
+		string2frame_menu("Set color shift", 120, 40, color1, color2);
+		string2frame_menu("Back", 144, 40, color1, color2);
+		if(button2==1) {
+		time2 = getMicrotime();
+		if(time2>=time1+300000) {
+			if(btn2==144) GUI_set[0]=0;
+			btn2=24;
+			time2=0; time1 = getMicrotime();
+			}
+		}
+	}
+	else if(GUI_set[0]==3) //both leds menu
+	{
+		string2frame_menu(" -- ", 24, 40, color1, color2);
+		string2frame_menu(" -- ", 48, 40, color1, color2);
+		string2frame_menu(" -- ", 72, 40, color1, color2);
+		string2frame_menu(" -- ", 96, 40, color1, color2);
+		string2frame_menu(" -- ", 120, 40, color1, color2);
+		string2frame_menu("Back", 144, 40, color1, color2);
+		if(button2==1) {
+		time2 = getMicrotime();
+		if(time2>=time1+300000) {
+			if(btn2==144) GUI_set[0]=0;
+			btn2=24;
+			time2=0; time1 = getMicrotime();
+			}
+		}
+	}
+	else if(GUI_set[0]==4) //ethernet
+	{
+		string2frame_menu(" -- ", 24, 40, color1, color2);
+		string2frame_menu(" -- ", 48, 40, color1, color2);
+		string2frame_menu(" -- ", 72, 40, color1, color2);
+		string2frame_menu(" -- ", 96, 40, color1, color2);
+		string2frame_menu(" -- ", 120, 40, color1, color2);
+		string2frame_menu("Back", 144, 40, color1, color2);
+		if(button2==1) {
+		time2 = getMicrotime();
+		if(time2>=time1+300000) {
+			if(btn2==144) GUI_set[0]=0;
+			btn2=24;
+			time2=0; time1 = getMicrotime();
+			}
+		}
+	}
+	else if(GUI_set[0]==5) // KOREK settings
+	{
+		string2frame_menu("Invert color of GUI", 24, 40, color1, color2);
+		string2frame_menu(" -- ", 48, 40, color1, color2);
+		string2frame_menu(" -- ", 72, 40, color1, color2);
+		string2frame_menu(" -- ", 96, 40, color1, color2);
+		string2frame_menu(" -- ", 120, 40, color1, color2);
+		string2frame_menu("Back", 144, 40, color1, color2);
+		if(button2==1) {
+		time2 = getMicrotime();
+		if(time2>=time1+300000) {
+			switch(btn2)
+			{
+				case 24:
+					GUI_set[1]=!GUI_set[1]; break;
+				
+				case 144:
+					GUI_set[0]=0; break;
+				default:
+					break;
+			}
+			btn2=24;
+			time2=0; time1 = getMicrotime();
+			}
+		}
+	}
+	else if(GUI_set[0]==6) // Exit
+	{
+		string2frame_menu(" Back ", 24, 40, color1, color2);
+		string2frame_menu(" Confirm exit ", 48, 40, color1, color2);
+		string2frame_menu(" -- ", 72, 40, color1, color2);
+		string2frame_menu(" -- ", 96, 40, color1, color2);
+		string2frame_menu(" -- ", 120, 40, color1, color2);
+		string2frame_menu(" -- ", 144, 40, color1, color2);
+		if(button2==1) {
+		time2 = getMicrotime();
+		if(time2>=time1+300000) {
+			switch(btn2)
+			{
+				case 24:
+					GUI_set[0]=0; break;
+				case 48:
+					GUI_set[2]=1; break;
+				default:
+					break;
+			}
+			btn2=24;
+			time2=0; time1 = getMicrotime();
+			}
+		}
+	}
 
+/*
 	posun = 150-12+3*string2frame_menu("BUTTON_1: ", 32, 150, 0, 0x0FFF);
 	char button1_str[3]; sprintf(button1_str,"%d", button1);
 	string2frame_menu(button1_str, 32, posun+4, 0, 0x0FFF);
@@ -96,6 +223,8 @@ void menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 	posun = 150-12+3*string2frame_menu("BUTTON_3: ", 64, 150, 0, 0x0FFF);
 	char button3_str[3]; sprintf(button3_str,"%d", button3);
 	string2frame_menu(button3_str, 64, posun+4, 0, 0x0FFF);*/
+	
+	return GUI_set;
 }
 
 
