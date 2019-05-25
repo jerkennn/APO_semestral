@@ -141,10 +141,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	{
 		string2frame_menu("Invert color of GUI", 24, 40, color1, color2);
 		string2frame_menu(" -- ", 48, 40, color1, color2);
-		string2frame_menu(" -- ", 72, 40, color1, color2);
-		string2frame_menu(" -- ", 96, 40, color1, color2);
-		string2frame_menu(" -- ", 120, 40, color1, color2);
-		string2frame_menu("Back", 144, 40, color1, color2);
+		string2frame_menu("Back", 72, 40, color1, color2);
 		if(button2==1) {
 		time2 = getMicrotime();
 		if(time2>=time1+300000) {
