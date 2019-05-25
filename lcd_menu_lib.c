@@ -102,11 +102,6 @@ void menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int b
 
 double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int contrast_lcd)
 {
-	int color1=0;
-	int color2=0;
-	if(contrast_lcd==1) {color1=0x0000; color2=0xFFFF;}
-	else if(contrast_lcd==0) {color1=0xFFFF; color2=0x0000;}
-
 	static double returned[6];
 	posuvnik1 = (int)(((double)posuvnik1/255)*460);
 	posuvnik2 = (int)(((double)posuvnik2/255)*460);
@@ -119,7 +114,7 @@ double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int contrast_
 		{
 			rgb = HSV_to_RGB(((double)x/460)*360, 1, 1);
 			hex = RGB_to_hex(rgb[0], rgb[1], rgb[2]);
-			if((int)(((double)x/460)*360) >= posuvnik1-1 && (int)(((double)x/460)*360) <= posuvnik1+1) frame[yrow + y][xcolumn + x] = color1;
+			if((int)(((double)x/460)*360) >= posuvnik1-1 && (int)(((double)x/460)*360) <= posuvnik1+1) frame[yrow + y][xcolumn + x] = 0;
 			else frame[yrow + y][xcolumn + x] = hex;
 			if((int)(((double)x/460)*360)==posuvnik1) {returned[0] = rgb[0]; returned[1] = rgb[1]; returned[2] = rgb[2];} 
 		}	
@@ -131,7 +126,7 @@ double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int contrast_
 		{
 			rgb = HSV_to_RGB(((double)x/460)*360, 1, 1);
 			hex = RGB_to_hex(rgb[0], rgb[1], rgb[2]);
-			if((int)(((double)x/460)*360) >= posuvnik2-1 && (int)(((double)x/460)*360) <= posuvnik2+1) frame[yrow+16 + y][xcolumn + x] = color1;
+			if((int)(((double)x/460)*360) >= posuvnik2-1 && (int)(((double)x/460)*360) <= posuvnik2+1) frame[yrow+16 + y][xcolumn + x] = 0;
 			else frame[yrow+16 + y][xcolumn + x] = hex;
 			if((int)(((double)x/460)*360)==posuvnik2) {returned[3] = rgb[0]; returned[4] = rgb[1]; returned[5] = rgb[2];} 
 		}

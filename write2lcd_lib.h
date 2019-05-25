@@ -24,7 +24,7 @@ uint16_t frame[FRAME_H][FRAME_W];
 
 int string2frame_menu(char *s, int yrow, int xcolumn, uint16_t forecolor, uint16_t backcolor);
 void frame2lcd();
-void delete_lcd();
+void delete_lcd(int convert_lcd);
 
 #ifdef __cplusplus
 

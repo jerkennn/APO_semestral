@@ -70,11 +70,15 @@ int string2frame_menu(char *s, int yrow, int xcolumn, uint16_t forecolor, uint16
 	return p;
 }
 
-void delete_lcd()
+void delete_lcd(int contrast_lcd)
 {
+    int color=0;
+	if(contrast_lcd==0) color=0x0000;
+	else if(contrast_lcd==1) color=0xFFFF;
+
 	for(int i = 0; i<320; i++)
 	{
-		for(int j=0; j<480; j++) frame[i][j]=0;
+		for(int j=0; j<480; j++) frame[i][j]=color;
 	}
 }
 
