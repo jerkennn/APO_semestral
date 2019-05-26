@@ -100,7 +100,6 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			posuvnik_change=1;
 			if(btn2==24) {menu_arr.led1.simpleLedSetup = 'h'; menu_arr.led2.simpleLedSetup = 'h';}
 			else if(btn2==48) {menu_arr.led1.simpleLedSetup = 's'; menu_arr.led2.simpleLedSetup = 's';}
 			else if(btn2==72) {menu_arr.led1.simpleLedSetup = 'v'; menu_arr.led2.simpleLedSetup = 'v';}
@@ -226,9 +225,12 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_sta
 	}
 	else
 	{
-		posuvnik1 = (int)(((double)posuvnik1-posuvnik1_shift/255)*460);
-		posuvnik2 = (int)(((double)posuvnik2-posuvnik2_shift/255)*460);
+		posuvnik1 = (int)(( (double) ( (unsigned char)(posuvnik1_start-posuvnik1_shift) )/255)*460);
+		posuvnik2 = (int)(( (double) ( (unsigned char)(posuvnik2_start-posuvnik2_shift) )/255)*460);
 	}
+
+	//posuvnik1 = (int)(( (double) ( posuvnik1_start )/255)*460);
+	//posuvnik2 = (int)(( (double) ( posuvnik2_start )/255)*460);
 
 	int x,y;
 	if(click==1){
