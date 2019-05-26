@@ -44,7 +44,9 @@ GUI_set_menu menu_arr;
 // int btn1=0;
 int btn2;
 // int btn3=0;
-//int click;
+
+double *rgb1;
+double *rgb2;
 
 unsigned char *parlcd_mem_base;
 
