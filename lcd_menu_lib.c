@@ -11,6 +11,8 @@
 int click = 0;
 int nextscreen = 0;
 int posuvnik_change=0;
+double led1_hsv[3];
+double led2_hsv[3];
 GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, GUI_set_menu menu_arr)
 {
 	btn2 = 24;
@@ -92,8 +94,8 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		string2frame_menu("Change hue (H)", 24, 40, color1, color2);
 		string2frame_menu("Change saturation (S)", 48, 40, color1, color2);
 		string2frame_menu("Change value (V)", 72, 40, color1, color2);
-		string2frame_menu("Change period", 96, 40, color1, color2);
-		string2frame_menu("Set color shift", 120, 40, color1, color2);
+		string2frame_menu("Change period", 96, 40, color1, color2); //???
+		string2frame_menu("Set color shift", 120, 40, color1, color2); //???
 		string2frame_menu("Back", 144, 40, color1, color2);
 		
 
@@ -123,9 +125,11 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		if(menu_arr.time2>=menu_arr.time1+300000) {
 			if(btn2==24){
 				menu_arr.animation1=!menu_arr.animation1;
+				menu_arr.led1.simpleLedSetup = 'h'; menu_arr.led2.simpleLedSetup = 'h';
 			}
 			if(btn2==48){
 				menu_arr.animation2=!menu_arr.animation2;
+				menu_arr.led1.simpleLedSetup = 'h'; menu_arr.led2.simpleLedSetup = 'h';
 			}
 			else if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
@@ -245,8 +249,11 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_sta
 
 	int x,y;
 	if(click==1){
-		led1_hsv = RGB_to_HSV(menu_arr.led1.red, menu_arr.led1.green, menu_arr.led1.blue);
-		led2_hsv = RGB_to_HSV(menu_arr.led2.red, menu_arr.led2.green, menu_arr.led2.blue);
+		double *led1_hsv_ = RGB_to_HSV(menu_arr.led1.red, menu_arr.led1.green, menu_arr.led1.blue);
+		led1_hsv[0] = led1_hsv_[0]; led1_hsv[1] = led1_hsv_[1]; led1_hsv[2] = led1_hsv_[2];
+
+		double *led2_hsv_ = RGB_to_HSV(menu_arr.led2.red, menu_arr.led2.green, menu_arr.led2.blue);
+		led2_hsv[0] = led2_hsv_[0]; led2_hsv[1] = led2_hsv_[1]; led2_hsv[2] = led2_hsv_[2];
 	}
 
 	for(y=0; y<15; y++)

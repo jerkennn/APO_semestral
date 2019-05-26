@@ -68,9 +68,6 @@ double *rgb2;
 uint16_t hex1;
 uint16_t hex2;
 
-double *led1_hsv;
-double *led2_hsv;
-
 unsigned char *parlcd_mem_base;
 
 uint16_t frame[FRAME_H][FRAME_W];
