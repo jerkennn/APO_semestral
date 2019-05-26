@@ -18,11 +18,23 @@
 extern "C"
 #endif
 
+typedef struct led_set
+{
+    double red;
+    double green;
+    double blue;
+    double period;
+    char simpleLedSetup;
+}led_settings;
+
+
 typedef struct GUI_set
 {
     int currentScreen;
     int colourGui;
     int exit;
+    led_settings led1;
+    led_settings led2;
 }GUI_set_menu;
 
 GUI_set_menu menu_arr;
@@ -42,7 +54,8 @@ uint16_t frame[FRAME_H][FRAME_W];
 GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, GUI_set_menu menu_arr);
 void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, double*leds, int convert_lcd);
 
-double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int convert_lcd);
+//double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int convert_lcd);
+GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int convert_lcd, GUI_set_menu menu_arr);
 
 #ifdef __cplusplus
 

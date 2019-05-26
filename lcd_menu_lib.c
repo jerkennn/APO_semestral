@@ -41,7 +41,8 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			break;
 		case 26 ... 30:
 			btn2 = 6*24;
-			if(menu_arr.currentScreen==5) btn2=3*24;
+			if(menu_arr.currentScreen==0) btn2=1*24;
+			else if(menu_arr.currentScreen==5) btn2=3*24;
 			else if(menu_arr.currentScreen==6) btn2=2*24;
 			break;
 		default:
@@ -61,12 +62,11 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	
 	if(menu_arr.currentScreen==0) // start menu
 	{
-		string2frame_menu("Change only LED 1", 24, 40, color1, color2);
-		string2frame_menu("Change only LED 2", 48, 40, color1, color2);
-		string2frame_menu("Change both LEDs", 72, 40, color1, color2);
-		string2frame_menu("Ethernet settings", 96, 40, color1, color2);
-		string2frame_menu("KOREK settings", 120, 40, color1, color2);
-		string2frame_menu("Exit KOREK", 144, 40, color1, color2);
+		string2frame_menu("Change LEDs", 24, 40, color1, color2);
+		string2frame_menu("Special effects", 48, 40, color1, color2);
+		string2frame_menu("Ethernet settings", 72, 40, color1, color2);
+		string2frame_menu("KOREK settings", 96, 40, color1, color2);
+		string2frame_menu("Exit KOREK", 120, 40, color1, color2);
 		if(button2==1) {
 		time2 = getMicrotime();
 		if(time2>=time1+300000) {
@@ -93,24 +93,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			}
 		}
 	}
-	else if(menu_arr.currentScreen==2) //led2 menu
-	{
-		string2frame_menu("Change hue (H)", 24, 40, color1, color2);
-		string2frame_menu("Change saturation (S)", 48, 40, color1, color2);
-		string2frame_menu("Change value (V)", 72, 40, color1, color2);
-		string2frame_menu("Change period", 96, 40, color1, color2);
-		string2frame_menu("Set color shift", 120, 40, color1, color2);
-		string2frame_menu("Back", 144, 40, color1, color2);
-		if(button2==1) {
-		time2 = getMicrotime();
-		if(time2>=time1+300000) {
-			if(btn2==144) menu_arr.currentScreen=0;
-			btn2=24;
-			time2=0; time1 = getMicrotime();
-			}
-		}
-	}
-	else if(menu_arr.currentScreen==3) //both leds menu
+	else if(menu_arr.currentScreen==2) //both leds menu
 	{
 		string2frame_menu(" -- ", 24, 40, color1, color2);
 		string2frame_menu(" -- ", 48, 40, color1, color2);
@@ -127,7 +110,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			}
 		}
 	}
-	else if(menu_arr.currentScreen==4) //ethernet
+	else if(menu_arr.currentScreen==3) //ethernet
 	{
 		string2frame_menu(" -- ", 24, 40, color1, color2);
 		string2frame_menu(" -- ", 48, 40, color1, color2);
@@ -144,7 +127,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			}
 		}
 	}
-	else if(menu_arr.currentScreen==5) // KOREK settings
+	else if(menu_arr.currentScreen==4) // KOREK settings
 	{
 		string2frame_menu("Invert color of GUI", 24, 40, color1, color2);
 		string2frame_menu(" -- ", 48, 40, color1, color2);
@@ -173,7 +156,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			}
 		}
 	}
-	else if(menu_arr.currentScreen==6) // Exit
+	else if(menu_arr.currentScreen==5) // Exit
 	{
 		string2frame_menu(" Back ", 24, 40, color1, color2);
 		string2frame_menu(" Confirm exit ", 48, 40, color1, color2);
@@ -199,23 +182,32 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 
 
 
-double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int contrast_lcd)
+GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int contrast_lcd, GUI_set_menu menu_arr)
 {
-	static double returned[6];
+	//static double returned[6];
 	posuvnik1 = (int)(((double)posuvnik1/255)*460);
 	posuvnik2 = (int)(((double)posuvnik2/255)*460);
 	int x,y;
-	static double *rgb;
+	double *rgb;
 	uint16_t hex;
+	double *led1_hsv = RGB_to_HSV(menu_arr.led1.red, menu_arr.led1.green, menu_arr.led1.blue);
+	double *led2_hsv = RGB_to_HSV(menu_arr.led2.red, menu_arr.led2.green, menu_arr.led2.blue);
+
 	for(y=0; y<15; y++)
 	{
 		for(x=0; x<460; x++)
 		{
-			rgb = HSV_to_RGB(((double)x/460)*360, 1, 1);
+			if(menu_arr.led1.simpleLedSetup=='h') rgb = HSV_to_RGB(((double)x/460)*360, led1_hsv[1], led1_hsv[2]);
+			else if(menu_arr.led1.simpleLedSetup=='s') rgb = HSV_to_RGB(led1_hsv[0], ((double)x/460) , led1_hsv[2]);
+			else if(menu_arr.led1.simpleLedSetup=='v') rgb = HSV_to_RGB(led1_hsv[0], led1_hsv[1], ((double)x/460) );
 			hex = RGB_to_hex(rgb[0], rgb[1], rgb[2]);
 			if((int)(((double)x/460)*360) >= posuvnik1-1 && (int)(((double)x/460)*360) <= posuvnik1+1) frame[yrow + y][xcolumn + x] = 0;
 			else frame[yrow + y][xcolumn + x] = hex;
-			if((int)(((double)x/460)*360)==posuvnik1) {returned[0] = rgb[0]; returned[1] = rgb[1]; returned[2] = rgb[2];} 
+			if((int)(((double)x/460)*360)==posuvnik1) {
+				menu_arr.led1.red = rgb[0];
+				menu_arr.led1.green = rgb[1];
+				menu_arr.led1.blue = rgb[2];
+			} 
 		}	
 	}
 
@@ -223,14 +215,20 @@ double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int contrast_
 	{
 		for(x=0; x<460; x++)
 		{
-			rgb = HSV_to_RGB(((double)x/460)*360, 1, 1);
+			if(menu_arr.led2.simpleLedSetup=='h') rgb = HSV_to_RGB(((double)x/460)*360, led2_hsv[1], led2_hsv[2]);
+			else if(menu_arr.led2.simpleLedSetup=='s') rgb = HSV_to_RGB(led2_hsv[0], ((double)x/460) , led2_hsv[2]);
+			else if(menu_arr.led2.simpleLedSetup=='v') rgb = HSV_to_RGB(led2_hsv[0], led2_hsv[1], ((double)x/460) );
 			hex = RGB_to_hex(rgb[0], rgb[1], rgb[2]);
 			if((int)(((double)x/460)*360) >= posuvnik2-1 && (int)(((double)x/460)*360) <= posuvnik2+1) frame[yrow+16 + y][xcolumn + x] = 0;
 			else frame[yrow+16 + y][xcolumn + x] = hex;
-			if((int)(((double)x/460)*360)==posuvnik2) {returned[3] = rgb[0]; returned[4] = rgb[1]; returned[5] = rgb[2];} 
-		}
+			if((int)(((double)x/460)*360)==posuvnik2) {
+				menu_arr.led2.red = rgb[0];
+				menu_arr.led2.green = rgb[1];
+				menu_arr.led2.blue = rgb[2];
+			} 
+		}	
 	}
-	return returned;
+	return menu_arr;
 }
 
 void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, double*leds, int contrast_lcd)
