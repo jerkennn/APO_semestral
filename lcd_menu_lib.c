@@ -231,36 +231,36 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int cont
 	return menu_arr;
 }
 
-void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, double*leds, int contrast_lcd)
+void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, GUI_set_menu menu_arr)
 {
 	int color1=0;
 	int color2=0;
-	if(contrast_lcd==1) {color1=0x0000; color2=0xFFFF;}
-	else if(contrast_lcd==0) {color1=0xFFFF; color2=0x0000;}
+	if(menu_arr.colourGui==1) {color1=0x0000; color2=0xFFFF;}
+	else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
 
 	int posun=0;
 	char str[255];
 	for(int i=0; i<480; i++) {frame[234][i] = color1; frame[235][i] = color1; frame[236][i] = color1;}
 	
 	posun = -12+3*string2frame_menu("Led 1 (r, g, b): ", 237, 0, color1, color2);
-	sprintf(str, "%d", (int)leds[0]);
+	sprintf(str, "%d", (int)menu_arr.led1.red);
 	string2frame_menu("    ", 237, 160, color1, color2);
 	posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 160, color1, color2);
-	sprintf(str, "%d", (int)leds[1]);
+	sprintf(str, "%d", (int)menu_arr.led1.green);
 	string2frame_menu("    ", 237, 210, color1, color2);
 	posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 210, color1, color2);
-	sprintf(str, "%d", (int)leds[2]);
+	sprintf(str, "%d", (int)menu_arr.led1.blue);
 	string2frame_menu("    ", 237, 260, color1, color2);
 	posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 260, color1, color2);
 
 	posun = -12+3*string2frame_menu("Led 2 (r, g, b): ", 253, 0, color1, color2);
-	sprintf(str, "%d", (int)leds[3]);
+	sprintf(str, "%d", (int)menu_arr.led2.red);
 	string2frame_menu("    ", 253, 160, color1, color2);
 	posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 160, color1, color2);
-	sprintf(str, "%d", (int)leds[4]);
+	sprintf(str, "%d", (int)menu_arr.led2.green);
 	string2frame_menu("    ", 253, 210, color1, color2);
 	posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 210, color1, color2);
-	sprintf(str, "%d", (int)leds[5]);
+	sprintf(str, "%d", (int)menu_arr.led2.blue);
 	string2frame_menu("    ", 253, 260, color1, color2);
 	posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 260, color1, color2);
 	
