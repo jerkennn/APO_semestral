@@ -9,6 +9,7 @@
 #include "convert_lib.h"
 #include "write2lcd_lib.h"
 int click = 0;
+int nextscreen = 0;
 GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, GUI_set_menu menu_arr)
 {
 	btn2 = 24;
@@ -17,44 +18,48 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	if(menu_arr.colourGui==1) {color1=0x0000; color2=0xFFFF;}
 	else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
 
-	switch (((int) (6*(double)rotate2/10.2)%37))
-	{
-		case 0 ... 4:
-			btn2 = 1*24;
-			break;
-		case 5 ... 9:
-			btn2 = 2*24;
-			break;
-		case 10 ... 14:
-			btn2 = 3*24;
-			if(menu_arr.currentScreen==6) btn2=24;
-			break;
-		case 15 ... 20:
-			btn2 = 4*24;
-			if(menu_arr.currentScreen==5) btn2=24;
-			else if(menu_arr.currentScreen==6) btn2=2*24;
-			break;
-		case 21 ... 25:
-			btn2 = 5*24;
-			if(menu_arr.currentScreen==5) btn2=2*24;
-			else if(menu_arr.currentScreen==6) btn2=24;
-			break;
-		case 26 ... 30:
-			btn2 = 6*24;
-			if(menu_arr.currentScreen==0) btn2=1*24;
-			else if(menu_arr.currentScreen==5) btn2=3*24;
-			else if(menu_arr.currentScreen==6) btn2=2*24;
-			break;
-		default:
-			break;
+	if(nextscreen==1) btn2=1*24;
+	else{
+		switch (((int) (6*(double)rotate2/10.2)%37))
+		{
+			case 0 ... 4:
+				btn2 = 1*24;
+				break;
+			case 5 ... 9:
+				btn2 = 2*24;
+				break;
+			case 10 ... 14:
+				btn2 = 3*24;
+				if(menu_arr.currentScreen==5) btn2=24;
+				break;
+			case 15 ... 20:
+				btn2 = 4*24;
+				if(menu_arr.currentScreen==4) btn2=24;
+				else if(menu_arr.currentScreen==5) btn2=2*24;
+				break;
+			case 21 ... 25:
+				btn2 = 5*24;
+				if(menu_arr.currentScreen==4) btn2=2*24;
+				else if(menu_arr.currentScreen==5) btn2=24;
+				break;
+			case 26 ... 30:
+				btn2 = 6*24;
+				if(menu_arr.currentScreen==0) btn2=1*24;
+				else if(menu_arr.currentScreen==4) btn2=3*24;
+				else if(menu_arr.currentScreen==5) btn2=2*24;
+				break;
+			default:
+				break;
+		}
 	}
-	
+
 	for(int i=0; i<170; i++)
 	{
 		for(int j = 0; j<320; j++) frame[i][j] = color2;
 	}
+	
+	nextscreen = 0;
 
-	//int posun=0;
 	string2frame_menu("******************** KOREK ********************", 0, 0, color1, color2);
 
 	for(int i=1;i<=6;i++) string2frame_menu("   ", i*24, 10, color1, color2);
@@ -75,7 +80,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 				//printf("***\n");
 				click = 1;
 				menu_arr.currentScreen=btn2/24;
-				btn2=24;
+				nextscreen = 1;
 				menu_arr.time2=0; 
 				menu_arr.time1 = getMicrotime();
 				}
@@ -92,8 +97,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			if(btn2==144) menu_arr.currentScreen=0;
-			btn2=24;
+			if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
@@ -109,8 +113,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			if(btn2==144) menu_arr.currentScreen=0;
-			btn2=24;
+			if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
@@ -126,8 +129,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			if(btn2==144) menu_arr.currentScreen=0;
-			btn2=24;
+			if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
@@ -152,7 +154,9 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					string2frame_menu("Back", 72, 40, color1, color2);
 					break;
 				case 72:
-					menu_arr.currentScreen=0; break;
+					menu_arr.currentScreen=0; 
+					nextscreen=1;
+					break;
 				default:
 					break;
 			}
@@ -171,7 +175,9 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			switch(btn2)
 			{
 				case 24:
-					menu_arr.currentScreen=0; break;
+					menu_arr.currentScreen=0; 
+					nextscreen=1;
+					break;
 				case 48:
 					menu_arr.exit=1; break;
 				default:
