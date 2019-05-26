@@ -86,7 +86,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 				}
 		}
 	}
-	else if(menu_arr.currentScreen==1) // led 1 menu
+	else if(menu_arr.currentScreen==1) // Change leds
 	{
 		string2frame_menu("Change hue (H)", 24, 40, color1, color2);
 		string2frame_menu("Change saturation (S)", 48, 40, color1, color2);
@@ -105,10 +105,10 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			}
 		}
 	}
-	else if(menu_arr.currentScreen==2) //both leds menu
+	else if(menu_arr.currentScreen==2) // effects
 	{
-		string2frame_menu(" -- ", 24, 40, color1, color2);
-		string2frame_menu(" -- ", 48, 40, color1, color2);
+		string2frame_menu("Animation 1", 24, 40, color1, color2);
+		string2frame_menu("Animation 2", 48, 40, color1, color2);
 		string2frame_menu(" -- ", 72, 40, color1, color2);
 		string2frame_menu(" -- ", 96, 40, color1, color2);
 		string2frame_menu(" -- ", 120, 40, color1, color2);
@@ -116,7 +116,13 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1;}
+			if(btn2==24){
+				menu_arr.animation1=!menu_arr.animation1;
+			}
+			if(btn2==48){
+				menu_arr.animation2=!menu_arr.animation2;
+			}
+			else if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
