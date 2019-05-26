@@ -210,9 +210,9 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_sta
 {
 	if(posuvnik_change==1)
 	{
-		posuvnik1_shift=posuvnik1_start;
-		posuvnik2_shift=posuvnik1_start;
 		posuvnik_change=0;
+		posuvnik1_shift=0;
+		posuvnik2_shift=0;
 		posuvnik1=0;
 		posuvnik2=0;
 		if(menu_arr.led1.simpleLedSetup=='h') posuvnik1 = menu_arr.posuvnik_up.h;
@@ -225,9 +225,11 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_sta
 	}
 	else
 	{
-		posuvnik1 = (int)((unsigned char) (posuvnik1 + ( (int)(( (double) ( (unsigned char)(posuvnik1_start-posuvnik1_shift) )/255)*460) )));
-		posuvnik2 = (int)((unsigned char) (posuvnik2 + ( (int)(( (double) ( (unsigned char)(posuvnik2_start-posuvnik2_shift) )/255)*460) )));
+		posuvnik1 = (( (int)( (unsigned char)(posuvnik1 + posuvnik1_start - posuvnik1_shift) ) /255)*460);
+		posuvnik2 = (( (int)( (unsigned char)(posuvnik2 + posuvnik2_start - posuvnik2_shift) ) /255)*460);
 	}
+	posuvnik1_shift=posuvnik1_start;
+	posuvnik2_shift=posuvnik2_start;
 
 	//posuvnik1 = (int)(( (double) ( posuvnik1_start )/255)*460);
 	//posuvnik2 = (int)(( (double) ( posuvnik2_start )/255)*460);
