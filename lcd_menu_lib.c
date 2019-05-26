@@ -221,18 +221,9 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 	{
 		for(x=0; x<460; x++)
 		{
-			if(menu_arr.led1.simpleLedSetup=='h') {
-				rgb1 = HSV_to_RGB(((double)x/460)*360, 1, 1);
-				led1_hsv[0]=((double)x/460)*360;
-			}
-			else if(menu_arr.led1.simpleLedSetup=='s') {
-				rgb1 = HSV_to_RGB(led1_hsv[0], ((double)x/460) , 1);
-				led1_hsv[1]=((double)x/460);
-			}
-			else if(menu_arr.led1.simpleLedSetup=='v') {
-				rgb1 = HSV_to_RGB(led1_hsv[0], 1, ((double)x/460) );
-				led1_hsv[2]=((double)x/460);
-			}
+			if(menu_arr.led1.simpleLedSetup=='h') rgb1 = HSV_to_RGB(((double)x/460)*360, 1, 1);
+			else if(menu_arr.led1.simpleLedSetup=='s') rgb1 = HSV_to_RGB(led1_hsv[0], ((double)x/460) , 1);
+			else if(menu_arr.led1.simpleLedSetup=='v') rgb1 = HSV_to_RGB(led1_hsv[0], 1, ((double)x/460) );
 			else {
 				rgb1 = (double*) calloc(3, sizeof(double));
 				if(menu_arr.colourGui==1) {
@@ -250,6 +241,9 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 					menu_arr.led1.red = rgb1[0];
 					menu_arr.led1.green = rgb1[1];
 					menu_arr.led1.blue = rgb1[2];
+					if(menu_arr.led1.simpleLedSetup=='h') led1_hsv[0]=((double)x/460)*360;
+					else if(menu_arr.led1.simpleLedSetup=='s') led1_hsv[1]=((double)x/460);
+					else if(menu_arr.led1.simpleLedSetup=='v') led1_hsv[2]=((double)x/460);
 				}
 			}
 		}	
@@ -259,18 +253,9 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 	{
 		for(x=0; x<460; x++)
 		{
-			if(menu_arr.led2.simpleLedSetup=='h') {
-				rgb2 = HSV_to_RGB(((double)x/460)*360, led2_hsv[1], led2_hsv[2]);
-				led2_hsv[0]=((double)x/460)*360;
-			}
-			else if(menu_arr.led2.simpleLedSetup=='s') {
-				rgb2 = HSV_to_RGB(led2_hsv[0], ((double)x/460) , led2_hsv[2]);
-				led2_hsv[1]=((double)x/460);
-			}
-			else if(menu_arr.led2.simpleLedSetup=='v') {
-				rgb2 = HSV_to_RGB(led2_hsv[0], led2_hsv[1], ((double)x/460) );
-				led2_hsv[2]=((double)x/460);
-			}
+			if(menu_arr.led2.simpleLedSetup=='h') rgb2 = HSV_to_RGB(((double)x/460)*360, led2_hsv[1], led2_hsv[2]);
+			else if(menu_arr.led2.simpleLedSetup=='s') rgb2 = HSV_to_RGB(led2_hsv[0], ((double)x/460) , led2_hsv[2]);
+			else if(menu_arr.led2.simpleLedSetup=='v') rgb2 = HSV_to_RGB(led2_hsv[0], led2_hsv[1], ((double)x/460) );
 			else {
 				rgb2 = (double*) calloc(3, sizeof(double));
 				if(menu_arr.colourGui==1) {
@@ -288,6 +273,9 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 					menu_arr.led2.red = rgb2[0];
 					menu_arr.led2.green = rgb2[1];
 					menu_arr.led2.blue = rgb2[2];
+					if(menu_arr.led2.simpleLedSetup=='h') led2_hsv[0]=((double)x/460)*360;
+					else if(menu_arr.led2.simpleLedSetup=='s') led2_hsv[1]=((double)x/460);
+					else if(menu_arr.led2.simpleLedSetup=='v') led2_hsv[2]=((double)x/460);
 				}
 			}
 		}	
