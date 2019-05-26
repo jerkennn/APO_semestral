@@ -39,9 +39,9 @@ typedef struct GUI_set
 
 GUI_set_menu menu_arr;
 
-//static int btn1=0;
+// int btn1=0;
 int btn2;
-//static int btn3=0;
+// int btn3=0;
 
 long time1;
 long time2;
@@ -55,7 +55,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, GUI_set_menu menu_arr);
 
 //double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int convert_lcd);
-GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int convert_lcd, GUI_set_menu menu_arr);
+GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_menu menu_arr);
 
 #ifdef __cplusplus
 
