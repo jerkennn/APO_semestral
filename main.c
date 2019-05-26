@@ -89,8 +89,19 @@ int main(int argc, char *argv[])
 	menu_arr.time1 = 0;
 	menu_arr.time2 = 0;
 	
-	menu_arr.led1.simpleLedSetup = 'h';
-	menu_arr.led2.simpleLedSetup = 'h';
+	menu_arr.posuvnik_up.h = 0;
+	menu_arr.posuvnik_up.s = 0;
+	menu_arr.posuvnik_up.v = 0;
+	
+	menu_arr.posuvnik_down.h = 0;
+	menu_arr.posuvnik_down.s = 0;
+	menu_arr.posuvnik_down.v = 0;
+	
+	menu_arr.animation1 = 0;
+	menu_arr.animation2 = 0;
+	
+	menu_arr.led1.simpleLedSetup = ' ';
+	menu_arr.led2.simpleLedSetup = ' ';
 	
 	menu_arr.led1.red = 255;
 	menu_arr.led1.green = 0;
@@ -130,7 +141,7 @@ int main(int argc, char *argv[])
 void *leds(void *d){
 	data_t *data = (data_t *)d;
 	int *led_1 = map_phys_address(SPILED_REG_BASE_PHYS + SPILED_REG_LED_RGB1_o, SPILED_REG_SIZE, 0); 
-	//int *led_2 = map_phys_address(SPILED_REG_BASE_PHYS + SPILED_REG_LED_RGB2_o, SPILED_REG_SIZE, 0);
+	int *led_2 = map_phys_address(SPILED_REG_BASE_PHYS + SPILED_REG_LED_RGB2_o, SPILED_REG_SIZE, 0);
 	
 
 	bool q = false;
@@ -162,14 +173,19 @@ void *leds(void *d){
 		}
 		if(animation)
 		{
-			led_animation(led_1, h_1, h_2, period, startTime);
+			pthread_mutex_lock(&mtx);
+			led_animation(led_1, h_1, h_2, period, startTime, 0, 0);
+			led_animation(led_2, h_2, h_1, period, startTime, 0, 0);
+			pthread_mutex_unlock(&mtx);
 			//*led_2 = color_1;
 		}
+		
 		
 		q = data->quit;
 		
 		}
 		*led_1 = 0;
+		*led_2 = 0;
 	return NULL;
 }
 
