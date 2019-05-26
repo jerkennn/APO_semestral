@@ -47,6 +47,8 @@ int btn2;
 
 double *rgb1;
 double *rgb2;
+uint16_t hex1;
+uint16_t hex2;
 
 unsigned char *parlcd_mem_base;
 
