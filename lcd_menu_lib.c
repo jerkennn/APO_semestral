@@ -226,8 +226,14 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_sta
 	}
 	else
 	{
-		posuvnik1 = (int)((( (double) ((unsigned char)(posuvnik1 + posuvnik1_start - posuvnik1_shift)) ) /255)*460);
-		posuvnik2 = (int)((( (double) ((unsigned char)(posuvnik2 + posuvnik2_start - posuvnik2_shift)) ) /255)*460);
+		int posRot1=posuvnik1 + posuvnik1_start - posuvnik1_shift;
+		int posRot2=posuvnik2 + posuvnik2_start - posuvnik2_shift;
+		if(posRot1>255) posRot1 = posRot1%255;
+		else if(posRot1<0) posRot1 = (-posRot1)%255;
+		if(posRot2>255) posRot2 = posRot2%255;
+		else if(posRot2<0) posRot2 = (-posRot2)%255;
+		posuvnik1 = (int)((( (double) ((unsigned char)(posRot1)) ) /255)*460);
+		posuvnik2 = (int)((( (double) ((unsigned char)(posRot2)) ) /255)*460);
 	}
 	posuvnik1_shift=posuvnik1_start;
 	posuvnik2_shift=posuvnik2_start;
