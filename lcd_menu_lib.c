@@ -225,8 +225,8 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_sta
 	}
 	else
 	{
-		posuvnik1 = (int)(( (double) ( (unsigned char)(posuvnik1_start-posuvnik1_shift) )/255)*460);
-		posuvnik2 = (int)(( (double) ( (unsigned char)(posuvnik2_start-posuvnik2_shift) )/255)*460);
+		posuvnik1 = (int)((unsigned char) (posuvnik1 + ( (int)(( (double) ( (unsigned char)(posuvnik1_start-posuvnik1_shift) )/255)*460) )));
+		posuvnik2 = (int)((unsigned char) (posuvnik2 + ( (int)(( (double) ( (unsigned char)(posuvnik2_start-posuvnik2_shift) )/255)*460) )));
 	}
 
 	//posuvnik1 = (int)(( (double) ( posuvnik1_start )/255)*460);
