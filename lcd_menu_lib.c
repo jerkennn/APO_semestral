@@ -187,7 +187,7 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 	posuvnik1 = (int)(((double)posuvnik1/255)*460);
 	posuvnik2 = (int)(((double)posuvnik2/255)*460);
 	int x,y;
-	double *rgb;
+	double *rgb = calloc(6, sizeof(double));
 	uint16_t hex;
 	double *led1_hsv = RGB_to_HSV(menu_arr.led1.red, menu_arr.led1.green, menu_arr.led1.blue);
 	double *led2_hsv = RGB_to_HSV(menu_arr.led2.red, menu_arr.led2.green, menu_arr.led2.blue);
@@ -199,7 +199,6 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 			if(menu_arr.led1.simpleLedSetup=='h') rgb = HSV_to_RGB(((double)x/460)*360, led1_hsv[1], led1_hsv[2]);
 			else if(menu_arr.led1.simpleLedSetup=='s') rgb = HSV_to_RGB(led1_hsv[0], ((double)x/460) , led1_hsv[2]);
 			else if(menu_arr.led1.simpleLedSetup=='v') rgb = HSV_to_RGB(led1_hsv[0], led1_hsv[1], ((double)x/460) );
-			else {rgb[0]=0; rgb[1]=0; rgb[2]=0;}
 			hex = RGB_to_hex(rgb[0], rgb[1], rgb[2]);
 			if((int)(((double)x/460)*360) >= posuvnik1-1 && (int)(((double)x/460)*360) <= posuvnik1+1) frame[yrow + y][xcolumn + x] = 0;
 			else frame[yrow + y][xcolumn + x] = hex;
@@ -218,7 +217,6 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 			if(menu_arr.led2.simpleLedSetup=='h') rgb = HSV_to_RGB(((double)x/460)*360, led2_hsv[1], led2_hsv[2]);
 			else if(menu_arr.led2.simpleLedSetup=='s') rgb = HSV_to_RGB(led2_hsv[0], ((double)x/460) , led2_hsv[2]);
 			else if(menu_arr.led2.simpleLedSetup=='v') rgb = HSV_to_RGB(led2_hsv[0], led2_hsv[1], ((double)x/460) );
-			else {rgb[0]=0; rgb[1]=0; rgb[2]=0;}
 			hex = RGB_to_hex(rgb[0], rgb[1], rgb[2]);
 			if((int)(((double)x/460)*360) >= posuvnik2-1 && (int)(((double)x/460)*360) <= posuvnik2+1) frame[yrow+16 + y][xcolumn + x] = 0;
 			else frame[yrow+16 + y][xcolumn + x] = hex;
@@ -229,6 +227,7 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 			} 
 		}	
 	}
+	free(rgb);
 	return menu_arr;
 }
 
