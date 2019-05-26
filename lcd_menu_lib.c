@@ -198,8 +198,8 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 	posuvnik1 = (int)(((double)posuvnik1/255)*460);
 	posuvnik2 = (int)(((double)posuvnik2/255)*460);
 	int x,y;
-	rgb1 = (double*) calloc(6, sizeof(double));
-	rgb2 = (double*) calloc(6, sizeof(double));
+	//rgb1 = (double*) calloc(3, sizeof(double));
+	//rgb2 = (double*) calloc(3, sizeof(double));
 	double *led1_hsv = RGB_to_HSV(menu_arr.led1.red, menu_arr.led1.green, menu_arr.led1.blue);
 	double *led2_hsv = RGB_to_HSV(menu_arr.led2.red, menu_arr.led2.green, menu_arr.led2.blue);
 
@@ -210,6 +210,9 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 			if(menu_arr.led1.simpleLedSetup=='h') rgb1 = HSV_to_RGB(((double)x/460)*360, 1, 1);
 			else if(menu_arr.led1.simpleLedSetup=='s') rgb1 = HSV_to_RGB(led1_hsv[0], ((double)x/460) , 1);
 			else if(menu_arr.led1.simpleLedSetup=='v') rgb1 = HSV_to_RGB(led1_hsv[0], 1, ((double)x/460) );
+			else{
+				rgb1 = (double*) calloc(3, sizeof(double));
+				}
 			hex1 = RGB_to_hex(rgb1[0], rgb1[1], rgb1[2]);
 			if((int)(((double)x/460)*360) >= posuvnik1-1 && (int)(((double)x/460)*360) <= posuvnik1+1) frame[yrow + y][xcolumn + x] = 0;
 			else frame[yrow + y][xcolumn + x] = hex1;
@@ -228,6 +231,9 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 			if(menu_arr.led2.simpleLedSetup=='h') rgb2 = HSV_to_RGB(((double)x/460)*360, led2_hsv[1], led2_hsv[2]);
 			else if(menu_arr.led2.simpleLedSetup=='s') rgb2 = HSV_to_RGB(led2_hsv[0], ((double)x/460) , led2_hsv[2]);
 			else if(menu_arr.led2.simpleLedSetup=='v') rgb2 = HSV_to_RGB(led2_hsv[0], led2_hsv[1], ((double)x/460) );
+			else {
+				rgb2 = (double*) calloc(3, sizeof(double));
+				}
 			hex2 = RGB_to_hex(rgb2[0], rgb2[1], rgb2[2]);
 			if((int)(((double)x/460)*360) >= posuvnik2-1 && (int)(((double)x/460)*360) <= posuvnik2+1) frame[yrow+16 + y][xcolumn + x] = 0;
 			else frame[yrow+16 + y][xcolumn + x] = hex2;
@@ -238,8 +244,8 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 			} 
 		}	
 	}
-	free(rgb1);
-	free(rgb2);
+	//free(rgb1);
+	//free(rgb2);
 	return menu_arr;
 }
 
@@ -297,3 +303,4 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 	string2frame_menu("    ", 290, 350, color1, color2);
 	string2frame_menu(str, 290, 350, color1, color2);
 }
+

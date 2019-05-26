@@ -234,6 +234,7 @@ void *display(void *d){
 		
 		menu_arr = menu(data->rk, data->gk, data->bk, data->rb, data->gb, data->bb, menu_arr);
 		pthread_mutex_unlock(&mtx);
+		
 		//printf("%d\n", menu_arr.currentScreen);
 		//printf("%d\n", menu_arr.exit);
 		q = (menu_arr.exit==1 ? true : false);
