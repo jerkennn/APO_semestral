@@ -35,6 +35,8 @@ typedef struct GUI_set
     int exit;
     led_settings led1;
     led_settings led2;
+    long time1;
+    long time2;
 }GUI_set_menu;
 
 GUI_set_menu menu_arr;

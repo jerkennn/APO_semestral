@@ -68,11 +68,11 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		string2frame_menu("KOREK settings", 96, 40, color1, color2);
 		string2frame_menu("Exit KOREK", 120, 40, color1, color2);
 		if(button2==1) {
-		time2 = getMicrotime();
-		if(time2>=time1+300000) {
+		menu_arr.time2 = getMicrotime();
+		if(menu_arr.time2>=menu_arr.time1+300000) {
 			menu_arr.currentScreen=btn2/24;
 			btn2=24;
-			time2=0; time1 = getMicrotime();
+			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
 	}
@@ -85,11 +85,11 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		string2frame_menu("Set color shift", 120, 40, color1, color2);
 		string2frame_menu("Back", 144, 40, color1, color2);
 		if(button2==1) {
-		time2 = getMicrotime();
-		if(time2>=time1+300000) {
+		menu_arr.time2 = getMicrotime();
+		if(menu_arr.time2>=menu_arr.time1+300000) {
 			if(btn2==144) menu_arr.currentScreen=0;
 			btn2=24;
-			time2=0; time1 = getMicrotime();
+			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
 	}
@@ -102,11 +102,11 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		string2frame_menu(" -- ", 120, 40, color1, color2);
 		string2frame_menu("Back", 144, 40, color1, color2);
 		if(button2==1) {
-		time2 = getMicrotime();
-		if(time2>=time1+300000) {
+		menu_arr.time2 = getMicrotime();
+		if(menu_arr.time2>=menu_arr.time1+300000) {
 			if(btn2==144) menu_arr.currentScreen=0;
 			btn2=24;
-			time2=0; time1 = getMicrotime();
+			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
 	}
@@ -119,11 +119,11 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		string2frame_menu(" -- ", 120, 40, color1, color2);
 		string2frame_menu("Back", 144, 40, color1, color2);
 		if(button2==1) {
-		time2 = getMicrotime();
-		if(time2>=time1+300000) {
+		menu_arr.time2 = getMicrotime();
+		if(menu_arr.time2>=menu_arr.time1+300000) {
 			if(btn2==144) menu_arr.currentScreen=0;
 			btn2=24;
-			time2=0; time1 = getMicrotime();
+			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
 	}
@@ -133,8 +133,8 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		string2frame_menu(" -- ", 48, 40, color1, color2);
 		string2frame_menu("Back", 72, 40, color1, color2);
 		if(button2==1) {
-		time2 = getMicrotime();
-		if(time2>=time1+300000) {
+		menu_arr.time2 = getMicrotime();
+		if(menu_arr.time2>=menu_arr.time1+300000) {
 			switch(btn2)
 			{
 				case 24:
@@ -152,7 +152,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					break;
 			}
 			btn2=24;
-			time2=0; time1 = getMicrotime();
+			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
 	}
@@ -161,8 +161,8 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		string2frame_menu(" Back ", 24, 40, color1, color2);
 		string2frame_menu(" Confirm exit ", 48, 40, color1, color2);
 		if(button2==1) {
-		time2 = getMicrotime();
-		if(time2>=time1+300000) {
+		menu_arr.time2 = getMicrotime();
+		if(menu_arr.time2>=menu_arr.time1+300000) {
 			switch(btn2)
 			{
 				case 24:
@@ -173,7 +173,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					break;
 			}
 			btn2=24;
-			time2=0; time1 = getMicrotime();
+			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
 	}
@@ -227,7 +227,6 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 			} 
 		}	
 	}
-	free(rgb);
 	return menu_arr;
 }
 
