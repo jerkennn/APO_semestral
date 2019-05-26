@@ -27,18 +27,29 @@ typedef struct led_set
     char simpleLedSetup;
 }led_settings;
 
+typedef struct posuvnik_set
+{
+    double h;
+    double s;
+    double v;
+}posuvnik_settings;
 
 typedef struct GUI_set
 {
+    long time1;
+    long time2;
+
     int currentScreen;
     int colourGui;
     int exit;
-    led_settings led1;
-    led_settings led2;
-    long time1;
-    long time2;
     int animation1;
     int animation2;
+    
+    led_settings led1;
+    led_settings led2;
+    
+    posuvnik_settings posuvnik_up;
+    posuvnik_settings posuvnik_down;
 }GUI_set_menu;
 
 GUI_set_menu menu_arr;
@@ -47,10 +58,18 @@ GUI_set_menu menu_arr;
 int btn2;
 // int btn3=0;
 
+int posuvnik1;
+int posuvnik2;
+int posuvnik1_shift;
+int posuvnik2_shift;
+
 double *rgb1;
 double *rgb2;
 uint16_t hex1;
 uint16_t hex2;
+
+double *led1_hsv;
+double *led2_hsv;
 
 unsigned char *parlcd_mem_base;
 

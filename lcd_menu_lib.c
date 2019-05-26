@@ -10,6 +10,7 @@
 #include "write2lcd_lib.h"
 int click = 0;
 int nextscreen = 0;
+int posuvnik_change=0;
 GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, GUI_set_menu menu_arr)
 {
 	btn2 = 24;
@@ -95,15 +96,16 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		string2frame_menu("Set color shift", 120, 40, color1, color2);
 		string2frame_menu("Back", 144, 40, color1, color2);
 		
-		if(btn2==24) {menu_arr.led1.simpleLedSetup = 'h'; menu_arr.led2.simpleLedSetup = 'h';}
-		else if(btn2==48) {menu_arr.led1.simpleLedSetup = 's'; menu_arr.led2.simpleLedSetup = 's';}
-		else if(btn2==72) {menu_arr.led1.simpleLedSetup = 'v'; menu_arr.led2.simpleLedSetup = 'v';}
-		else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' ';}
 
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1;}
+			posuvnik_change=1;
+			if(btn2==24) {menu_arr.led1.simpleLedSetup = 'h'; menu_arr.led2.simpleLedSetup = 'h';}
+			else if(btn2==48) {menu_arr.led1.simpleLedSetup = 's'; menu_arr.led2.simpleLedSetup = 's';}
+			else if(btn2==72) {menu_arr.led1.simpleLedSetup = 'v'; menu_arr.led2.simpleLedSetup = 'v';}
+			else if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; posuvnik_change=0;}
+			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; posuvnik_change=0;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
@@ -205,13 +207,30 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 
 
 
-GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_menu menu_arr)
+GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_start, GUI_set_menu menu_arr)
 {
-	posuvnik1 = (int)(((double)posuvnik1/255)*460);
-	posuvnik2 = (int)(((double)posuvnik2/255)*460);
+	if(posuvnik_change==1)
+	{
+		posuvnik1_shift=posuvnik1_start;
+		posuvnik2_shift=posuvnik1_start;
+		posuvnik_change=0;
+		posuvnik1=0;
+		posuvnik2=0;
+		if(menu_arr.led1.simpleLedSetup=='h') posuvnik1 = menu_arr.posuvnik_up.h;
+		else if(menu_arr.led1.simpleLedSetup=='s') posuvnik1 = menu_arr.posuvnik_up.s;
+		else if(menu_arr.led1.simpleLedSetup=='v') posuvnik1 = menu_arr.posuvnik_up.v;
+
+		if(menu_arr.led2.simpleLedSetup=='h') posuvnik2 = menu_arr.posuvnik_down.h;
+		else if(menu_arr.led2.simpleLedSetup=='s') posuvnik2 = menu_arr.posuvnik_down.s;
+		else if(menu_arr.led2.simpleLedSetup=='v') posuvnik2 = menu_arr.posuvnik_down.v;
+	}
+	else
+	{
+		posuvnik1 = (int)(((double)posuvnik1-posuvnik1_shift/255)*460);
+		posuvnik2 = (int)(((double)posuvnik2-posuvnik2_shift/255)*460);
+	}
+
 	int x,y;
-	double *led1_hsv;
-	double *led2_hsv;
 	if(click==1){
 		led1_hsv = RGB_to_HSV(menu_arr.led1.red, menu_arr.led1.green, menu_arr.led1.blue);
 		led2_hsv = RGB_to_HSV(menu_arr.led2.red, menu_arr.led2.green, menu_arr.led2.blue);
@@ -241,9 +260,9 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 					menu_arr.led1.red = rgb1[0];
 					menu_arr.led1.green = rgb1[1];
 					menu_arr.led1.blue = rgb1[2];
-					if(menu_arr.led1.simpleLedSetup=='h') led1_hsv[0]=((double)x/460)*360;
-					else if(menu_arr.led1.simpleLedSetup=='s') led1_hsv[1]=((double)x/460);
-					else if(menu_arr.led1.simpleLedSetup=='v') led1_hsv[2]=((double)x/460);
+					if(menu_arr.led1.simpleLedSetup=='h') {led1_hsv[0]=((double)x/460)*360; menu_arr.posuvnik_up.h = x;}
+					else if(menu_arr.led1.simpleLedSetup=='s') {led1_hsv[1]=((double)x/460); menu_arr.posuvnik_up.s = x;}
+					else if(menu_arr.led1.simpleLedSetup=='v') {led1_hsv[2]=((double)x/460); menu_arr.posuvnik_up.v = x;}
 				}
 			}
 		}	
@@ -253,9 +272,9 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 	{
 		for(x=0; x<460; x++)
 		{
-			if(menu_arr.led2.simpleLedSetup=='h') rgb2 = HSV_to_RGB(((double)x/460)*360, led2_hsv[1], led2_hsv[2]);
-			else if(menu_arr.led2.simpleLedSetup=='s') rgb2 = HSV_to_RGB(led2_hsv[0], ((double)x/460) , led2_hsv[2]);
-			else if(menu_arr.led2.simpleLedSetup=='v') rgb2 = HSV_to_RGB(led2_hsv[0], led2_hsv[1], ((double)x/460) );
+			if(menu_arr.led2.simpleLedSetup=='h') rgb2 = HSV_to_RGB(((double)x/460)*360, 1, 1);
+			else if(menu_arr.led2.simpleLedSetup=='s') rgb2 = HSV_to_RGB(led2_hsv[0], ((double)x/460) , 1);
+			else if(menu_arr.led2.simpleLedSetup=='v') rgb2 = HSV_to_RGB(led2_hsv[0], 1, ((double)x/460) );
 			else {
 				rgb2 = (double*) calloc(3, sizeof(double));
 				if(menu_arr.colourGui==1) {
@@ -273,9 +292,9 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 					menu_arr.led2.red = rgb2[0];
 					menu_arr.led2.green = rgb2[1];
 					menu_arr.led2.blue = rgb2[2];
-					if(menu_arr.led2.simpleLedSetup=='h') led2_hsv[0]=((double)x/460)*360;
-					else if(menu_arr.led2.simpleLedSetup=='s') led2_hsv[1]=((double)x/460);
-					else if(menu_arr.led2.simpleLedSetup=='v') led2_hsv[2]=((double)x/460);
+					if(menu_arr.led2.simpleLedSetup=='h') {led2_hsv[0]=((double)x/460)*360; menu_arr.posuvnik_down.h = x;}
+					else if(menu_arr.led2.simpleLedSetup=='s') {led2_hsv[1]=((double)x/460); menu_arr.posuvnik_down.s = x;}
+					else if(menu_arr.led2.simpleLedSetup=='v') {led2_hsv[2]=((double)x/460); menu_arr.posuvnik_down.v = x;}
 				}
 			}
 		}	
