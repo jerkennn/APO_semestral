@@ -32,6 +32,7 @@
 #include "lcd_menu_lib.h"
 #include "write2lcd_lib.h"
 #include "convert_lib.h"
+#include "led_effects.h"
 
 pthread_mutex_t mtx;
 unsigned char *parlcd_mem_base = NULL;
@@ -39,10 +40,6 @@ unsigned char *buttons_mem_base = NULL;
 unsigned char *leds_mem_base = NULL;
  
  
-uint32_t createRGB(int r, int g, int b)
-{   
-    return (((r)*0x10000) + ((g )*0x100) + (b));
-}
 
 typedef struct{
 	volatile int rk, gk, bk, rb, gb, bb;
@@ -65,14 +62,14 @@ void *leds(void *d);
 void *buttons(void *d);
 void *display(void *d);
 
+
+
 int main(int argc, char *argv[])
 {
 	parlcd_mem_base = map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
   
 	buttons_mem_base = map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
 	
-	
-  
 	if (parlcd_mem_base == NULL)  exit(1);
 	parlcd_hx8357_init(parlcd_mem_base); //only after power up
 
@@ -96,12 +93,12 @@ int main(int argc, char *argv[])
 	menu_arr.led2.simpleLedSetup = 'h';
 	
 	menu_arr.led1.red = 255;
-	menu_arr.led1.green = 255;
-	menu_arr.led1.blue = 255;
+	menu_arr.led1.green = 0;
+	menu_arr.led1.blue = 0;
 	
 	menu_arr.led2.red = 255;
-	menu_arr.led2.green = 255;
-	menu_arr.led2.blue = 255;
+	menu_arr.led2.green = 0;
+	menu_arr.led2.blue = 0;
 	
 	
 	
@@ -129,18 +126,6 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-
-void led_animation(int *led, double h_1, double h_2, long int period, long int startTime){
-		double c1 = 2*((getMicrotime() - startTime)%(period));
-		double c2 = (double)(period);
-		double absMe = (1-c1/c2); 
-		if(absMe<0){absMe = -absMe;}
-		double coef = 1-absMe;
-		double out_h = h_1 + (h_2 - h_1)*coef; 
-		double *rgb_led_1 = HSV_to_RGB(out_h , 1, 1);
-		uint32_t color_1 = createRGB(rgb_led_1[0], rgb_led_1[1], rgb_led_1[2]);
-		*led = color_1;
-	}
 
 void *leds(void *d){
 	data_t *data = (data_t *)d;
@@ -209,6 +194,7 @@ void *buttons(void *d){
 			data->bb = (rgb_knobs_value>>24) & 1;    // blue button
 			data->gb = (rgb_knobs_value>>25) & 1;    // green button
 			data->rb = (rgb_knobs_value>>26) & 1;    // red buttom
+			
 			pthread_mutex_unlock(&mtx);
 			
 			if(data->bb == 1)
@@ -233,6 +219,7 @@ void *display(void *d){
 	
 	while(!q)
 	{
+		pthread_mutex_lock(&mtx);
 		menu_arr = strip(200, 10, data->rk, data->bk, menu_arr); // !!!!!!
 		
 		data->rgb_1.red = menu_arr.led1.red;
@@ -246,6 +233,7 @@ void *display(void *d){
 		down_control_panel(0, 0, 0, 0, 0, 0, menu_arr); // !!!!
 		
 		menu_arr = menu(data->rk, data->gk, data->bk, data->rb, data->gb, data->bb, menu_arr);
+		pthread_mutex_unlock(&mtx);
 		//printf("%d\n", menu_arr.currentScreen);
 		//printf("%d\n", menu_arr.exit);
 		q = (menu_arr.exit==1 ? true : false);
