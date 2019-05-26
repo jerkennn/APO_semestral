@@ -226,8 +226,8 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_sta
 	}
 	else
 	{
-		int posRot1=posuvnik1 + posuvnik1_start - posuvnik1_shift;
-		int posRot2=posuvnik2 + posuvnik2_start - posuvnik2_shift;
+		int posRot1=posuvnik1 + (int)((((double)(posuvnik1_start - posuvnik1_shift))/255)*460);
+		int posRot2=posuvnik2 + (int)((((double)(posuvnik2_start - posuvnik2_shift))/255)*460);
 		if(posRot1>255) posRot1 = posRot1%255;
 		else if(posRot1<0) posRot1 = (-posRot1)%255;
 		if(posRot2>255) posRot2 = posRot2%255;
