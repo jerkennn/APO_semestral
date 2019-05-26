@@ -209,6 +209,8 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 
 GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_start, GUI_set_menu menu_arr)
 {
+
+	/* ZDE ZACINA TESTOVACI CAST */
 	if(posuvnik_change==1)
 	{
 		posuvnik_change=0;
@@ -216,26 +218,27 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_sta
 		posuvnik2_shift=posuvnik2_start;
 		posuvnik1=0;
 		posuvnik2=0;
-		if(menu_arr.led1.simpleLedSetup=='h') posuvnik1 = menu_arr.posuvnik_up.h;
-		else if(menu_arr.led1.simpleLedSetup=='s') posuvnik1 = menu_arr.posuvnik_up.s;
-		else if(menu_arr.led1.simpleLedSetup=='v') posuvnik1 = menu_arr.posuvnik_up.v;
+		if(menu_arr.led1.simpleLedSetup=='h') posuvnik1 = (int)((((double)menu_arr.posuvnik_up.h)/460)*360);
+		else if(menu_arr.led1.simpleLedSetup=='s') posuvnik1 = (int)((((double)menu_arr.posuvnik_up.s)/460)*360);
+		else if(menu_arr.led1.simpleLedSetup=='v') posuvnik1 = (int)((((double)menu_arr.posuvnik_up.v)/460)*360);
 
-		if(menu_arr.led2.simpleLedSetup=='h') posuvnik2 = menu_arr.posuvnik_down.h;
-		else if(menu_arr.led2.simpleLedSetup=='s') posuvnik2 = menu_arr.posuvnik_down.s;
-		else if(menu_arr.led2.simpleLedSetup=='v') posuvnik2 = menu_arr.posuvnik_down.v;
+		if(menu_arr.led2.simpleLedSetup=='h') posuvnik2 = (int)((((double)menu_arr.posuvnik_down.h)/460)*360);
+		else if(menu_arr.led2.simpleLedSetup=='s') posuvnik2 = (int)((((double)menu_arr.posuvnik_down.s)/460)*360);
+		else if(menu_arr.led2.simpleLedSetup=='v') posuvnik2 = (int)((((double)menu_arr.posuvnik_down.v)/460)*360);
 	}
 	else
 	{
 		double rot1 = posuvnik1_start-posuvnik1_shift;
 		double rot2 = posuvnik2_start-posuvnik2_shift;
-		rot1 = (rot1/255)*460;
-		rot2 = (rot2/255)*460;
+		rot1 = (rot1/255)*360;
+		rot2 = (rot2/255)*360;
 
 		posuvnik1 += (int) rot1; 
 		posuvnik2 += (int) rot2;
 	}
 	posuvnik1_shift=posuvnik1_start;
-	posuvnik2_shift=posuvnik2_start;
+	posuvnik2_shift=posuvnik2_start; 
+	/* ZDE KONCI TESTOVACI CAST */
 
 	//posuvnik1 = (int)(( (double) ( posuvnik1_start )/255)*460);
 	//posuvnik2 = (int)(( (double) ( posuvnik2_start )/255)*460);
