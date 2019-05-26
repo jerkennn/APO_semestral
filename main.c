@@ -85,9 +85,25 @@ int main(int argc, char *argv[])
 	data.menu_arr.colourGui = 0;
 	data.menu_arr.exit = 0;
 	
-	menu_arr.currentScreen=0; 
-	menu_arr.colourGui=0;
-	menu_arr.exit=0;
+	
+	menu_arr.currentScreen = 0; 
+	menu_arr.colourGui = 0;
+	menu_arr.exit = 0;
+	menu_arr.time1 = 0;
+	menu_arr.time2 = 0;
+	
+	menu_arr.led1.simpleLedSetup = 'h';
+	menu_arr.led2.simpleLedSetup = 'h';
+	
+	menu_arr.led1.red = 255;
+	menu_arr.led1.green = 255;
+	menu_arr.led1.blue = 255;
+	
+	menu_arr.led2.red = 255;
+	menu_arr.led2.green = 255;
+	menu_arr.led2.blue = 255;
+	
+	
 	
 	data.rgb_1.red = 0;
 	data.rgb_1.green = 0;
@@ -114,7 +130,7 @@ int main(int argc, char *argv[])
 }
 
 
-void set_animation(int *led, double h_1, double h_2, long int period, long int startTime){
+void led_animation(int *led, double h_1, double h_2, long int period, long int startTime){
 		double c1 = 2*((getMicrotime() - startTime)%(period));
 		double c2 = (double)(period);
 		double absMe = (1-c1/c2); 
@@ -161,7 +177,7 @@ void *leds(void *d){
 		}
 		if(animation)
 		{
-			set_animation(led_1, h_1, h_2, period, startTime);
+			led_animation(led_1, h_1, h_2, period, startTime);
 			//*led_2 = color_1;
 		}
 		
@@ -213,21 +229,21 @@ void *display(void *d){
 	data_t *data = (data_t *)d;
 	
 	bool q = false;
-	double *rgb_leds;
+	//double *rgb_leds;
 	
 	while(!q)
 	{
-		rgb_leds = strip(200, 10, data->rk, data->bk, menu_arr.colourGui); // !!!!!!
+		menu_arr = strip(200, 10, data->rk, data->bk, menu_arr); // !!!!!!
 		
-		data->rgb_1.red = rgb_leds[0];
-		data->rgb_1.green = rgb_leds[1];
-		data->rgb_1.blue = rgb_leds[2];
+		data->rgb_1.red = menu_arr.led1.red;
+		data->rgb_1.green = menu_arr.led1.green;
+		data->rgb_1.blue = menu_arr.led1.blue;
 		
-		data->rgb_2.red = rgb_leds[3];
-		data->rgb_2.green = rgb_leds[4];
-		data->rgb_2.blue = rgb_leds[5];
+		data->rgb_2.red = menu_arr.led2.red;
+		data->rgb_2.green = menu_arr.led2.green;
+		data->rgb_2.blue = menu_arr.led2.blue;
 	
-		down_control_panel(0, 0, 0, 0, 0, 0, rgb_leds, menu_arr.colourGui); // !!!!
+		down_control_panel(0, 0, 0, 0, 0, 0, menu_arr); // !!!!
 		
 		menu_arr = menu(data->rk, data->gk, data->bk, data->rb, data->gb, data->bb, menu_arr);
 		//printf("%d\n", menu_arr.currentScreen);

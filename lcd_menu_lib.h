@@ -44,9 +44,7 @@ GUI_set_menu menu_arr;
 // int btn1=0;
 int btn2;
 // int btn3=0;
-
-long time1;
-long time2;
+//int click;
 
 unsigned char *parlcd_mem_base;
 

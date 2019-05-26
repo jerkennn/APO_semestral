@@ -8,7 +8,7 @@
 #include "lcd_menu_lib.h"
 #include "convert_lib.h"
 #include "write2lcd_lib.h"
-
+int click = 0;
 GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, GUI_set_menu menu_arr)
 {
 	btn2 = 24;
@@ -68,12 +68,17 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		string2frame_menu("KOREK settings", 96, 40, color1, color2);
 		string2frame_menu("Exit KOREK", 120, 40, color1, color2);
 		if(button2==1) {
-		menu_arr.time2 = getMicrotime();
-		if(menu_arr.time2>=menu_arr.time1+300000) {
-			menu_arr.currentScreen=btn2/24;
-			btn2=24;
-			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
-			}
+			//printf("*\n");
+			menu_arr.time2 = getMicrotime();
+			//printf("**\n");
+			if(menu_arr.time2>=menu_arr.time1+300000 || !click) {
+				//printf("***\n");
+				click = 1;
+				menu_arr.currentScreen=btn2/24;
+				btn2=24;
+				menu_arr.time2=0; 
+				menu_arr.time1 = getMicrotime();
+				}
 		}
 	}
 	else if(menu_arr.currentScreen==1) // led 1 menu
