@@ -84,14 +84,17 @@ int string2frame_menu_big(char *s, int yrow, int xcolumn, uint16_t forecolor, ui
 		
 		int x, y;
 		xcolumn = xcolumn + w;
-		w = font_winFreeSystem14x16.width[cix]; 
-		for(y=0; y<16; y++)
+		w = font_winFreeSystem14x16.width[cix]*2; 
+		for(y=0; y<32; y+=2)
 		{
 			uint16_t mask = *ptr++;
 			
-			for(x=0; x<w+4; x++)
+			for(x=0; x<w+4; x+=2)
 			{
 				frame[yrow + y][xcolumn + x] = (mask & 0x8000) ? forecolor : backcolor;
+				frame[yrow + y][xcolumn + x +1] = (mask & 0x8000) ? forecolor : backcolor;
+				frame[yrow + y+1][xcolumn + x] = (mask & 0x8000) ? forecolor : backcolor;
+				frame[yrow + y+1][xcolumn + x +1] = (mask & 0x8000) ? forecolor : backcolor;
 				mask <<= 1;
 			}
 		}

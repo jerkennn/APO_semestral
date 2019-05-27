@@ -62,6 +62,8 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	
 	nextscreen = 0;
 
+	string2frame_menu_big("ab", 100, 400, 0, 0xFFFF);
+
 	string2frame_menu("******************** KOREK ********************", 0, 0, color1, color2);
 
 	for(int i=1;i<=6;i++) string2frame_menu("   ", i*24, 10, color1, color2);
@@ -69,11 +71,16 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	
 	if(menu_arr.currentScreen==0) // start menu
 	{
-		string2frame_menu("Change LEDs", 24, 40, color1, color2);
+		/*string2frame_menu("Change LEDs", 24, 40, color1, color2);
 		string2frame_menu("Special effects", 48, 40, color1, color2);
 		string2frame_menu("Ethernet settings", 72, 40, color1, color2);
 		string2frame_menu("KOREK settings", 96, 40, color1, color2);
-		string2frame_menu("Exit KOREK", 120, 40, color1, color2);
+		string2frame_menu("Exit KOREK", 120, 40, color1, color2);*/
+		string2frame_menu_big("Change LEDs", 24, 40, color1, color2);
+		string2frame_menu_big("Special effects", 60, 40, color1, color2);
+		string2frame_menu_big("Ethernet settings", 96, 40, color1, color2);
+		string2frame_menu_big("KOREK settings", 132, 40, color1, color2);
+		string2frame_menu_big("Exit KOREK", 164, 40, color1, color2);
 		if(button2==1) {
 			//printf("*\n");
 			menu_arr.time2 = getMicrotime();
@@ -216,11 +223,7 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 			else if(menu_arr.led1.simpleLedSetup=='s') rgb1 = HSV_to_RGB(led1_hsv[0], ((double)x/460) , 1);
 			else if(menu_arr.led1.simpleLedSetup=='v') rgb1 = HSV_to_RGB(led1_hsv[0], 1, ((double)x/460) );
 			else {
-				rgb1 = (double*) calloc(3, sizeof(double));
-				if(menu_arr.colourGui==1) {
-					rgb1[0]=255;rgb1[1]=255;rgb1[2]=255;
-					frame[yrow + y][xcolumn + x] = 0xFFFF;
-					}
+				if(menu_arr.colourGui==1) frame[yrow + y][xcolumn + x] = 0xFFFF;
 				else frame[yrow + y][xcolumn + x] = 0;
 			}
 			if(menu_arr.led1.simpleLedSetup!=' ')
@@ -250,11 +253,7 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 			else if(menu_arr.led2.simpleLedSetup=='s') rgb2 = HSV_to_RGB(led2_hsv[0], ((double)x/460) , 1);
 			else if(menu_arr.led2.simpleLedSetup=='v') rgb2 = HSV_to_RGB(led2_hsv[0], 1, ((double)x/460) );
 			else {
-				rgb2 = (double*) calloc(3, sizeof(double));
-				if(menu_arr.colourGui==1) {
-					rgb2[0]=255;rgb2[1]=255;rgb2[2]=255;
-					frame[yrow+16 + y][xcolumn + x] = 0xFFFF;
-					}
+				if(menu_arr.colourGui==1) frame[yrow+16 + y][xcolumn + x] = 0xFFFF;
 				else frame[yrow+16 + y][xcolumn + x] = 0;
 			}
 			if(menu_arr.led2.simpleLedSetup!=' ')
@@ -274,7 +273,6 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 			}
 		}	
 	}
-
 	return menu_arr;
 }
 
