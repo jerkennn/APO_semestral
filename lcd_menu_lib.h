@@ -60,8 +60,8 @@ int btn2;
 
 int posuvnik1;
 int posuvnik2;
-int posuvnik1_shift;
-int posuvnik2_shift;
+double posuvnik1_shift;
+double posuvnik2_shift;
 
 double *rgb1;
 double *rgb2;
@@ -77,7 +77,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, GUI_set_menu menu_arr);
 
 //double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int convert_lcd);
-GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_menu menu_arr);
+GUI_set_menu strip(int yrow, int xcolumn, double posuvnik1_vstup, double posuvnik2_vstup, GUI_set_menu menu_arr);
 
 #ifdef __cplusplus
 

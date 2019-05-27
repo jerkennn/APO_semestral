@@ -10,9 +10,15 @@
 #include "write2lcd_lib.h"
 int click = 0;
 int nextscreen = 0;
-int posuvnik_change=0;
 double led1_hsv[3];
 double led2_hsv[3];
+
+double posuvnik_change=1;
+double rot1=0;
+double rot2=0;
+double posuvnik1_start=0;
+double posuvnik2_start=0;
+
 GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, GUI_set_menu menu_arr)
 {
 	btn2 = 24;
@@ -100,14 +106,14 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		
 
 		if(button2==1) {
+		posuvnik_change=1;
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			posuvnik_change = 1;
 			if(btn2==24) {menu_arr.led1.simpleLedSetup = 'h'; menu_arr.led2.simpleLedSetup = 'h';}
 			else if(btn2==48) {menu_arr.led1.simpleLedSetup = 's'; menu_arr.led2.simpleLedSetup = 's';}
 			else if(btn2==72) {menu_arr.led1.simpleLedSetup = 'v'; menu_arr.led2.simpleLedSetup = 'v';}
-			else if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; posuvnik_change=0;}
-			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; posuvnik_change=0;}
+			else if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' ';}
+			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' ';}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
@@ -211,41 +217,38 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 
 
 
-GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_start, GUI_set_menu menu_arr)
+GUI_set_menu strip(int yrow, int xcolumn, double posuvnik1_vstup, double posuvnik2_vstup, GUI_set_menu menu_arr)
 {
 
 	/* ZDE ZACINA TESTOVACI CAST */
 	if(posuvnik_change==1)
 	{
 		posuvnik_change=0;
-		posuvnik1_shift=posuvnik1_start;
-		posuvnik2_shift=posuvnik2_start;
-		posuvnik1=0;
-		posuvnik2=0;
-		if(menu_arr.led1.simpleLedSetup=='h') posuvnik1 = (int)((((double)menu_arr.posuvnik_up.h)/460)*360);
-		else if(menu_arr.led1.simpleLedSetup=='s') posuvnik1 = (int)((((double)menu_arr.posuvnik_up.s)/460)*360);
-		else if(menu_arr.led1.simpleLedSetup=='v') posuvnik1 = (int)((((double)menu_arr.posuvnik_up.v)/460)*360);
+		if(menu_arr.led1.simpleLedSetup=='h') posuvnik1 = (int)((menu_arr.posuvnik_up.h/460)*360);
+		else if(menu_arr.led1.simpleLedSetup=='s') posuvnik1 = (int)((menu_arr.posuvnik_up.s/460)*360);
+		else if(menu_arr.led1.simpleLedSetup=='v') posuvnik1 = (int)((menu_arr.posuvnik_up.v/460)*360);
 
-		if(menu_arr.led2.simpleLedSetup=='h') posuvnik2 = (int)((((double)menu_arr.posuvnik_down.h)/460)*360);
-		else if(menu_arr.led2.simpleLedSetup=='s') posuvnik2 = (int)((((double)menu_arr.posuvnik_down.s)/460)*360);
-		else if(menu_arr.led2.simpleLedSetup=='v') posuvnik2 = (int)((((double)menu_arr.posuvnik_down.v)/460)*360);
+		if(menu_arr.led2.simpleLedSetup=='h') posuvnik2 = (int)((menu_arr.posuvnik_down.h/460)*360);
+		else if(menu_arr.led2.simpleLedSetup=='s') posuvnik2 = (int)((menu_arr.posuvnik_down.s/460)*360);
+		else if(menu_arr.led2.simpleLedSetup=='v') posuvnik2 = (int)((menu_arr.posuvnik_down.v/460)*360);
+		
+		posuvnik1_shift = posuvnik1_vstup;
+		posuvnik2_shift = posuvnik2_vstup;
+		
 	}
 	else
 	{
-		double rot1 = posuvnik1_start-posuvnik1_shift;
-		double rot2 = posuvnik2_start-posuvnik2_shift;
-		rot1 = (rot1/255)*360;
-		rot2 = (rot2/255)*360;
-
-		posuvnik1 += (int) rot1; 
-		posuvnik2 += (int) rot2;
+		int q1 = posuvnik1_vstup-posuvnik1_shift;
+		int q2 = posuvnik2_vstup-posuvnik2_shift;
+		while(q1<0) q1+=255;
+		while(q2<0) q2+=255;
+		posuvnik1 = (int)(( (double) ( q1 )/255)*360);
+		posuvnik2 = (int)(( (double) ( q2 )/255)*360);
 	}
-	posuvnik1_shift=posuvnik1_start;
-	posuvnik2_shift=posuvnik2_start; 
 	/* ZDE KONCI TESTOVACI CAST */
-
-	//posuvnik1 = (int)(( (double) ( posuvnik1_start )/255)*460);
-	//posuvnik2 = (int)(( (double) ( posuvnik2_start )/255)*460);
+		
+	//posuvnik1 = (int)(( (double) ( posuvnik1_vstup )/255)*460);
+	//posuvnik2 = (int)(( (double) ( posuvnik2_vstup )/255)*460);
 
 	int x,y;
 	if(click==1){
@@ -274,7 +277,11 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_sta
 			if(menu_arr.led1.simpleLedSetup!=' ')
 			{
 				hex1 = RGB_to_hex(rgb1[0], rgb1[1], rgb1[2]);
-				if((int)(((double)x/460)*360) >= posuvnik1-1 && (int)(((double)x/460)*360) <= posuvnik1+1) frame[yrow + y][xcolumn + x] = 0;
+				if((int)(((double)x/460)*360) >= posuvnik1-1 && (int)(((double)x/460)*360) <= posuvnik1+1)
+				{
+					if(menu_arr.led1.simpleLedSetup=='v') frame[yrow + y][xcolumn + x] = 0xFFFF;
+					else frame[yrow + y][xcolumn + x] = 0;
+				}
 				else frame[yrow + y][xcolumn + x] = hex1;
 				if((int)(((double)x/460)*360)==posuvnik1) {
 					menu_arr.led1.red = rgb1[0];
@@ -306,7 +313,11 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_sta
 			if(menu_arr.led2.simpleLedSetup!=' ')
 			{
 				hex2 = RGB_to_hex(rgb2[0], rgb2[1], rgb2[2]);
-				if((int)(((double)x/460)*360) >= posuvnik2-1 && (int)(((double)x/460)*360) <= posuvnik2+1) frame[yrow+16 + y][xcolumn + x] = 0;
+				if((int)(((double)x/460)*360) >= posuvnik2-1 && (int)(((double)x/460)*360) <= posuvnik2+1)
+				{
+					if(menu_arr.led2.simpleLedSetup=='v') frame[yrow+16 + y][xcolumn + x] = 0xFFFF;
+					else frame[yrow+16 + y][xcolumn + x] = 0;
+				}
 				else frame[yrow+16 + y][xcolumn + x] = hex2;
 				if((int)(((double)x/460)*360)==posuvnik2) {
 					menu_arr.led2.red = rgb2[0];
@@ -319,8 +330,6 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_sta
 			}
 		}	
 	}
-	//free(rgb1);
-	//free(rgb2);
 	return menu_arr;
 }
 
