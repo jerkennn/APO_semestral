@@ -36,8 +36,8 @@ typedef struct posuvnik_set
 
 typedef struct GUI_set
 {
-    long time1;
-    long time2;
+    unsigned long long time1;
+    unsigned long long time2;
 
     int currentScreen;
     int colourGui;

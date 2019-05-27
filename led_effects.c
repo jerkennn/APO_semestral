@@ -19,7 +19,7 @@ void led_animation(int *led, double h_1, double h_2, long int period, long int s
 		long int start_time = 0;
 		long int current_time = 0;
 		
-		double c1 = 2*((getMicrotime() - startTime)%(period));
+		double c1 = 2*((getMillitime() - startTime)%(period));
 		double c2 = (double)(period);
 		double absMe = (1-c1/c2); 
 		if(absMe<0){absMe = -absMe;}

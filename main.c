@@ -151,10 +151,10 @@ void *leds(void *d){
 	volatile double *hsv_1;
 	volatile double *hsv_2;
 	int animation = 0;
-	long int period = 10*1000*1000;
+	long int period = 10*1000;
 	double h_1 = 0;
 	double h_2 = 0;
-	long int startTime = 0;
+	unsigned long long startTime = 0;
 	
 	while(!q){
 		if(data->rb == 1  && animation == 1)
@@ -168,7 +168,7 @@ void *leds(void *d){
 			hsv_2 = RGB_to_HSV(data->rgb_2.red, data->rgb_2.green, data->rgb_2.blue);
 			h_2 = hsv_2[0];
 			animation = 1;
-			startTime = getMicrotime();
+			startTime = getMillitime();
 			  
 		}
 		if(animation)
