@@ -10,7 +10,8 @@
 #include "write2lcd_lib.h"
 int click = 0;
 int nextscreen = 0;
-int posuvnik_change=0;
+int stripStart = 0;
+
 GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, GUI_set_menu menu_arr)
 {
 	btn2 = 24;
@@ -87,7 +88,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 				}
 		}
 	}
-	else if(menu_arr.currentScreen==1) // Change leds
+	else if(menu_arr.currentScreen==1) // led 1 menu
 	{
 		string2frame_menu("Change hue (H)", 24, 40, color1, color2);
 		string2frame_menu("Change saturation (S)", 48, 40, color1, color2);
@@ -95,25 +96,23 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		string2frame_menu("Change period", 96, 40, color1, color2);
 		string2frame_menu("Set color shift", 120, 40, color1, color2);
 		string2frame_menu("Back", 144, 40, color1, color2);
-		
-
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			posuvnik_change = 1;
+			stripStart = 1;
 			if(btn2==24) {menu_arr.led1.simpleLedSetup = 'h'; menu_arr.led2.simpleLedSetup = 'h';}
 			else if(btn2==48) {menu_arr.led1.simpleLedSetup = 's'; menu_arr.led2.simpleLedSetup = 's';}
 			else if(btn2==72) {menu_arr.led1.simpleLedSetup = 'v'; menu_arr.led2.simpleLedSetup = 'v';}
-			else if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; posuvnik_change=0;}
-			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; posuvnik_change=0;}
+			else if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
+			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
 	}
-	else if(menu_arr.currentScreen==2) // effects
+	else if(menu_arr.currentScreen==2) //both leds menu
 	{
-		string2frame_menu("Animation 1", 24, 40, color1, color2);
-		string2frame_menu("Animation 2", 48, 40, color1, color2);
+		string2frame_menu(" -- ", 24, 40, color1, color2);
+		string2frame_menu(" -- ", 48, 40, color1, color2);
 		string2frame_menu(" -- ", 72, 40, color1, color2);
 		string2frame_menu(" -- ", 96, 40, color1, color2);
 		string2frame_menu(" -- ", 120, 40, color1, color2);
@@ -121,13 +120,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			if(btn2==24){
-				menu_arr.animation1=!menu_arr.animation1;
-			}
-			if(btn2==48){
-				menu_arr.animation2=!menu_arr.animation2;
-			}
-			else if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1;}
+			if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
@@ -207,45 +200,14 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 
 
 
-GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_start, GUI_set_menu menu_arr)
+GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_menu menu_arr)
 {
-	if(posuvnik_change==1)
-	{
-		posuvnik_change=0;
-		posuvnik1_shift=posuvnik1_start;
-		posuvnik2_shift=posuvnik2_start;
-		posuvnik1=0;
-		posuvnik2=0;
-		if(menu_arr.led1.simpleLedSetup=='h') posuvnik1 = menu_arr.posuvnik_up.h;
-		else if(menu_arr.led1.simpleLedSetup=='s') posuvnik1 = menu_arr.posuvnik_up.s;
-		else if(menu_arr.led1.simpleLedSetup=='v') posuvnik1 = menu_arr.posuvnik_up.v;
+	posuvnik1 = (int)(((double)posuvnik1/255)*460);
+	posuvnik2 = (int)(((double)posuvnik2/255)*460);
 
-		if(menu_arr.led2.simpleLedSetup=='h') posuvnik2 = menu_arr.posuvnik_down.h;
-		else if(menu_arr.led2.simpleLedSetup=='s') posuvnik2 = menu_arr.posuvnik_down.s;
-		else if(menu_arr.led2.simpleLedSetup=='v') posuvnik2 = menu_arr.posuvnik_down.v;
-	}
-	else
-	{
-		double rot1 = posuvnik1_start-posuvnik1_shift;
-		double rot2 = posuvnik2_start-posuvnik2_shift;
-		rot1 = (rot1/255)*460;
-		rot2 = (rot2/255)*460;
-
-		posuvnik1 += (int) rot1; 
-		posuvnik2 += (int) rot2;
-	}
-	posuvnik1_shift=posuvnik1_start;
-	posuvnik2_shift=posuvnik2_start;
-
-	//posuvnik1 = (int)(( (double) ( posuvnik1_start )/255)*460);
-	//posuvnik2 = (int)(( (double) ( posuvnik2_start )/255)*460);
-
+	led1_hsv = RGB_to_HSV(menu_arr.led1.red, menu_arr.led1.green, menu_arr.led1.blue);
+	
 	int x,y;
-	if(click==1){
-		led1_hsv = RGB_to_HSV(menu_arr.led1.red, menu_arr.led1.green, menu_arr.led1.blue);
-		led2_hsv = RGB_to_HSV(menu_arr.led2.red, menu_arr.led2.green, menu_arr.led2.blue);
-	}
-
 	for(y=0; y<15; y++)
 	{
 		for(x=0; x<460; x++)
@@ -264,20 +226,22 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_sta
 			if(menu_arr.led1.simpleLedSetup!=' ')
 			{
 				hex1 = RGB_to_hex(rgb1[0], rgb1[1], rgb1[2]);
-				if((int)(((double)x/460)*360) >= posuvnik1-1 && (int)(((double)x/460)*360) <= posuvnik1+1) frame[yrow + y][xcolumn + x] = 0;
+				if((int)(((double)x/460)*360) >= posuvnik1-1 && (int)(((double)x/460)*360) <= posuvnik1+1)
+				{
+				 if(menu_arr.led1.simpleLedSetup=='v') frame[yrow + y][xcolumn + x] = 0xFFFF;
+				 else frame[yrow + y][xcolumn + x] = 0;
+				}
 				else frame[yrow + y][xcolumn + x] = hex1;
 				if((int)(((double)x/460)*360)==posuvnik1) {
 					menu_arr.led1.red = rgb1[0];
 					menu_arr.led1.green = rgb1[1];
 					menu_arr.led1.blue = rgb1[2];
-					if(menu_arr.led1.simpleLedSetup=='h') {led1_hsv[0]=((double)x/460)*360; menu_arr.posuvnik_up.h = x;}
-					else if(menu_arr.led1.simpleLedSetup=='s') {led1_hsv[1]=((double)x/460); menu_arr.posuvnik_up.s = x;}
-					else if(menu_arr.led1.simpleLedSetup=='v') {led1_hsv[2]=((double)x/460); menu_arr.posuvnik_up.v = x;}
 				}
 			}
 		}	
 	}
 
+	led2_hsv = RGB_to_HSV(menu_arr.led2.red, menu_arr.led2.green, menu_arr.led2.blue);
 	for(y=0; y<15; y++)
 	{
 		for(x=0; x<460; x++)
@@ -296,21 +260,21 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1_start, int posuvnik2_sta
 			if(menu_arr.led2.simpleLedSetup!=' ')
 			{
 				hex2 = RGB_to_hex(rgb2[0], rgb2[1], rgb2[2]);
-				if((int)(((double)x/460)*360) >= posuvnik2-1 && (int)(((double)x/460)*360) <= posuvnik2+1) frame[yrow+16 + y][xcolumn + x] = 0;
+				if((int)(((double)x/460)*360) >= posuvnik2-1 && (int)(((double)x/460)*360) <= posuvnik2+1)
+				{
+				 if(menu_arr.led2.simpleLedSetup=='v') frame[yrow+16 + y][xcolumn + x] = 0xFFFF;
+				 else frame[yrow+16 + y][xcolumn + x] = 0;
+				}
 				else frame[yrow+16 + y][xcolumn + x] = hex2;
 				if((int)(((double)x/460)*360)==posuvnik2) {
 					menu_arr.led2.red = rgb2[0];
 					menu_arr.led2.green = rgb2[1];
 					menu_arr.led2.blue = rgb2[2];
-					if(menu_arr.led2.simpleLedSetup=='h') {led2_hsv[0]=((double)x/460)*360; menu_arr.posuvnik_down.h = x;}
-					else if(menu_arr.led2.simpleLedSetup=='s') {led2_hsv[1]=((double)x/460); menu_arr.posuvnik_down.s = x;}
-					else if(menu_arr.led2.simpleLedSetup=='v') {led2_hsv[2]=((double)x/460); menu_arr.posuvnik_down.v = x;}
 				}
 			}
 		}	
 	}
-	//free(rgb1);
-	//free(rgb2);
+
 	return menu_arr;
 }
 
@@ -325,28 +289,30 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 	char str[255];
 	for(int i=0; i<480; i++) {frame[234][i] = color1; frame[235][i] = color1; frame[236][i] = color1;}
 	
-	posun = -12+3*string2frame_menu("Led 1 (r, g, b): ", 237, 0, color1, color2);
-	sprintf(str, "%d", (int)menu_arr.led1.red);
-	string2frame_menu("    ", 237, 160, color1, color2);
-	posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 160, color1, color2);
-	sprintf(str, "%d", (int)menu_arr.led1.green);
-	string2frame_menu("    ", 237, 210, color1, color2);
-	posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 210, color1, color2);
-	sprintf(str, "%d", (int)menu_arr.led1.blue);
-	string2frame_menu("    ", 237, 260, color1, color2);
-	posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 260, color1, color2);
+	if(menu_arr.animation==0)
+	{
+		posun = -12+3*string2frame_menu("Led 1 (r, g, b): ", 237, 0, color1, color2);
+		sprintf(str, "%d", (int)menu_arr.led1.red);
+		string2frame_menu("    ", 237, 160, color1, color2);
+		posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 160, color1, color2);
+		sprintf(str, "%d", (int)menu_arr.led1.green);
+		string2frame_menu("    ", 237, 210, color1, color2);
+		posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 210, color1, color2);
+		sprintf(str, "%d", (int)menu_arr.led1.blue);
+		string2frame_menu("    ", 237, 260, color1, color2);
+		posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 260, color1, color2);
 
-	posun = -12+3*string2frame_menu("Led 2 (r, g, b): ", 253, 0, color1, color2);
-	sprintf(str, "%d", (int)menu_arr.led2.red);
-	string2frame_menu("    ", 253, 160, color1, color2);
-	posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 160, color1, color2);
-	sprintf(str, "%d", (int)menu_arr.led2.green);
-	string2frame_menu("    ", 253, 210, color1, color2);
-	posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 210, color1, color2);
-	sprintf(str, "%d", (int)menu_arr.led2.blue);
-	string2frame_menu("    ", 253, 260, color1, color2);
-	posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 260, color1, color2);
-	
+		posun = -12+3*string2frame_menu("Led 2 (r, g, b): ", 253, 0, color1, color2);
+		sprintf(str, "%d", (int)menu_arr.led2.red);
+		string2frame_menu("    ", 253, 160, color1, color2);
+		posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 160, color1, color2);
+		sprintf(str, "%d", (int)menu_arr.led2.green);
+		string2frame_menu("    ", 253, 210, color1, color2);
+		posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 210, color1, color2);
+		sprintf(str, "%d", (int)menu_arr.led2.blue);
+		string2frame_menu("    ", 253, 260, color1, color2);
+		posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 260, color1, color2);
+	}
 
 	sprintf(str, "%d", L_push);
 	string2frame_menu("    ", 270, 80, color1, color2);
@@ -368,3 +334,4 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 	string2frame_menu("    ", 290, 350, color1, color2);
 	string2frame_menu(str, 290, 350, color1, color2);
 }
+

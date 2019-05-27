@@ -25,7 +25,7 @@ double* HSV_to_RGB(double h, double s, double v);
 double* RGB_to_HSV(double r, double g, double b);
 uint16_t RGB_to_hex(double r, double g, double b);
 
-unsigned long long getMillitime();
+long getMicrotime();
 
 #ifdef __cplusplus
 

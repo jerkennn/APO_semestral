@@ -88,9 +88,9 @@ uint16_t RGB_to_hex(double r, double g, double b)
 	return ((((int)(r*249+1014))>>11)<<11) + ((((int)(g*253+505))>>10)<<5) + (((int)(b*249+1014))>>11);
 }
 
-unsigned long long getMillitime(){
+long getMicrotime(){
 	struct timeval currentTime;
 	gettimeofday(&currentTime, NULL);
-	return currentTime.tv_sec * (int)1e3 + (int)currentTime.tv_sec/1000;
+	return currentTime.tv_sec * (int)1e6 + currentTime.tv_usec;
 }
 

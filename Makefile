@@ -2,8 +2,8 @@ CC = arm-linux-gnueabihf-gcc
 CXX = arm-linux-gnueabihf-g++
 
 CPPFLAGS = -I .
-CFLAGS =-g -std=gnu99 -O1 
-CXXFLAGS = -g -std=gnu++11 -O1 
+CFLAGS =-g -std=gnu99 -O1 -Wall
+CXXFLAGS = -g -std=gnu++11 -O1 -Wall
 LDFLAGS = -lrt -lpthread
 
 SOURCES = main.c mzapo_phys.c mzapo_parlcd.c

@@ -27,29 +27,17 @@ typedef struct led_set
     char simpleLedSetup;
 }led_settings;
 
-typedef struct posuvnik_set
-{
-    double h;
-    double s;
-    double v;
-}posuvnik_settings;
 
 typedef struct GUI_set
 {
-    unsigned long long time1;
-    unsigned long long time2;
-
     int currentScreen;
     int colourGui;
     int exit;
-    int animation1;
-    int animation2;
-    
     led_settings led1;
     led_settings led2;
-    
-    posuvnik_settings posuvnik_up;
-    posuvnik_settings posuvnik_down;
+    long time1;
+    long time2;
+    int animation;
 }GUI_set_menu;
 
 GUI_set_menu menu_arr;
@@ -58,15 +46,14 @@ GUI_set_menu menu_arr;
 int btn2;
 // int btn3=0;
 
-int posuvnik1;
-int posuvnik2;
-double posuvnik1_shift;
-double posuvnik2_shift;
-
 double *rgb1;
 double *rgb2;
 uint16_t hex1;
 uint16_t hex2;
+
+double *led1_hsv;
+double *led2_hsv;
+
 
 unsigned char *parlcd_mem_base;
 
@@ -77,7 +64,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, GUI_set_menu menu_arr);
 
 //double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int convert_lcd);
-GUI_set_menu strip(int yrow, int xcolumn, double posuvnik1_vstup, double posuvnik2_vstup, GUI_set_menu menu_arr);
+GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_menu menu_arr);
 
 #ifdef __cplusplus
 

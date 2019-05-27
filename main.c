@@ -89,19 +89,10 @@ int main(int argc, char *argv[])
 	menu_arr.time1 = 0;
 	menu_arr.time2 = 0;
 	
-	menu_arr.posuvnik_up.h = 0;
-	menu_arr.posuvnik_up.s = 0;
-	menu_arr.posuvnik_up.v = 0;
-	
-	menu_arr.posuvnik_down.h = 0;
-	menu_arr.posuvnik_down.s = 0;
-	menu_arr.posuvnik_down.v = 0;
-	
-	menu_arr.animation1 = 0;
-	menu_arr.animation2 = 0;
-	
 	menu_arr.led1.simpleLedSetup = ' ';
 	menu_arr.led2.simpleLedSetup = ' ';
+	
+	menu_arr.animation=0;
 	
 	menu_arr.led1.red = 255;
 	menu_arr.led1.green = 0;
@@ -141,7 +132,7 @@ int main(int argc, char *argv[])
 void *leds(void *d){
 	data_t *data = (data_t *)d;
 	int *led_1 = map_phys_address(SPILED_REG_BASE_PHYS + SPILED_REG_LED_RGB1_o, SPILED_REG_SIZE, 0); 
-	int *led_2 = map_phys_address(SPILED_REG_BASE_PHYS + SPILED_REG_LED_RGB2_o, SPILED_REG_SIZE, 0);
+	//int *led_2 = map_phys_address(SPILED_REG_BASE_PHYS + SPILED_REG_LED_RGB2_o, SPILED_REG_SIZE, 0);
 	
 
 	bool q = false;
@@ -151,15 +142,16 @@ void *leds(void *d){
 	volatile double *hsv_1;
 	volatile double *hsv_2;
 	int animation = 0;
-	long int period = 10*1000;
+	long int period = 10*1000*1000;
 	double h_1 = 0;
 	double h_2 = 0;
-	unsigned long long startTime = 0;
+	long int startTime = 0;
 	
 	while(!q){
 		if(data->rb == 1  && animation == 1)
 		{
 			animation = 0;
+			menu_arr.animation=0;
 		}
 		if(data->rb == 1 && animation != 1)
 		{
@@ -168,24 +160,20 @@ void *leds(void *d){
 			hsv_2 = RGB_to_HSV(data->rgb_2.red, data->rgb_2.green, data->rgb_2.blue);
 			h_2 = hsv_2[0];
 			animation = 1;
-			startTime = getMillitime();
+			menu_arr.animation=1;
+			startTime = getMicrotime();
 			  
 		}
 		if(animation)
 		{
-			pthread_mutex_lock(&mtx);
-			led_animation(led_1, h_1, h_2, period, startTime, 0, 0);
-			led_animation(led_2, h_2, h_1, period, startTime, 0, 0);
-			pthread_mutex_unlock(&mtx);
+			led_animation(led_1, h_1, h_2, period, startTime);
 			//*led_2 = color_1;
 		}
-		
 		
 		q = data->quit;
 		
 		}
 		*led_1 = 0;
-		*led_2 = 0;
 	return NULL;
 }
 
