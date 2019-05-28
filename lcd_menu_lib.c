@@ -179,7 +179,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			string2frame_menu("Change hue (H)", 24, 40, color1, color2);
 			string2frame_menu("Change saturation (S)", 48, 40, color1, color2);
 			string2frame_menu("Change value (V)", 72, 40, color1, color2);
-			string2frame_menu("Change period", 96, 40, color1, color2); //stejne 96 jako value u velkych pismen
+			string2frame_menu("Change period", 96, 40, color1, color2);
 			string2frame_menu("Back", 120, 40, color1, color2);
 		}
 		else
@@ -595,18 +595,18 @@ GUI_set_menu getPeriod(int posuvnik1, int posuvnik2, int posuvnik3, GUI_set_menu
 		{
 			sprintf(str, "%d", on);
 			string2frame_menu_big("ON-Per.: ", 68, 10, color1, color2);
-			string2frame_menu_big("      ", 68, 200, color1, color2);
-			string2frame_menu_big(str, 68, 200, color1, color2);
+			string2frame_menu_big("      ", 68, 205, color1, color2);
+			string2frame_menu_big(str, 68, 205, color1, color2);
 
 			sprintf(str, "%d", off);
 			string2frame_menu_big("OFF-Per.: ", 104, 10, color1, color2);
-			string2frame_menu_big("      ", 104, 200, color1, color2);
-			string2frame_menu_big(str, 104, 200, color1, color2);
+			string2frame_menu_big("      ", 104, 205, color1, color2);
+			string2frame_menu_big(str, 104, 205, color1, color2);
 			
 			sprintf(str, "%d", anime);
 			string2frame_menu_big("Anime-Per.: ", 140, 10, color1, color2);
-			string2frame_menu_big("      ", 140, 200, color1, color2);
-			string2frame_menu_big(str, 140, 200, color1, color2);
+			string2frame_menu_big("      ", 140, 205, color1, color2);
+			string2frame_menu_big(str, 140, 205, color1, color2);
 		}
 
 		menu_arr.periodStrip_prev1=posuvnik1;

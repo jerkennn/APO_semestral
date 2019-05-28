@@ -42,7 +42,9 @@ typedef struct GUI_set
     int colourGui;
     int exit;
     led_settings led1;
+    led_settings led1_prev;
     led_settings led2;
+    led_settings led2_prev;
     long time1;
     long time2;
     int animation;

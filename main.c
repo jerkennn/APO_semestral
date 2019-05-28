@@ -43,8 +43,16 @@
 #include <arpa/inet.h> 
 #include <netinet/in.h> 
   
-#define PORT     8080 
-#define MAXLINE 1024 
+#define PORT 8090 
+
+typedef struct{
+	double red;
+	double green;
+	double blue;
+	int led1_static;
+} udp_data;
+
+#define STRUCT_SIZE (sizeof(udp_data)+8)
 
 pthread_mutex_t mtx;
 unsigned char *parlcd_mem_base = NULL;
@@ -147,15 +155,18 @@ int main(int argc, char *argv[])
 	sleep(2);
 
 	pthread_mutex_init(&mtx, NULL);
-	pthread_t threads[3];
+	pthread_t threads[4];
 	
 	pthread_create(&threads[0], NULL, buttons_thread, &data);
 	pthread_create(&threads[1], NULL, leds_thread, &data);
 	pthread_create(&threads[2], NULL, display_thread, &data);
+	pthread_create(&threads[3], NULL, server_thread, &data);
 	
 	pthread_join(threads[0], NULL);
 	pthread_join(threads[1], NULL);
 	pthread_join(threads[2], NULL);
+	pthread_join(threads[3], NULL);
+
 
 	delete_lcd(0);
 	string2frame_menu_big("KOREK", 100, 180, 0xFFFF, 0);
@@ -205,7 +216,6 @@ void *leds_thread(void *d){
 			h_1 = hsv_1[0];
 			hsv_2 = RGB_to_HSV(data->rgb_2.red, data->rgb_2.green, data->rgb_2.blue);
 			h_2 = hsv_2[0];
-			printf("*\n");
 			//animation = 1; 	
 			menu_arr.animation=1;
 			startTime = getMicrotime();
@@ -333,11 +343,11 @@ void *display_thread(void *d){
 		}
 	return NULL;
 }
-/*
 void *server_thread(void *d){
+
 	data_t *data = (data_t *)d;
 	int sockfd; 
-    char buffer[MAXLINE]; 
+    char buffer[sizeof(udp_data)]; 
 	//char *hello = "Hello from server"; 
     struct sockaddr_in servaddr, cliaddr; 
       
@@ -351,8 +361,7 @@ void *server_thread(void *d){
     memset(&cliaddr, 0, sizeof(cliaddr));
 
     int broadcast = 1;
-    if (setsockopt(sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast,
-        sizeof broadcast) == -1) {
+    if (setsockopt(sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast, sizeof broadcast) == -1) {
         perror("setsockopt (SO_BROADCAST)");
         exit(1);
     }
@@ -363,36 +372,45 @@ void *server_thread(void *d){
     servaddr.sin_port = htons(PORT); 
       
     // Bind the socket with the server address 
-    if ( bind(sockfd, (const struct sockaddr *)&servaddr,  
-            sizeof(servaddr)) < 0 ) 
+    if ( bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr)) < 0 ) 
     { 
         perror("bind failed"); 
         exit(EXIT_FAILURE); 
     } 
       
-    int len, n;
+    int len;
+    int n;
+    
     bool q = false;
+    
+    udp_data *input_data = malloc(sizeof(udp_data));
+    
     while(!q){
-	    n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, (struct sockaddr *) &cliaddr,  &len); 
-	    buffer[n] = '\0'; 
-	    printf("Client : %s\n", buffer);
+	    n = recvfrom(sockfd, (char *)buffer, STRUCT_SIZE, MSG_WAITALL, (struct sockaddr *) &cliaddr, &len);
+	    memcpy(input_data, buffer, sizeof(udp_data));
+	    menu_arr.led1.red = input_data->red;
+	    menu_arr.led1.green = input_data->green; 
+	    menu_arr.led1.blue = input_data->blue; 
+	    menu_arr.led1.staticLight =  input_data->led1_static;
+	    //buffer[n] = '\0'; 
+	    //printf("Client : %s\n", buffer);
 	    q = data->quit;
     }
-    
+    free(input_data);
 	return NULL;
 }
 
-
+/*
 void *client_thread(void *d)
 {
 	data_t *data = (data_t *)d;
 	int sockfd; 
-    //char buffer[MAXLINE]; 
-    char *hello = "Hello from client"; 
+    char buffer[sizeof(udp_data)]; 
+
     struct sockaddr_in     servaddr; 
   
     // Creating socket file descriptor 
-    if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) { 
+    if((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) { 
         perror("socket creation failed"); 
         exit(EXIT_FAILURE); 
     } 
@@ -400,8 +418,7 @@ void *client_thread(void *d)
     memset(&servaddr, 0, sizeof(servaddr));
 
     int broadcast = 1;
-    if (setsockopt(sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast,
-        sizeof broadcast) == -1) {
+    if (setsockopt(sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast, sizeof broadcast) == -1) {
         perror("setsockopt (SO_BROADCAST)");
         exit(1);
     }
@@ -414,15 +431,15 @@ void *client_thread(void *d)
     //int n, len; 
     
     bool q = false;
+    udp_data *output_data = malloc(sizeof(udp_data));
+    
     while(!q){
-	    sendto(sockfd, (const char *)hello, strlen(hello), 
-		MSG_CONFIRM, (const struct sockaddr *) &servaddr,  
-		    sizeof(servaddr)); 
+    	memcpy(buffer, output_data, sizeof(udp_data));
+	    sendto(sockfd, (char *)buffer, STRUCT_SIZE, MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr)); 
 	    printf("Hello message sent.\n");
 	    q = data->quit;
     }
-  
+  	free(output_data);
     close(sockfd); 
     return NULL;
-}
-*/
+}*/
