@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 	menu_arr.led1.blue = 0;
 	menu_arr.led1.periodSet.periodOFF = 0;
 	menu_arr.led1.periodSet.periodON = 0;
-	menu_arr.led1.periodSet.periodAnime = 0;
+	menu_arr.led1.periodSet.periodAnime = 1;
 	
 	
 	menu_arr.led2.red = 255;
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
 	menu_arr.led2.blue = 0;
 	menu_arr.led2.periodSet.periodOFF = 0;
 	menu_arr.led2.periodSet.periodON = 0;
-	menu_arr.led2.periodSet.periodAnime = 0;
+	menu_arr.led2.periodSet.periodAnime = 1;
 	
 
 	
@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
 	string2frame_menu_big("Welcome", 140, 160, 0xFFFF, 0);
 	
 	frame2lcd();
-	sleep(3);
+	sleep(2);
 
 	pthread_mutex_init(&mtx, NULL);
 	pthread_t threads[3];
@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
 	string2frame_menu_big("KOREK", 100, 180, 0xFFFF, 0);
 	string2frame_menu_big("Goodbye", 140, 160, 0xFFFF, 0);
 	frame2lcd();
-	sleep(3);
+	sleep(1);
 	delete_lcd(0);
 	frame2lcd();
 	
@@ -184,7 +184,7 @@ void *leds_thread(void *d){
 	volatile double *hsv_1;
 	volatile double *hsv_2;
 	int prev_animation = 1;
-	long int period = 8*1000*1000;
+	//long int period = 8*1000*1000;
 	double h_1 = 0;
 	double h_2 = 0;
 	short staticLight1 = 0;
@@ -205,6 +205,7 @@ void *leds_thread(void *d){
 			h_1 = hsv_1[0];
 			hsv_2 = RGB_to_HSV(data->rgb_2.red, data->rgb_2.green, data->rgb_2.blue);
 			h_2 = hsv_2[0];
+			printf("*\n");
 			//animation = 1; 	
 			menu_arr.animation=1;
 			startTime = getMicrotime();
@@ -212,8 +213,10 @@ void *leds_thread(void *d){
 		}
 		if(menu_arr.animation)
 		{
-			led1_animation(led_1, h_1, h_2, period, startTime, 1000*((int)menu_arr.led1.periodSet.periodON), 1000*((int)menu_arr.led1.periodSet.periodOFF));
-			led2_animation(led_2, h_2, h_1, period, startTime, 1000*((int)menu_arr.led2.periodSet.periodON), 1000*((int)menu_arr.led2.periodSet.periodOFF));
+			if(menu_arr.led1.periodSet.periodAnime==0) menu_arr.led1.periodSet.periodAnime=1;
+			if(menu_arr.led2.periodSet.periodAnime==0) menu_arr.led2.periodSet.periodAnime=1;
+			led1_animation(led_1, h_1, h_2, 1000*((int)menu_arr.led1.periodSet.periodAnime), startTime, 1000*((int)menu_arr.led1.periodSet.periodON), 1000*((int)menu_arr.led1.periodSet.periodOFF));
+			led2_animation(led_2, h_2, h_1, 1000*((int)menu_arr.led2.periodSet.periodAnime), startTime, 1000*((int)menu_arr.led2.periodSet.periodON), 1000*((int)menu_arr.led2.periodSet.periodOFF));
 			//*led_2 = color_1;
 		}
 		else if(!menu_arr.led1.staticLight && !staticLight1 && !menu_arr.led2.staticLight && !staticLight2)
@@ -226,14 +229,12 @@ void *leds_thread(void *d){
 		if(!menu_arr.animation && menu_arr.led1.staticLight)
 		{
 			staticLight1=1;
-			uint32_t color = createRGB(menu_arr.led1.red, menu_arr.led1.green , menu_arr.led1.blue);
-			*led_1 = color;
+			led1_static(led_1, menu_arr.led1.red, menu_arr.led1.green , menu_arr.led1.blue, 1000*((int)menu_arr.led1.periodSet.periodON), 1000*((int)menu_arr.led1.periodSet.periodOFF));
 		}
 		if(!menu_arr.animation && menu_arr.led2.staticLight)
 		{
 			staticLight2=1;
-			uint32_t color = createRGB(menu_arr.led2.red, menu_arr.led2.green , menu_arr.led2.blue);
-			*led_2 = color;
+			led2_static(led_2, menu_arr.led2.red, menu_arr.led2.green , menu_arr.led2.blue, 1000*((int)menu_arr.led2.periodSet.periodON), 1000*((int)menu_arr.led2.periodSet.periodOFF));
 		}
 		else if(!menu_arr.led1.staticLight && staticLight1)
 		{

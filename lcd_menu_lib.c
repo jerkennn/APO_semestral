@@ -285,7 +285,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
 			stripStart = 1;
-			if(btn2==24) {menu_arr.currentScreen=1; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' ';}
+			if(btn2==24) {menu_arr.currentScreen=12; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' ';}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
@@ -594,19 +594,19 @@ GUI_set_menu getPeriod(int posuvnik1, int posuvnik2, int posuvnik3, GUI_set_menu
 		else
 		{
 			sprintf(str, "%d", on);
-			string2frame_menu_big("ON-Per.: ", 48, 10, color1, color2);
-			string2frame_menu_big("      ", 48, 200, color1, color2);
-			string2frame_menu_big(str, 48, 200, color1, color2);
+			string2frame_menu_big("ON-Per.: ", 68, 10, color1, color2);
+			string2frame_menu_big("      ", 68, 200, color1, color2);
+			string2frame_menu_big(str, 68, 200, color1, color2);
 
 			sprintf(str, "%d", off);
-			string2frame_menu_big("OFF-Per.: ", 84, 10, color1, color2);
-			string2frame_menu_big("      ", 84, 200, color1, color2);
-			string2frame_menu_big(str, 84, 200, color1, color2);
+			string2frame_menu_big("OFF-Per.: ", 104, 10, color1, color2);
+			string2frame_menu_big("      ", 104, 200, color1, color2);
+			string2frame_menu_big(str, 104, 200, color1, color2);
 			
 			sprintf(str, "%d", anime);
-			string2frame_menu_big("Anime-Per.: ", 120, 10, color1, color2);
-			string2frame_menu_big("      ", 120, 200, color1, color2);
-			string2frame_menu_big(str, 120, 200, color1, color2);
+			string2frame_menu_big("Anime-Per.: ", 140, 10, color1, color2);
+			string2frame_menu_big("      ", 140, 200, color1, color2);
+			string2frame_menu_big(str, 140, 200, color1, color2);
 		}
 
 		menu_arr.periodStrip_prev1=posuvnik1;
