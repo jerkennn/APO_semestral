@@ -91,7 +91,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					break;
 			}
 		}
-		if((menu_arr.currentScreen==11) && (menu_arr.led1.simpleLedSetup!=' ') && (menu_arr.led2.simpleLedSetup!=' ')) btn2=1*24;
+		if((menu_arr.currentScreen==11) && (menu_arr.led1.simpleLedSetup!=' ') && (menu_arr.led2.simpleLedSetup!=' ') && (btn2>60)) btn2=1*24;
 		
 	}
 	if(menu_arr.currentScreen!=11)
@@ -204,8 +204,8 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	{
 		if(menu_arr.size==0) 
 		{	
-			if(menu_arr.animation==1) string2frame_menu_big("Animation off", 24, 40, color1, color2);
-			else string2frame_menu_big("Animation on", 24, 40, color1, color2);
+			if(menu_arr.animation==1) string2frame_menu("Animation off", 24, 40, color1, color2);
+			else string2frame_menu("Animation on", 24, 40, color1, color2);
 			string2frame_menu("Back", 48, 40, color1, color2);
 		}
 		else 
