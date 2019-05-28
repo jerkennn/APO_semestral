@@ -94,11 +94,21 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		if((menu_arr.currentScreen==11) && (menu_arr.led1.simpleLedSetup!=' ') && (menu_arr.led2.simpleLedSetup!=' ')) btn2=1*24;
 		
 	}
-
-	for(int i=0; i<230; i++)
+	if(menu_arr.currentScreen!=11)
 	{
-		for(int j = 0; j<480; j++) frame[i][j] = color2;
+		for(int i=0; i<230; i++)
+		{
+			for(int j = 0; j<480; j++) frame[i][j] = color2;
+		}
 	}
+	else
+	{
+		for(int i=0; i<180; i++)
+		{
+			for(int j = 0; j<480; j++) frame[i][j] = color2;
+		}
+	}
+	
 	
 	nextscreen = 0;
 
