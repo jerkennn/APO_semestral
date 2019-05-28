@@ -22,37 +22,77 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 
 	if(nextscreen==1) btn2=1*24;
 	else{
-		switch (((int) (6*(double)rotate2/10.2)%37))
-		{
-			case 0 ... 4:
-				btn2 = 1*24;
-				break;
-			case 5 ... 9:
-				btn2 = 2*24;
-				break;
-			case 10 ... 14:
-				btn2 = 3*24;
-				if(menu_arr.currentScreen==5) btn2=24;
-				break;
-			case 15 ... 20:
-				btn2 = 4*24;
-				if(menu_arr.currentScreen==4) btn2=24;
-				else if(menu_arr.currentScreen==5) btn2=2*24;
-				break;
-			case 21 ... 25:
-				btn2 = 5*24;
-				if(menu_arr.currentScreen==4) btn2=2*24;
-				else if(menu_arr.currentScreen==5) btn2=24;
-				break;
-			case 26 ... 30:
-				btn2 = 6*24;
-				if(menu_arr.currentScreen==0) btn2=1*24;
-				else if(menu_arr.currentScreen==4) btn2=3*24;
-				else if(menu_arr.currentScreen==5) btn2=2*24;
-				break;
-			default:
-				break;
+		if(menu_arr.size==0){
+			switch (((int) (6*(double)rotate2/10.2)%37))
+			{
+				case 0 ... 4:
+					btn2 = 1*24;
+					break;
+				case 5 ... 9:
+					btn2 = 2*24;
+					break;
+				case 10 ... 14:
+					btn2 = 3*24;
+					if(menu_arr.currentScreen==5) btn2=24;
+					break;
+				case 15 ... 20:
+					btn2 = 4*24;
+					if(menu_arr.currentScreen==4) btn2=24;
+					else if(menu_arr.currentScreen==5) btn2=2*24;
+					break;
+				case 21 ... 25:
+					btn2 = 5*24;
+					if(menu_arr.currentScreen==4) btn2=2*24;
+					else if(menu_arr.currentScreen==5) btn2=24;
+					break;
+				case 26 ... 30:
+					btn2 = 6*24;
+					if(menu_arr.currentScreen==0) btn2=1*24;
+					else if(menu_arr.currentScreen==1) btn2=1*24;
+					else if(menu_arr.currentScreen==4) btn2=3*24;
+					else if(menu_arr.currentScreen==5) btn2=2*24;
+					break;
+				default:
+					break;
+			}
 		}
+		else
+		{
+			switch (((int) (6*(double)rotate2/10.2)%37))
+			{
+				case 0 ... 4:
+					btn2 = 1*36;
+					break;
+				case 5 ... 9:
+					btn2 = 2*36;
+					break;
+				case 10 ... 14:
+					btn2 = 3*36;
+					if(menu_arr.currentScreen==5) btn2=36;
+					break;
+				case 15 ... 20:
+					btn2 = 4*36;
+					if(menu_arr.currentScreen==4) btn2=36;
+					else if(menu_arr.currentScreen==5) btn2=2*36;
+					break;
+				case 21 ... 25:
+					btn2 = 5*36;
+					if(menu_arr.currentScreen==4) btn2=2*36;
+					else if(menu_arr.currentScreen==5) btn2=36;
+					break;
+				case 26 ... 30:
+					btn2 = 6*36;
+					if(menu_arr.currentScreen==0) btn2=1*36;
+					else if(menu_arr.currentScreen==1) btn2=1*36;
+					else if(menu_arr.currentScreen==4) btn2=3*36;
+					else if(menu_arr.currentScreen==5) btn2=2*36;
+					break;
+				default:
+					break;
+			}
+		}
+		if((menu_arr.currentScreen==11) && (menu_arr.led1.simpleLedSetup!=' ') && (menu_arr.led2.simpleLedSetup!=' ')) btn2=1*24;
+		
 	}
 
 	for(int i=0; i<170; i++)
@@ -62,117 +102,199 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	
 	nextscreen = 0;
 
-	string2frame_menu_big("ab", 100, 400, 0, 0xFFFF);
+	//string2frame_menu("******************** KOREK ********************", 0, 0, color1, color2);
 
-	string2frame_menu("******************** KOREK ********************", 0, 0, color1, color2);
-
-	for(int i=1;i<=6;i++) string2frame_menu("   ", i*24, 10, color1, color2);
-	string2frame_menu(">>", btn2, 10, color1, color2);
+	if(menu_arr.size==0){
+		for(int i=1;i<=6;i++) string2frame_menu("   ", i*24, 10, color1, color2);
+		string2frame_menu(">>", btn2, 10, color1, color2);
+	}
+	else
+	{
+		for(int i=1;i<=6;i++) string2frame_menu("   ", i*36, 10, color1, color2);
+		string2frame_menu_big(">>", btn2, 10, color1, color2);
+	}
+	
 	
 	if(menu_arr.currentScreen==0) // start menu
 	{
-		/*string2frame_menu("Change LEDs", 24, 40, color1, color2);
-		string2frame_menu("Special effects", 48, 40, color1, color2);
-		string2frame_menu("Ethernet settings", 72, 40, color1, color2);
-		string2frame_menu("KOREK settings", 96, 40, color1, color2);
-		string2frame_menu("Exit KOREK", 120, 40, color1, color2);*/
-		string2frame_menu_big("Change LEDs", 24, 40, color1, color2);
-		string2frame_menu_big("Special effects", 60, 40, color1, color2);
-		string2frame_menu_big("Ethernet settings", 96, 40, color1, color2);
-		string2frame_menu_big("KOREK settings", 132, 40, color1, color2);
-		string2frame_menu_big("Exit KOREK", 164, 40, color1, color2);
+		if(menu_arr.size==0)
+		{
+			string2frame_menu("Change LEDs", 24, 40, color1, color2);
+			string2frame_menu("Special effects", 48, 40, color1, color2);
+			string2frame_menu("Ethernet settings", 72, 40, color1, color2);
+			string2frame_menu("KOREK settings", 96, 40, color1, color2);
+			string2frame_menu("Exit KOREK", 120, 40, color1, color2);
+		}
+		else
+		{
+			string2frame_menu_big("Change LEDs", 24, 40, color1, color2);
+			string2frame_menu_big("Special effects", 60, 40, color1, color2);
+			string2frame_menu_big("Ethernet settings", 96, 40, color1, color2);
+			string2frame_menu_big("KOREK settings", 132, 40, color1, color2);
+			string2frame_menu_big("Exit KOREK", 164, 40, color1, color2);
+		}
 		if(button2==1) {
-			//printf("*\n");
 			menu_arr.time2 = getMicrotime();
-			//printf("**\n");
 			if(menu_arr.time2>=menu_arr.time1+300000 || !click) {
 				//printf("***\n");
 				click = 1;
-				menu_arr.currentScreen=btn2/24;
+				if(menu_arr.size==0) menu_arr.currentScreen=btn2/24;
+				else menu_arr.currentScreen=btn2/36;
 				nextscreen = 1;
 				menu_arr.time2=0; 
 				menu_arr.time1 = getMicrotime();
 				}
 		}
 	}
-	else if(menu_arr.currentScreen==1) // led 1 menu
+	else if(menu_arr.currentScreen==1) // leds menu
 	{
-		string2frame_menu("Change hue (H)", 24, 40, color1, color2);
-		string2frame_menu("Change saturation (S)", 48, 40, color1, color2);
-		string2frame_menu("Change value (V)", 72, 40, color1, color2);
-		string2frame_menu("Change period", 96, 40, color1, color2);
-		string2frame_menu("Set color shift", 120, 40, color1, color2);
-		string2frame_menu("Back", 144, 40, color1, color2);
+		if(menu_arr.size==0)
+		{
+			string2frame_menu("Change hue (H)", 24, 40, color1, color2);
+			string2frame_menu("Change saturation (S)", 48, 40, color1, color2);
+			string2frame_menu("Change value (V)", 72, 40, color1, color2);
+			string2frame_menu("Change period", 96, 40, color1, color2);
+			string2frame_menu("Back", 120, 40, color1, color2);
+		}
+		else
+		{
+			string2frame_menu_big("Change hue (H)", 24, 40, color1, color2);
+			string2frame_menu_big("Change saturation (S)", 60, 40, color1, color2);
+			string2frame_menu_big("Change value (V)", 96, 40, color1, color2);
+			string2frame_menu_big("Change period", 132, 40, color1, color2);
+			string2frame_menu_big("Back", 164, 40, color1, color2);
+		}
+		
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
 			stripStart = 1;
-			if(btn2==24) {menu_arr.led1.simpleLedSetup = 'h'; menu_arr.led2.simpleLedSetup = 'h';}
-			else if(btn2==48) {menu_arr.led1.simpleLedSetup = 's'; menu_arr.led2.simpleLedSetup = 's';}
-			else if(btn2==72) {menu_arr.led1.simpleLedSetup = 'v'; menu_arr.led2.simpleLedSetup = 'v';}
-			else if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
+			if(btn2==24) {menu_arr.led1.simpleLedSetup = 'h'; menu_arr.led2.simpleLedSetup = 'h'; menu_arr.currentScreen==11;}
+			else if(btn2==48 || btn2==60) {menu_arr.led1.simpleLedSetup = 's'; menu_arr.led2.simpleLedSetup = 's'; menu_arr.currentScreen==11;}
+			else if(btn2==72 || btn2==96) {menu_arr.led1.simpleLedSetup = 'v'; menu_arr.led2.simpleLedSetup = 'v'; menu_arr.currentScreen==11;}
+			else if(btn2==120 || btn2==164) {menu_arr.currentScreen=0; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
 	}
-	else if(menu_arr.currentScreen==2) //both leds menu
+	else if(menu_arr.currentScreen==11) // changing colors
 	{
-		string2frame_menu(" -- ", 24, 40, color1, color2);
-		string2frame_menu(" -- ", 48, 40, color1, color2);
-		string2frame_menu(" -- ", 72, 40, color1, color2);
-		string2frame_menu(" -- ", 96, 40, color1, color2);
-		string2frame_menu(" -- ", 120, 40, color1, color2);
-		string2frame_menu("Back", 144, 40, color1, color2);
+		string2frame_menu("Back", 24, 40, color1, color2);
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1;}
+			stripStart = 1;
+			if(btn2==24) {menu_arr.currentScreen=0; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
+			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
+			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
+			}
+		}
+	}
+	else if(menu_arr.currentScreen==2) //effects
+	{
+		if(menu_arr.size==0)
+		{
+			string2frame_menu(" -- ", 24, 40, color1, color2);
+			string2frame_menu(" -- ", 48, 40, color1, color2);
+			string2frame_menu(" -- ", 72, 40, color1, color2);
+			string2frame_menu(" -- ", 96, 40, color1, color2);
+			string2frame_menu(" -- ", 120, 40, color1, color2);
+			string2frame_menu("Back", 144, 40, color1, color2);
+		}
+		else
+		{
+			string2frame_menu_big(" -- ", 24, 40, color1, color2);
+			string2frame_menu_big(" -- ", 60, 40, color1, color2);
+			string2frame_menu_big(" -- ", 96, 40, color1, color2);
+			string2frame_menu_big(" -- ", 132, 40, color1, color2);
+			string2frame_menu_big(" -- ", 164, 40, color1, color2);
+			string2frame_menu_big("Back", 200, 40, color1, color2);
+		}
+		if(button2==1) {
+		menu_arr.time2 = getMicrotime();
+		if(menu_arr.time2>=menu_arr.time1+300000) {
+			if(btn2==144 || btn2==200) {menu_arr.currentScreen=0; nextscreen=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
 	}
 	else if(menu_arr.currentScreen==3) //ethernet
 	{
-		string2frame_menu(" -- ", 24, 40, color1, color2);
-		string2frame_menu(" -- ", 48, 40, color1, color2);
-		string2frame_menu(" -- ", 72, 40, color1, color2);
-		string2frame_menu(" -- ", 96, 40, color1, color2);
-		string2frame_menu(" -- ", 120, 40, color1, color2);
-		string2frame_menu("Back", 144, 40, color1, color2);
+		if(menu_arr.size==0)
+		{
+			string2frame_menu(" -- ", 24, 40, color1, color2);
+			string2frame_menu(" -- ", 48, 40, color1, color2);
+			string2frame_menu(" -- ", 72, 40, color1, color2);
+			string2frame_menu(" -- ", 96, 40, color1, color2);
+			string2frame_menu(" -- ", 120, 40, color1, color2);
+			string2frame_menu("Back", 144, 40, color1, color2);
+		}
+		else
+		{
+			string2frame_menu_big(" -- ", 24, 40, color1, color2);
+			string2frame_menu_big(" -- ", 60, 40, color1, color2);
+			string2frame_menu_big(" -- ", 96, 40, color1, color2);
+			string2frame_menu_big(" -- ", 132, 40, color1, color2);
+			string2frame_menu_big(" -- ", 164, 40, color1, color2);
+			string2frame_menu_big("Back", 200, 40, color1, color2);
+		}
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			if(btn2==144) {menu_arr.currentScreen=0; nextscreen=1;}
+			if(btn2==144 || btn2==200) {menu_arr.currentScreen=0; nextscreen=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
 	}
 	else if(menu_arr.currentScreen==4) // KOREK settings
 	{
-		string2frame_menu("Invert color of GUI", 24, 40, color1, color2);
-		string2frame_menu(" -- ", 48, 40, color1, color2);
-		string2frame_menu("Back", 72, 40, color1, color2);
+		if(menu_arr.size==0){
+			string2frame_menu("Invert color of GUI", 24, 40, color1, color2);
+			string2frame_menu("Change text size", 48, 40, color1, color2);
+			string2frame_menu("Back", 72, 40, color1, color2);
+		}
+		else{
+			string2frame_menu_big("Invert color of GUI", 24, 40, color1, color2);
+			string2frame_menu_big("Change text size", 60, 40, color1, color2);
+			string2frame_menu_big("Back", 96, 40, color1, color2);
+		}
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			switch(btn2)
-			{
-				case 24:
-					menu_arr.colourGui=!menu_arr.colourGui; 
-					delete_lcd(menu_arr.colourGui);
-					if(menu_arr.colourGui==1) {color1=0x0000; color2=0xFFFF;}
-					else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
+			if(btn2==24){
+				menu_arr.colourGui=!menu_arr.colourGui; 
+				delete_lcd(menu_arr.colourGui);
+				if(menu_arr.colourGui==1) {color1=0x0000; color2=0xFFFF;}
+				else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
+				if(menu_arr.size==0){
 					string2frame_menu("Invert color of GUI", 24, 40, color1, color2);
-					string2frame_menu(" -- ", 48, 40, color1, color2);
+					string2frame_menu("Change text size", 48, 40, color1, color2);
 					string2frame_menu("Back", 72, 40, color1, color2);
-					break;
-				case 72:
-					menu_arr.currentScreen=0; 
-					nextscreen=1;
-					break;
-				default:
-					break;
+				}
+				else{
+					string2frame_menu_big("Invert color of GUI", 24, 40, color1, color2);
+					string2frame_menu_big("Change text size", 60, 40, color1, color2);
+					string2frame_menu_big("Back", 96, 40, color1, color2);
+				}
+			}
+			else if(btn2==48 || btn2==60){
+				menu_arr.size=!menu_arr.size;
+				delete_lcd(menu_arr.colourGui);
+				if(menu_arr.size==0){
+					string2frame_menu("Invert color of GUI", 24, 40, color1, color2);
+					string2frame_menu("Change text size", 48, 40, color1, color2);
+					string2frame_menu("Back", 72, 40, color1, color2);
+				}
+				else{
+					string2frame_menu_big("Invert color of GUI", 24, 40, color1, color2);
+					string2frame_menu_big("Change text size", 60, 40, color1, color2);
+					string2frame_menu_big("Back", 96, 40, color1, color2);
+				}
+			}
+			else if(btn2==72 || btn2==96){
+				menu_arr.currentScreen=0; 
+				nextscreen=1;
 			}
 			btn2=24;
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
@@ -181,8 +303,14 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	}
 	else if(menu_arr.currentScreen==5) // Exit
 	{
-		string2frame_menu(" Back ", 24, 40, color1, color2);
-		string2frame_menu(" Confirm exit ", 48, 40, color1, color2);
+		if(menu_arr.size==0){
+			string2frame_menu(" Back ", 24, 40, color1, color2);
+			string2frame_menu(" Confirm exit ", 48, 40, color1, color2);
+		}
+		else{
+			string2frame_menu_big(" Back ", 24, 40, color1, color2);
+			string2frame_menu_big(" Confirm exit ", 60, 40, color1, color2);
+		}
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
@@ -193,6 +321,8 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					nextscreen=1;
 					break;
 				case 48:
+					menu_arr.exit=1; break;
+				case 60:
 					menu_arr.exit=1; break;
 				default:
 					break;
