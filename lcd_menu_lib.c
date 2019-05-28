@@ -120,7 +120,11 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	}
 	else
 	{
-		for(int i=0;i<6;i++) string2frame_menu_big("   ", i*36+24, 10, color1, color2);
+		for(int i=0;i<6;i++)
+		{
+			if(i==5) string2frame_menu_big("   ", i*36+10, 10, color1, color2);	
+			else string2frame_menu_big("   ", i*36+24, 10, color1, color2);
+		}
 		string2frame_menu_big(">", btn2, 10, color1, color2);
 	}
 	
@@ -198,13 +202,24 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	}
 	else if(menu_arr.currentScreen==11) // changing colors
 	{
-		if(menu_arr.size==0) string2frame_menu("Back", 24, 40, color1, color2);
-		else string2frame_menu_big("Back", 24, 40, color1, color2);
+		if(menu_arr.size==0) 
+		{	
+			if(menu_arr.animation==1) string2frame_menu_big("Animation off", 24, 40, color1, color2);
+			else string2frame_menu_big("Animation on", 24, 40, color1, color2);
+			string2frame_menu("Back", 48, 40, color1, color2);
+		}
+		else 
+		{
+			if(menu_arr.animation==1) string2frame_menu_big("Animation off", 24, 40, color1, color2);
+			else string2frame_menu_big("Animation on", 24, 40, color1, color2);
+			string2frame_menu_big("Back", 60, 40, color1, color2);
+		}
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
 			stripStart = 1;
-			if(btn2==24) {menu_arr.currentScreen=1; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
+			if(btn2==24) menu_arr.animation=!menu_arr.animation;
+			else if(btn2==48 || btn2==60) {menu_arr.currentScreen=1; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
@@ -214,7 +229,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	{
 		if(menu_arr.size==0)
 		{
-			string2frame_menu("Animation on/off", 24, 40, color1, color2);
+			string2frame_menu(" -- ", 24, 40, color1, color2);
 			string2frame_menu(" -- ", 48, 40, color1, color2);
 			string2frame_menu(" -- ", 72, 40, color1, color2);
 			string2frame_menu(" -- ", 96, 40, color1, color2);
@@ -222,7 +237,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		}
 		else
 		{
-			string2frame_menu_big("Animation on/off", 24, 40, color1, color2);
+			string2frame_menu_big(" -- ", 24, 40, color1, color2);
 			string2frame_menu_big(" -- ", 60, 40, color1, color2);
 			string2frame_menu_big(" -- ", 96, 40, color1, color2);
 			string2frame_menu_big(" -- ", 132, 40, color1, color2);
@@ -231,8 +246,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			if(btn2==24) menu_arr.animation=!menu_arr.animation;
-			else if(btn2==120 || btn2==168) {menu_arr.currentScreen=0; nextscreen=1;}
+			if(btn2==120 || btn2==168) {menu_arr.currentScreen=0; nextscreen=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
