@@ -95,7 +95,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		
 	}
 
-	for(int i=0; i<170; i++)
+	for(int i=0; i<200; i++)
 	{
 		for(int j = 0; j<320; j++) frame[i][j] = color2;
 	}
@@ -110,8 +110,8 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	}
 	else
 	{
-		for(int i=1;i<=6;i++) string2frame_menu("   ", i*36, 10, color1, color2);
-		string2frame_menu_big(">>", btn2, 10, color1, color2);
+		for(int i=0;i<=6;i++) string2frame_menu_big("   ", i*36+24, 10, color1, color2);
+		string2frame_menu_big(">", btn2, 10, color1, color2);
 	}
 	
 	
@@ -169,9 +169,9 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
 			stripStart = 1;
-			if(btn2==24) {menu_arr.led1.simpleLedSetup = 'h'; menu_arr.led2.simpleLedSetup = 'h'; menu_arr.currentScreen==11;}
-			else if(btn2==48 || btn2==60) {menu_arr.led1.simpleLedSetup = 's'; menu_arr.led2.simpleLedSetup = 's'; menu_arr.currentScreen==11;}
-			else if(btn2==72 || btn2==96) {menu_arr.led1.simpleLedSetup = 'v'; menu_arr.led2.simpleLedSetup = 'v'; menu_arr.currentScreen==11;}
+			if(btn2==24) {menu_arr.led1.simpleLedSetup = 'h'; menu_arr.led2.simpleLedSetup = 'h'; menu_arr.currentScreen=11;}
+			else if(btn2==48 || btn2==60) {menu_arr.led1.simpleLedSetup = 's'; menu_arr.led2.simpleLedSetup = 's'; menu_arr.currentScreen=11;}
+			else if(btn2==72 || btn2==96) {menu_arr.led1.simpleLedSetup = 'v'; menu_arr.led2.simpleLedSetup = 'v'; menu_arr.currentScreen=11;}
 			else if(btn2==120 || btn2==164) {menu_arr.currentScreen=0; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
