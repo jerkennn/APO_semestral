@@ -155,17 +155,17 @@ int main(int argc, char *argv[])
 	sleep(2);
 
 	pthread_mutex_init(&mtx, NULL);
-	pthread_t threads[4];
+	pthread_t threads[3];
 	
 	pthread_create(&threads[0], NULL, buttons_thread, &data);
 	pthread_create(&threads[1], NULL, leds_thread, &data);
 	pthread_create(&threads[2], NULL, display_thread, &data);
-	pthread_create(&threads[3], NULL, server_thread, &data);
+	//pthread_create(&threads[3], NULL, server_thread, &data);
 	
 	pthread_join(threads[0], NULL);
 	pthread_join(threads[1], NULL);
 	pthread_join(threads[2], NULL);
-	pthread_join(threads[3], NULL);
+	//pthread_join(threads[3], NULL);
 
 
 	delete_lcd(0);
@@ -342,7 +342,7 @@ void *display_thread(void *d){
 		q = q || data->quit;
 		}
 	return NULL;
-}
+}/*
 void *server_thread(void *d){
 
 	data_t *data = (data_t *)d;
@@ -399,7 +399,7 @@ void *server_thread(void *d){
     free(input_data);
 	return NULL;
 }
-
+*/
 /*
 void *client_thread(void *d)
 {

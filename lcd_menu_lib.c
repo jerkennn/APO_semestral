@@ -38,12 +38,12 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					break;
 				case 15 ... 20:
 					btn2 = 4*24;
-					if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12) btn2=24;
+					if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12 || menu_arr.currentScreen==21) btn2=24;
 					else if(menu_arr.currentScreen==5) btn2=2*24;
 					break;
 				case 21 ... 25:
 					btn2 = 5*24;
-					if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12) btn2=2*24;
+					if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12 || menu_arr.currentScreen==21) btn2=2*24;
 					else if(menu_arr.currentScreen==11) btn2=24;
 					else if(menu_arr.currentScreen==5) btn2=24;
 					break;
@@ -52,7 +52,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					if(menu_arr.currentScreen==0) btn2=1*24;
 					else if(menu_arr.currentScreen==11) btn2=24;
 					else if(menu_arr.currentScreen==1 || menu_arr.currentScreen==2 || menu_arr.currentScreen==3) btn2=24;
-					else if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12) btn2=3*24;
+					else if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12 || menu_arr.currentScreen==21) btn2=3*24;
 					else if(menu_arr.currentScreen==5) btn2=2*24;
 					break;
 				default:
@@ -75,12 +75,12 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					break;
 				case 15 ... 20:
 					btn2 = 24+3*36;
-					if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12) btn2=24;
+					if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12 || menu_arr.currentScreen==21) btn2=24;
 					else if(menu_arr.currentScreen==5) btn2=24+36;
 					break;
 				case 21 ... 25:
 					btn2 = 24+4*36;
-					if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12) btn2=24+1*36;
+					if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12 || menu_arr.currentScreen==21) btn2=24+1*36;
 					else if(menu_arr.currentScreen==11) btn2=24;
 					else if(menu_arr.currentScreen==5) btn2=24;
 					break;
@@ -89,7 +89,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					if(menu_arr.currentScreen==0) btn2=24;
 					else if(menu_arr.currentScreen==11) btn2=24;
 					else if(menu_arr.currentScreen==1 || menu_arr.currentScreen==2 || menu_arr.currentScreen==3) btn2=24;
-					else if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12) btn2=24+2*36;
+					else if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12 || menu_arr.currentScreen==21) btn2=24+2*36;
 					else if(menu_arr.currentScreen==5) btn2=24+36;
 					break;
 				default:
@@ -294,16 +294,16 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	{
 		if(menu_arr.size==0)
 		{
-			string2frame_menu("LED1 to LED2", 24, 40, color1, color2);
-			string2frame_menu("LED2 to LED1", 48, 40, color1, color2);
+			string2frame_menu("Copy LEDs", 24, 40, color1, color2);
+			string2frame_menu(" -- ", 48, 40, color1, color2);
 			string2frame_menu(" -- ", 72, 40, color1, color2);
 			string2frame_menu(" -- ", 96, 40, color1, color2);
 			string2frame_menu("Back", 120, 40, color1, color2);
 		}
 		else
 		{
-			string2frame_menu_big("LED1 to LED2", 24, 40, color1, color2);
-			string2frame_menu_big("LED2 to LED1", 60, 40, color1, color2);
+			string2frame_menu_big("Copy LEDs", 24, 40, color1, color2);
+			string2frame_menu_big(" -- ", 60, 40, color1, color2);
 			string2frame_menu_big(" -- ", 96, 40, color1, color2);
 			string2frame_menu_big(" -- ", 132, 40, color1, color2);
 			string2frame_menu_big("Back", 168, 40, color1, color2);
@@ -311,9 +311,32 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
+			if(btn2==24) {menu_arr.currentScreen=21; nextscreen=1;}
+			else if(btn2==120 || btn2==168) {menu_arr.currentScreen=0; nextscreen=1;}
+			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
+			}
+		}
+	}
+	else if(menu_arr.currentScreen==21)
+	{
+		if(menu_arr.size==0)
+		{
+			string2frame_menu("LED1 to LED2", 24, 40, color1, color2);
+			string2frame_menu("LED2 to LED1", 48, 40, color1, color2);
+			string2frame_menu("Back", 72, 40, color1, color2);
+		}
+		else
+		{
+			string2frame_menu_big("LED1 to LED2", 24, 40, color1, color2);
+			string2frame_menu_big("LED2 to LED1", 60, 40, color1, color2);
+			string2frame_menu_big("Back", 96, 40, color1, color2);
+		}
+		if(button2==1) {
+		menu_arr.time2 = getMicrotime();
+		if(menu_arr.time2>=menu_arr.time1+300000) {
 			if(btn2==24) menu_arr.led2 = menu_arr.led1;
 			else if(btn2==48 || btn2==60) menu_arr.led1 = menu_arr.led2;
-			else if(btn2==120 || btn2==168) {menu_arr.currentScreen=0; nextscreen=1;}
+			else if(btn2==72 || btn2==96) {menu_arr.currentScreen=2; nextscreen=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
