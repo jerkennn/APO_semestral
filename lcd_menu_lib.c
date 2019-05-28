@@ -198,13 +198,13 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	}
 	else if(menu_arr.currentScreen==11) // changing colors
 	{
-		if(menu_arr.size==0) string2frame_menu("Back", 24, 40, color1, color2);
+		if(menu_arr.size=0) string2frame_menu("Back", 24, 40, color1, color2);
 		else string2frame_menu_big("Back", 24, 40, color1, color2);
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
 			stripStart = 1;
-			if(btn2==24) {menu_arr.currentScreen=0; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
+			if(btn2==24) {menu_arr.currentScreen=1; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
@@ -358,6 +358,15 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 
 GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_menu menu_arr)
 {
+	for(int i=0; i<480; i++)
+	{
+		for(int j=0; j<200; j++)
+		{
+			if(menu_arr.colourGui==1) frame[j][i] = 0xFFFF;
+			else frame[j][i] = 0;
+		}
+	}
+
 	posuvnik1 = (int)(((double)posuvnik1/255)*360);
 	posuvnik2 = (int)(((double)posuvnik2/255)*360);
 
@@ -435,6 +444,7 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 	//int posun=0;
 	char str[255];
 	for(int i=0; i<480; i++) {frame[234][i] = color1; frame[235][i] = color1; frame[236][i] = color1;}
+	
 	/*
 	if(menu_arr.animation==0 && menu_arr.currentScreen==11 && menu_arr.size==0 &&0)
 	{
@@ -483,8 +493,8 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 		sprintf(str, "%d", (int)menu_arr.led2.blue);
 		string2frame_menu_big("    ", 253, 260, color1, color2);
 		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 253, 260, color1, color2);
-	}
-*/
+	}*/
+
 
 	sprintf(str, "%d", L_push);
 	string2frame_menu("    ", 270, 80, color1, color2);
