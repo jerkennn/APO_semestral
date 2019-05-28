@@ -490,7 +490,7 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 	return menu_arr;
 }
 
-GUI_set_menu stripPeriod(int posuvnik1, int posuvnik2, GUI_set_menu menu_arr)
+GUI_set_menu getPeriod(int posuvnik1, int posuvnik2, GUI_set_menu menu_arr)
 {
 	if(menu_arr.led1.simpleLedSetup=='p' && menu_arr.led2.simpleLedSetup=='p')
 	{
@@ -499,10 +499,18 @@ GUI_set_menu stripPeriod(int posuvnik1, int posuvnik2, GUI_set_menu menu_arr)
 		char str[100];
 		if(menu_arr.colourGui==1) {color1=0x0000; color2=0xFFFF;}
 		else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
-		menu_arr.led1.periodSet.periodON += ((posuvnik1-menu_arr.periodStrip_prev1)/10);
+		menu_arr.led1.periodSet.periodON += (posuvnik1-menu_arr.periodStrip_prev1);
 		sprintf(str, "%f", menu_arr.led1.periodSet.periodON);
-		string2frame_menu("     ", 300, 300, color1, color2);
-		string2frame_menu(str, 300, 300, color1, color2);
+		string2frame_menu("     ", 150, 300, color1, color2);
+		string2frame_menu(str, 150, 300, color1, color2);
+
+		sprintf(str, "%d", posuvnik1);
+		string2frame_menu("     ", 100, 300, color1, color2);
+		string2frame_menu(str, 100, 300, color1, color2);
+		sprintf(str, "%f", menu_arr.periodStrip_prev1);
+		string2frame_menu("     ", 120, 300, color1, color2);
+		string2frame_menu(str, 120, 300, color1, color2);
+
 		menu_arr.periodStrip_prev1=posuvnik1;
 		menu_arr.periodStrip_prev2=posuvnik2;
 	}
