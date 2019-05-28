@@ -61,7 +61,7 @@ void led1_animation(int *led, double h_1, double h_2, long int period, long int 
 		}
 	}
 	
-void led1_static(int *led, int red, int green, int blue, int on_time, int off_time){
+void led1_static(int *led, int red, int green, int blue, int on_time, int off_time){ //led1_static(led1, r, g ,b, 0, 0)
 	static long int start_time;
 	//long int current_time = 0;
 	uint32_t color = createRGB(red, green, blue);

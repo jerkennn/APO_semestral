@@ -43,11 +43,13 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 				case 21 ... 25:
 					btn2 = 5*24;
 					if(menu_arr.currentScreen==4) btn2=2*24;
+					else if(menu_arr.currentScreen==11) btn2=24;
 					else if(menu_arr.currentScreen==5) btn2=24;
 					break;
 				case 26 ... 30:
 					btn2 = 6*24;
 					if(menu_arr.currentScreen==0) btn2=1*24;
+					else if(menu_arr.currentScreen==11) btn2=24;
 					else if(menu_arr.currentScreen==1 || menu_arr.currentScreen==2 || menu_arr.currentScreen==3) btn2=24;
 					else if(menu_arr.currentScreen==4) btn2=3*24;
 					else if(menu_arr.currentScreen==5) btn2=2*24;
@@ -78,11 +80,13 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 				case 21 ... 25:
 					btn2 = 24+4*36;
 					if(menu_arr.currentScreen==4) btn2=24+1*36;
+					else if(menu_arr.currentScreen==11) btn2=24;
 					else if(menu_arr.currentScreen==5) btn2=24;
 					break;
 				case 26 ... 30:
 					btn2 = 24+5*36;
 					if(menu_arr.currentScreen==0) btn2=24;
+					else if(menu_arr.currentScreen==11) btn2=24;
 					else if(menu_arr.currentScreen==1 || menu_arr.currentScreen==2 || menu_arr.currentScreen==3) btn2=24;
 					else if(menu_arr.currentScreen==4) btn2=24+2*36;
 					else if(menu_arr.currentScreen==5) btn2=24+36;
@@ -91,7 +95,8 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					break;
 			}
 		}
-		if((menu_arr.currentScreen==11) && (menu_arr.led1.simpleLedSetup!=' ') && (menu_arr.led2.simpleLedSetup!=' ') && (btn2>60)) btn2=1*24;
+		//if((menu_arr.currentScreen==11) && (menu_arr.led1.simpleLedSetup!=' ') && (menu_arr.led2.simpleLedSetup!=' ') && (btn2>72) && (menu_arr.size==0)) btn2=1*24;
+		//if((menu_arr.currentScreen==11) && (menu_arr.led1.simpleLedSetup!=' ') && (menu_arr.led2.simpleLedSetup!=' ') && (btn2>72) && (menu_arr.size==0)) btn2=1*24;
 		
 	}
 	if(menu_arr.currentScreen!=11)
@@ -120,10 +125,9 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	}
 	else
 	{
-		for(int i=0;i<6;i++)
+		for(int i=0;i<5;i++)
 		{
-			if(i==5) string2frame_menu_big("   ", i*36+10, 10, color1, color2);	
-			else string2frame_menu_big("   ", i*36+24, 10, color1, color2);
+			string2frame_menu_big("   ", i*36+24, 10, color1, color2);
 		}
 		string2frame_menu_big(">", btn2, 10, color1, color2);
 	}
@@ -175,7 +179,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			string2frame_menu("Change hue (H)", 24, 40, color1, color2);
 			string2frame_menu("Change saturation (S)", 48, 40, color1, color2);
 			string2frame_menu("Change value (V)", 72, 40, color1, color2);
-			string2frame_menu("Change period", 96, 40, color1, color2);
+			string2frame_menu("Change period", 96, 40, color1, color2); //stejne 96 jako value u velkych pismen
 			string2frame_menu("Back", 120, 40, color1, color2);
 		}
 		else
@@ -206,20 +210,38 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		{	
 			if(menu_arr.animation==1) string2frame_menu("Animation off", 24, 40, color1, color2);
 			else string2frame_menu("Animation on", 24, 40, color1, color2);
-			string2frame_menu("Back", 48, 40, color1, color2);
+			
+			if(menu_arr.led1.staticLight==1) string2frame_menu("Static light 1 off", 48, 40, color1, color2);
+			else string2frame_menu("Static light 1 on", 48, 40, color1, color2);
+			
+			if(menu_arr.led2.staticLight==1) string2frame_menu("Static light 2 off", 72, 40, color1, color2);
+			else string2frame_menu("Static light 2 on", 72, 40, color1, color2);
+			
+			string2frame_menu("Back", 96, 40, color1, color2);
 		}
 		else 
 		{
 			if(menu_arr.animation==1) string2frame_menu_big("Animation off", 24, 40, color1, color2);
 			else string2frame_menu_big("Animation on", 24, 40, color1, color2);
-			string2frame_menu_big("Back", 60, 40, color1, color2);
+			
+			if(menu_arr.led1.staticLight==1) string2frame_menu_big("Static light 1 off", 60, 40, color1, color2);
+			else string2frame_menu_big("Static light 1 on", 60, 40, color1, color2);
+			
+			if(menu_arr.led2.staticLight==1) string2frame_menu_big("Static light 2 off", 96, 40, color1, color2);
+			else string2frame_menu_big("Static light 2 on", 96, 40, color1, color2);
+			
+			string2frame_menu_big("Back", 132, 40, color1, color2);
 		}
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
 			stripStart = 1;
 			if(btn2==24) menu_arr.animation=!menu_arr.animation;
-			else if(btn2==48 || btn2==60) {menu_arr.currentScreen=1; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
+			else if(btn2==48 || btn2==60) menu_arr.led1.staticLight=!menu_arr.led1.staticLight;
+			else if(btn2==72) menu_arr.led2.staticLight=!menu_arr.led2.staticLight;
+			else if(btn2==96 && menu_arr.size==1) menu_arr.led2.staticLight=!menu_arr.led2.staticLight;
+			else if(btn2==96 && menu_arr.size==0) {menu_arr.currentScreen=1; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
+			else if(btn2==132 && menu_arr.size==1) {menu_arr.currentScreen=1; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}

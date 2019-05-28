@@ -25,6 +25,7 @@ typedef struct led_set
     double blue;
     double period;
     char simpleLedSetup;
+    short staticLight;
 }led_settings;
 
 
