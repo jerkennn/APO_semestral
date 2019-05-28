@@ -61,31 +61,31 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			switch (((int) (6*(double)rotate2/10.2)%37))
 			{
 				case 0 ... 4:
-					btn2 = 1*36;
+					btn2 = 24;
 					break;
 				case 5 ... 9:
-					btn2 = 2*36;
+					btn2 = 24+1*36;
 					break;
 				case 10 ... 14:
-					btn2 = 3*36;
-					if(menu_arr.currentScreen==5) btn2=36;
+					btn2 = 24+2*36;
+					if(menu_arr.currentScreen==5) btn2=24;
 					break;
 				case 15 ... 20:
-					btn2 = 4*36;
-					if(menu_arr.currentScreen==4) btn2=36;
-					else if(menu_arr.currentScreen==5) btn2=2*36;
+					btn2 = 24+3*36;
+					if(menu_arr.currentScreen==4) btn2=24;
+					else if(menu_arr.currentScreen==5) btn2=24+36;
 					break;
 				case 21 ... 25:
-					btn2 = 5*36;
-					if(menu_arr.currentScreen==4) btn2=2*36;
-					else if(menu_arr.currentScreen==5) btn2=36;
+					btn2 = 24+4*36;
+					if(menu_arr.currentScreen==4) btn2=24+1*36;
+					else if(menu_arr.currentScreen==5) btn2=24;
 					break;
 				case 26 ... 30:
-					btn2 = 6*36;
-					if(menu_arr.currentScreen==0) btn2=1*36;
-					else if(menu_arr.currentScreen==1) btn2=1*36;
-					else if(menu_arr.currentScreen==4) btn2=3*36;
-					else if(menu_arr.currentScreen==5) btn2=2*36;
+					btn2 = 24+5*36;
+					if(menu_arr.currentScreen==0) btn2=24;
+					else if(menu_arr.currentScreen==1) btn2=24;
+					else if(menu_arr.currentScreen==4) btn2=24+2*36;
+					else if(menu_arr.currentScreen==5) btn2=24+36;
 					break;
 				default:
 					break;
@@ -95,9 +95,9 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		
 	}
 
-	for(int i=0; i<200; i++)
+	for(int i=0; i<230; i++)
 	{
-		for(int j = 0; j<320; j++) frame[i][j] = color2;
+		for(int j = 0; j<480; j++) frame[i][j] = color2;
 	}
 	
 	nextscreen = 0;
@@ -110,7 +110,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	}
 	else
 	{
-		for(int i=0;i<=6;i++) string2frame_menu_big("   ", i*36+24, 10, color1, color2);
+		for(int i=0;i<6;i++) string2frame_menu_big("   ", i*36+24, 10, color1, color2);
 		string2frame_menu_big(">", btn2, 10, color1, color2);
 	}
 	
@@ -131,7 +131,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			string2frame_menu_big("Special effects", 60, 40, color1, color2);
 			string2frame_menu_big("Ethernet settings", 96, 40, color1, color2);
 			string2frame_menu_big("KOREK settings", 132, 40, color1, color2);
-			string2frame_menu_big("Exit KOREK", 164, 40, color1, color2);
+			string2frame_menu_big("Exit KOREK", 168, 40, color1, color2);
 		}
 		if(button2==1) {
 			menu_arr.time2 = getMicrotime();
@@ -162,7 +162,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			string2frame_menu_big("Change saturation (S)", 60, 40, color1, color2);
 			string2frame_menu_big("Change value (V)", 96, 40, color1, color2);
 			string2frame_menu_big("Change period", 132, 40, color1, color2);
-			string2frame_menu_big("Back", 164, 40, color1, color2);
+			string2frame_menu_big("Back", 168, 40, color1, color2);
 		}
 		
 		if(button2==1) {
@@ -208,8 +208,8 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			string2frame_menu_big(" -- ", 60, 40, color1, color2);
 			string2frame_menu_big(" -- ", 96, 40, color1, color2);
 			string2frame_menu_big(" -- ", 132, 40, color1, color2);
-			string2frame_menu_big(" -- ", 164, 40, color1, color2);
-			string2frame_menu_big("Back", 200, 40, color1, color2);
+			string2frame_menu_big(" -- ", 168, 40, color1, color2);
+			string2frame_menu_big("Back", 204, 40, color1, color2);
 		}
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
@@ -236,8 +236,8 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			string2frame_menu_big(" -- ", 60, 40, color1, color2);
 			string2frame_menu_big(" -- ", 96, 40, color1, color2);
 			string2frame_menu_big(" -- ", 132, 40, color1, color2);
-			string2frame_menu_big(" -- ", 164, 40, color1, color2);
-			string2frame_menu_big("Back", 200, 40, color1, color2);
+			string2frame_menu_big(" -- ", 168, 40, color1, color2);
+			string2frame_menu_big("Back", 204, 40, color1, color2);
 		}
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
@@ -417,7 +417,7 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 	char str[255];
 	for(int i=0; i<480; i++) {frame[234][i] = color1; frame[235][i] = color1; frame[236][i] = color1;}
 	
-	if(menu_arr.animation==0)
+	if(menu_arr.animation==0 && menu_arr.currentScreen==11 && menu_arr.size==0)
 	{
 		posun = -12+3*string2frame_menu("Led 1 (r, g, b): ", 237, 0, color1, color2);
 		sprintf(str, "%d", (int)menu_arr.led1.red);
@@ -441,6 +441,31 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 		string2frame_menu("    ", 253, 260, color1, color2);
 		posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 260, color1, color2);
 	}
+	else if(menu_arr.animation==0 && menu_arr.currentScreen==11 && menu_arr.size==1)
+	{
+		posun = -12+3*string2frame_menu_big("Led 1 (r, g, b): ", 237, 0, color1, color2);
+		sprintf(str, "%d", (int)menu_arr.led1.red);
+		string2frame_menu_big("    ", 237, 160, color1, color2);
+		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 237, 160, color1, color2);
+		sprintf(str, "%d", (int)menu_arr.led1.green);
+		string2frame_menu_big("    ", 237, 210, color1, color2);
+		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 237, 210, color1, color2);
+		sprintf(str, "%d", (int)menu_arr.led1.blue);
+		string2frame_menu_big("    ", 237, 260, color1, color2);
+		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 237, 260, color1, color2);
+
+		posun = -12+3*string2frame_menu_big("Led 2 (r, g, b): ", 253, 0, color1, color2);
+		sprintf(str, "%d", (int)menu_arr.led2.red);
+		string2frame_menu_big("    ", 253, 160, color1, color2);
+		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 253, 160, color1, color2);
+		sprintf(str, "%d", (int)menu_arr.led2.green);
+		string2frame_menu_big("    ", 253, 210, color1, color2);
+		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 253, 210, color1, color2);
+		sprintf(str, "%d", (int)menu_arr.led2.blue);
+		string2frame_menu_big("    ", 253, 260, color1, color2);
+		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 253, 260, color1, color2);
+	}
+
 
 	sprintf(str, "%d", L_push);
 	string2frame_menu("    ", 270, 80, color1, color2);
