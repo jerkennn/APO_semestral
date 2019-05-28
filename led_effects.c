@@ -8,6 +8,17 @@
 #include "convert_lib.h"
 #include "led_effects.h"
 
+int first_1_a = 1;
+int on_1_a = 1;
+
+int first_1 = 1;
+int on_1 = 1;
+
+int first_2_a = 1;
+int on_2_a = 1;
+
+int first_2 = 1;
+int on_2 = 1;
 
 
 uint32_t createRGB(int r, int g, int b)
@@ -19,8 +30,6 @@ void led1_animation(int *led, double h_1, double h_2, long int period, long int 
 		
 		static long int start_time;
 		//long int current_time = 0;
-		int first = 1;
-		int on = 1;
 		
 		double c1 = 2*((getMicrotime() - startTime)%(period));
 		double c2 = (double)(period);
@@ -37,24 +46,26 @@ void led1_animation(int *led, double h_1, double h_2, long int period, long int 
 		}
 		else
 		{
-			if(first)
+			if(first_1_a)
 			{
 				start_time = getMicrotime();
+				//printf("time set\n");
 				*led = color;
-				first = 0;
+				first_1_a = 0;
 			}
-			if(on &&(getMicrotime()-start_time >= on_time))
+			if(on_1_a &&(getMicrotime()-start_time >= on_time))
 			{
 				*led = 0;
-				on = 0;
+				on_1_a = 0;
 			}
-			else if(on && (getMicrotime() - start_time < on_time))
+			else if(on_1_a && (getMicrotime() - start_time < on_time))
 			{
 				*led = color;
+				//printf("run\n");
 			}
-			else if(!on && (getMicrotime() - start_time >= on_time + off_time))
+			else if(!on_1_a && (getMicrotime() - start_time >= on_time + off_time))
 			{
-				on = 1;
+				on_1_a = 1;
 				start_time = getMicrotime();
 			}
 			
@@ -65,8 +76,6 @@ void led1_static(int *led, int red, int green, int blue, int on_time, int off_ti
 	static long int start_time;
 	//long int current_time = 0;
 	uint32_t color = createRGB(red, green, blue);
-	int first = 1;
-	int on = 1;
 	if(on_time == 0 || off_time == 0)
 	{
 	
@@ -74,24 +83,24 @@ void led1_static(int *led, int red, int green, int blue, int on_time, int off_ti
 	}
 	else
 	{
-		if(first)
+		if(first_1)
 		{
 			start_time = getMicrotime();
 			*led = color;
-			first = 0;
+			first_1 = 0;
 		}
-		if(on &&(getMicrotime()-start_time >= on_time))
+		if(on_1 &&(getMicrotime()-start_time >= on_time))
 		{
 			*led = 0;
-			on = 0;
+			on_1 = 0;
 		}
-		else if(on && (getMicrotime() - start_time < on_time))
+		else if(on_1 && (getMicrotime() - start_time < on_time))
 		{
 			*led = color;
 		}
-		else if(!on && (getMicrotime() - start_time >= on_time + off_time))
+		else if(!on_1 && (getMicrotime() - start_time >= on_time + off_time))
 		{
-			on = 1;
+			on_1 = 1;
 			start_time = getMicrotime();
 		}
 		
@@ -102,8 +111,6 @@ void led2_animation(int *led, double h_1, double h_2, long int period, long int 
 		
 		static long int start_time;
 		//long int current_time = 0;
-		int first = 1;
-		int on = 1;
 		
 		double c1 = 2*((getMicrotime() - startTime)%(period));
 		double c2 = (double)(period);
@@ -120,24 +127,24 @@ void led2_animation(int *led, double h_1, double h_2, long int period, long int 
 		}
 		else
 		{
-			if(first)
+			if(first_2_a)
 			{
 				start_time = getMicrotime();
 				*led = color;
-				first = 0;
+				first_2_a = 0;
 			}
-			if(on &&(getMicrotime()-start_time >= on_time))
+			if(on_2_a &&(getMicrotime()-start_time >= on_time))
 			{
 				*led = 0;
-				on = 0;
+				on_2_a = 0;
 			}
-			else if(on && (getMicrotime() - start_time < on_time))
+			else if(on_2_a && (getMicrotime() - start_time < on_time))
 			{
 				*led = color;
 			}
-			else if(!on && (getMicrotime() - start_time >= on_time + off_time))
+			else if(!on_2_a && (getMicrotime() - start_time >= on_time + off_time))
 			{
-				on = 1;
+				on_2_a = 1;
 				start_time = getMicrotime();
 			}
 			
@@ -148,8 +155,6 @@ void led2_static(int *led, int red, int green, int blue, int on_time, int off_ti
 	static long int start_time = 0;
 	//long int current_time = 0;
 	uint32_t color = createRGB(red, green, blue);
-	int first = 1;
-	int on = 1;
 	if(on_time == 0 || off_time == 0)
 	{
 	
@@ -157,24 +162,24 @@ void led2_static(int *led, int red, int green, int blue, int on_time, int off_ti
 	}
 	else
 	{
-		if(first)
+		if(first_2)
 		{
 			start_time = getMicrotime();
 			*led = color;
-			first = 0;
+			first_2 = 0;
 		}
-		if(on &&(getMicrotime()-start_time >= on_time))
+		if(on_2 &&(getMicrotime()-start_time >= on_time))
 		{
 			*led = 0;
-			on = 0;
+			on_2 = 0;
 		}
-		else if(on && (getMicrotime() - start_time < on_time))
+		else if(on_2 && (getMicrotime() - start_time < on_time))
 		{
 			*led = color;
 		}
-		else if(!on && (getMicrotime() - start_time >= on_time + off_time))
+		else if(!on_2 && (getMicrotime() - start_time >= on_time + off_time))
 		{
-			on = 1;
+			on_2 = 1;
 			start_time = getMicrotime();
 		}
 		

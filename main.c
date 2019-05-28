@@ -183,8 +183,8 @@ void *leds_thread(void *d){
 		}
 		if(menu_arr.animation)
 		{
-			led1_animation(led_1, h_1, h_2, period, startTime, 0, 0);
-			led2_animation(led_2, h_2, h_1, period, startTime, 0, 0);
+			led1_animation(led_1, h_1, h_2, period, startTime, 100*1000, 100*1000);
+			led2_animation(led_2, h_2, h_1, period, startTime, 200*1000, 200*1000);
 			//*led_2 = color_1;
 		}
 		else if(!menu_arr.led1.staticLight && !staticLight1 && !menu_arr.led2.staticLight && !staticLight2)
