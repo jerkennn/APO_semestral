@@ -8,6 +8,7 @@
 #include "lcd_menu_lib.h"
 #include "convert_lib.h"
 #include "write2lcd_lib.h"
+
 int click = 0;
 int nextscreen = 0;
 int stripStart = 0;
@@ -251,16 +252,16 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	{
 		if(menu_arr.size==0)
 		{
-			string2frame_menu(" -- ", 24, 40, color1, color2);
-			string2frame_menu(" -- ", 48, 40, color1, color2);
+			string2frame_menu("LED1 to LED2", 24, 40, color1, color2);
+			string2frame_menu("LED2 to LED1", 48, 40, color1, color2);
 			string2frame_menu(" -- ", 72, 40, color1, color2);
 			string2frame_menu(" -- ", 96, 40, color1, color2);
 			string2frame_menu("Back", 120, 40, color1, color2);
 		}
 		else
 		{
-			string2frame_menu_big(" -- ", 24, 40, color1, color2);
-			string2frame_menu_big(" -- ", 60, 40, color1, color2);
+			string2frame_menu_big("LED1 to LED2", 24, 40, color1, color2);
+			string2frame_menu_big("LED2 to LED1", 60, 40, color1, color2);
 			string2frame_menu_big(" -- ", 96, 40, color1, color2);
 			string2frame_menu_big(" -- ", 132, 40, color1, color2);
 			string2frame_menu_big("Back", 168, 40, color1, color2);
@@ -268,7 +269,9 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			if(btn2==120 || btn2==168) {menu_arr.currentScreen=0; nextscreen=1;}
+			if(btn2==24) menu_arr.led1 = menu_arr.led2;
+			else if(btn2==48 || btn2==60) menu_arr.led2 = menu_arr.led1;
+			else if(btn2==120 || btn2==168) {menu_arr.currentScreen=0; nextscreen=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
