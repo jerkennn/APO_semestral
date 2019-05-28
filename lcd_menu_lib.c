@@ -38,12 +38,12 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					break;
 				case 15 ... 20:
 					btn2 = 4*24;
-					if(menu_arr.currentScreen==4) btn2=24;
+					if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12) btn2=24;
 					else if(menu_arr.currentScreen==5) btn2=2*24;
 					break;
 				case 21 ... 25:
 					btn2 = 5*24;
-					if(menu_arr.currentScreen==4) btn2=2*24;
+					if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12) btn2=2*24;
 					else if(menu_arr.currentScreen==11) btn2=24;
 					else if(menu_arr.currentScreen==5) btn2=24;
 					break;
@@ -52,7 +52,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					if(menu_arr.currentScreen==0) btn2=1*24;
 					else if(menu_arr.currentScreen==11) btn2=24;
 					else if(menu_arr.currentScreen==1 || menu_arr.currentScreen==2 || menu_arr.currentScreen==3) btn2=24;
-					else if(menu_arr.currentScreen==4) btn2=3*24;
+					else if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12) btn2=3*24;
 					else if(menu_arr.currentScreen==5) btn2=2*24;
 					break;
 				default:
@@ -75,12 +75,12 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					break;
 				case 15 ... 20:
 					btn2 = 24+3*36;
-					if(menu_arr.currentScreen==4) btn2=24;
+					if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12) btn2=24;
 					else if(menu_arr.currentScreen==5) btn2=24+36;
 					break;
 				case 21 ... 25:
 					btn2 = 24+4*36;
-					if(menu_arr.currentScreen==4) btn2=24+1*36;
+					if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12) btn2=24+1*36;
 					else if(menu_arr.currentScreen==11) btn2=24;
 					else if(menu_arr.currentScreen==5) btn2=24;
 					break;
@@ -89,14 +89,14 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 					if(menu_arr.currentScreen==0) btn2=24;
 					else if(menu_arr.currentScreen==11) btn2=24;
 					else if(menu_arr.currentScreen==1 || menu_arr.currentScreen==2 || menu_arr.currentScreen==3) btn2=24;
-					else if(menu_arr.currentScreen==4) btn2=24+2*36;
+					else if(menu_arr.currentScreen==4 || menu_arr.currentScreen==12) btn2=24+2*36;
 					else if(menu_arr.currentScreen==5) btn2=24+36;
 					break;
 				default:
 					break;
 			}
 		}
-		if(menu_arr.currentScreen==12) btn2=1*24;
+		if(menu_arr.currentScreen==121) btn2=1*24;
 		
 	}
 	if(menu_arr.currentScreen!=11)
@@ -200,7 +200,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			else if(btn2==72 && menu_arr.size==0) {menu_arr.led1.simpleLedSetup = 'v'; menu_arr.led2.simpleLedSetup = 'v'; menu_arr.currentScreen=11; nextscreen=1;}
 			else if(btn2==96 && menu_arr.size==1) {menu_arr.led1.simpleLedSetup = 'v'; menu_arr.led2.simpleLedSetup = 'v'; menu_arr.currentScreen=11; nextscreen=1;}
 			else if(btn2==96 && menu_arr.size==0) {menu_arr.led1.simpleLedSetup = 'p'; menu_arr.led2.simpleLedSetup = 'p'; menu_arr.currentScreen=12; nextscreen=1;}
-			else if(btn2==132 && menu_arr.size==1) {menu_arr.led1.simpleLedSetup = 'p'; menu_arr.led2.simpleLedSetup = 'p'; menu_arr.currentScreen=12; nextscreen=1;}
+			else if(btn2==132 && menu_arr.size==1) {menu_arr.currentScreen=12; nextscreen=1;}
 			else if(btn2==120 || btn2==168) {menu_arr.currentScreen=0; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0; nextscreen=1;}
 			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
@@ -252,8 +252,35 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	}
 	else if(menu_arr.currentScreen==12) // periods
 	{
-		if(menu_arr.size==0) string2frame_menu("Back", 24, 40, color1, color2);
-		else string2frame_menu_big("Back", 24, 40, color1, color2);
+		if(menu_arr.size==0){
+			string2frame_menu("LED 1", 24, 40, color1, color2);
+			string2frame_menu("LED 2", 48, 40, color1, color2);
+			string2frame_menu("Back", 72, 40, color1, color2);
+		}
+		else{
+			string2frame_menu_big("LED 1", 24, 40, color1, color2);
+			string2frame_menu_big("LED 2", 60, 40, color1, color2);
+			string2frame_menu_big("Back", 96, 40, color1, color2);
+		}
+		if(button2==1) {
+		menu_arr.time2 = getMicrotime();
+		if(menu_arr.time2>=menu_arr.time1+300000) {
+			stripStart = 1;
+			if(btn2==24) {menu_arr.led1.simpleLedSetup='p'; menu_arr.led2.simpleLedSetup=' '; menu_arr.currentScreen=121; nextscreen=1; }
+			if(btn2==48 || btn2==60) {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup='p'; menu_arr.currentScreen=121; nextscreen=1; }
+			else if(btn2==72 || btn2==96) {menu_arr.currentScreen=1; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' ';}
+			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
+			}
+		}
+	}
+	else if(menu_arr.currentScreen==121)
+	{
+		if(menu_arr.size==0){
+			string2frame_menu("Back", 24, 40, color1, color2);
+		}
+		else{
+			string2frame_menu_big("Back", 24, 40, color1, color2);
+		}
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
@@ -495,70 +522,99 @@ GUI_set_menu getPeriod(int posuvnik1, int posuvnik2, int posuvnik3, GUI_set_menu
 	int color2=0;
 	if(menu_arr.colourGui==1) {color1=0x0000; color2=0xFFFF;}
 	else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
+	int printVal=0;
 	
-	if(menu_arr.led1.simpleLedSetup=='p')
+	int on=0;
+	int off=0;
+	int anime=0;
+	
+	if(menu_arr.led1.simpleLedSetup=='p' && menu_arr.led2.simpleLedSetup!='p')
 	{
 		if(posuvnik1-menu_arr.periodStrip_prev1>0) menu_arr.led1.periodSet.periodON+=50;
 		else if(posuvnik1-menu_arr.periodStrip_prev1<0) menu_arr.led1.periodSet.periodON-=50;
 
-		if(posuvnik1-menu_arr.periodStrip_prev2>0) menu_arr.led1.periodSet.periodOFF+=50;
-		else if(posuvnik1-menu_arr.periodStrip_prev2<0) menu_arr.led1.periodSet.periodOFF-=50;
+		if(posuvnik2-menu_arr.periodStrip_prev2>0) menu_arr.led1.periodSet.periodOFF+=50;
+		else if(posuvnik2-menu_arr.periodStrip_prev2<0) menu_arr.led1.periodSet.periodOFF-=50;
 
-		if(posuvnik1-menu_arr.periodStrip_prev2>0) menu_arr.led1.periodSet.periodAnime+=50;
-		else if(posuvnik1-menu_arr.periodStrip_prev2<0) menu_arr.led1.periodSet.periodAnime-=50;
+		if(posuvnik3-menu_arr.periodStrip_prev3>0) menu_arr.led1.periodSet.periodAnime+=50;
+		else if(posuvnik3-menu_arr.periodStrip_prev3<0) menu_arr.led1.periodSet.periodAnime-=50;
+		
+		if(menu_arr.led1.periodSet.periodON<0) menu_arr.led1.periodSet.periodON=0;
+		if(menu_arr.led1.periodSet.periodOFF<0) menu_arr.led1.periodSet.periodOFF=0;
+		if(menu_arr.led1.periodSet.periodAnime<0) menu_arr.led1.periodSet.periodAnime=0;
+		
+		on = menu_arr.led1.periodSet.periodON;
+		off = menu_arr.led1.periodSet.periodOFF;
+		anime = menu_arr.led1.periodSet.periodAnime;
+		
+		printVal=1;
 	}
-	else if(menu_arr.led2.simpleLedSetup=='p')
+	else if(menu_arr.led2.simpleLedSetup=='p' && menu_arr.led1.simpleLedSetup!='p')
 	{
 		if(posuvnik1-menu_arr.periodStrip_prev1>0) menu_arr.led2.periodSet.periodON+=50;
 		else if(posuvnik1-menu_arr.periodStrip_prev1<0) menu_arr.led2.periodSet.periodON-=50;
 
-		if(posuvnik1-menu_arr.periodStrip_prev2>0) menu_arr.led1.periodSet.periodOFF+=50;
-		else if(posuvnik1-menu_arr.periodStrip_prev2<0) menu_arr.led1.periodSet.periodOFF-=50;
+		if(posuvnik2-menu_arr.periodStrip_prev2>0) menu_arr.led2.periodSet.periodOFF+=50;
+		else if(posuvnik2-menu_arr.periodStrip_prev2<0) menu_arr.led2.periodSet.periodOFF-=50;
 
-		if(posuvnik1-menu_arr.periodStrip_prev2>0) menu_arr.led1.periodSet.periodAnime+=50;
-		else if(posuvnik1-menu_arr.periodStrip_prev2<0) menu_arr.led1.periodSet.periodAnime-=50;
-	}
+		if(posuvnik3-menu_arr.periodStrip_prev3>0) menu_arr.led2.periodSet.periodAnime+=50;
+		else if(posuvnik3-menu_arr.periodStrip_prev3<0) menu_arr.led2.periodSet.periodAnime-=50;
 		
+		if(menu_arr.led2.periodSet.periodON<0) menu_arr.led2.periodSet.periodON=0;
+		if(menu_arr.led2.periodSet.periodOFF<0) menu_arr.led2.periodSet.periodOFF=0;
+		if(menu_arr.led2.periodSet.periodAnime<0) menu_arr.led2.periodSet.periodAnime=0;
+		
+		
+		on = menu_arr.led2.periodSet.periodON;
+		off = menu_arr.led2.periodSet.periodOFF;
+		anime = menu_arr.led2.periodSet.periodAnime;
+		
+		printVal=1;
+	}
+	if(printVal==1)
+	{	
 		char str[100];
 		if(menu_arr.size==0)
 		{
-			sprintf(str, "%f", menu_arr.led1.periodSet.periodON);
+			sprintf(str, "%d", on);
 			string2frame_menu("ON-Period: ", 48, 10, color1, color2);
-			string2frame_menu("      ", 48, 50, color1, color2);
-			string2frame_menu(str, 48, 50, color1, color2);
+			string2frame_menu("      ", 48, 200, color1, color2);
+			string2frame_menu(str, 48, 200, color1, color2);
 
-			sprintf(str, "%d", menu_arr.led1.periodSet.periodOFF);
+			sprintf(str, "%d", off);
 			string2frame_menu("OFF-Period: ", 72, 10, color1, color2);
-			string2frame_menu("      ", 72, 50, color1, color2);
-			string2frame_menu(str, 72, 50, color1, color2);
+			string2frame_menu("      ", 72, 200, color1, color2);
+			string2frame_menu(str, 72, 200, color1, color2);
 			
-			sprintf(str, "%f", menu_arr.led1.periodSet.periodAnime);
+			sprintf(str, "%d", anime);
 			string2frame_menu("Anime-Period: ", 96, 10, color1, color2);
-			string2frame_menu("      ", 96, 50, color1, color2);
-			string2frame_menu(str, 96, 50, color1, color2);
+			string2frame_menu("      ", 96, 200, color1, color2);
+			string2frame_menu(str, 96, 200, color1, color2);
 		}
 		else
 		{
-			sprintf(str, "%f", menu_arr.led1.periodSet.periodON);
-			string2frame_menu_big("ON-Period: ", 48, 10, color1, color2);
-			string2frame_menu_big("      ", 48, 50, color1, color2);
-			string2frame_menu_big(str, 48, 50, color1, color2);
+			sprintf(str, "%d", on);
+			string2frame_menu_big("ON-Per.: ", 48, 10, color1, color2);
+			string2frame_menu_big("      ", 48, 200, color1, color2);
+			string2frame_menu_big(str, 48, 200, color1, color2);
 
-			sprintf(str, "%d", menu_arr.led1.periodSet.periodOFF);
-			string2frame_menu("OFF-Period: ", 84, 10, color1, color2);
-			string2frame_menu_big("      ", 84, 50, color1, color2);
-			string2frame_menu_big(str, 84, 50, color1, color2);
+			sprintf(str, "%d", off);
+			string2frame_menu_big("OFF-Per.: ", 84, 10, color1, color2);
+			string2frame_menu_big("      ", 84, 200, color1, color2);
+			string2frame_menu_big(str, 84, 200, color1, color2);
 			
-			sprintf(str, "%f", menu_arr.led1.periodSet.periodAnime);
-			string2frame_menu_big("Anime-Period: ", 120, 10, color1, color2);
-			string2frame_menu_big("      ", 120, 50, color1, color2);
-			string2frame_menu_big(str, 120, 50, color1, color2);
+			sprintf(str, "%d", anime);
+			string2frame_menu_big("Anime-Per.: ", 120, 10, color1, color2);
+			string2frame_menu_big("      ", 120, 200, color1, color2);
+			string2frame_menu_big(str, 120, 200, color1, color2);
 		}
 
 		menu_arr.periodStrip_prev1=posuvnik1;
 		menu_arr.periodStrip_prev2=posuvnik2;
 		menu_arr.periodStrip_prev3=posuvnik3;
-
+	
+		printVal=0;
+	}
 	return menu_arr;
 }
 

@@ -13,6 +13,8 @@
  *******************************************************************/
 
 #define _POSIX_C_SOURCE 200112L
+#define _DEFAULT_SOURCE
+#define _BSD_SOURCE
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -135,6 +137,15 @@ int main(int argc, char *argv[])
 	menu_arr.periodStrip_prev1 = 0;
 	menu_arr.periodStrip_prev2 = 0;
 
+
+	delete_lcd(0);
+		
+	string2frame_menu_big("KOREK", 100, 180, 0xFFFF, 0);
+	string2frame_menu_big("Welcome", 140, 160, 0xFFFF, 0);
+	
+	frame2lcd();
+	sleep(3);
+
 	pthread_mutex_init(&mtx, NULL);
 	pthread_t threads[3];
 	
@@ -146,6 +157,14 @@ int main(int argc, char *argv[])
 	pthread_join(threads[1], NULL);
 	pthread_join(threads[2], NULL);
 
+	delete_lcd(0);
+	string2frame_menu_big("KOREK", 100, 180, 0xFFFF, 0);
+	string2frame_menu_big("Goodbye", 140, 160, 0xFFFF, 0);
+	frame2lcd();
+	sleep(3);
+	delete_lcd(0);
+	frame2lcd();
+	
 	printf("Goodbye APO\n");
 
 	return 0;
@@ -193,8 +212,8 @@ void *leds_thread(void *d){
 		}
 		if(menu_arr.animation)
 		{
-			led1_animation(led_1, h_1, h_2, period, startTime, 0, 0);
-			led2_animation(led_2, h_2, h_1, period, startTime, 0, 0);
+			led1_animation(led_1, h_1, h_2, period, startTime, 1000*((int)menu_arr.led1.periodSet.periodON), 1000*((int)menu_arr.led1.periodSet.periodOFF));
+			led2_animation(led_2, h_2, h_1, period, startTime, 1000*((int)menu_arr.led2.periodSet.periodON), 1000*((int)menu_arr.led2.periodSet.periodOFF));
 			//*led_2 = color_1;
 		}
 		else if(!menu_arr.led1.staticLight && !staticLight1 && !menu_arr.led2.staticLight && !staticLight2)
@@ -299,7 +318,7 @@ void *display_thread(void *d){
 		
 		menu_arr = menu(data->rk, data->gk, data->bk, data->rb, data->gb, data->bb, menu_arr);
 		
-		menu_arr = getPeriod(data->rk, data->bk, menu_arr);
+		menu_arr = getPeriod(data->rk, data->gk, data->bk, menu_arr);
 		pthread_mutex_unlock(&mtx);
 		
 		//printf("%d\n", menu_arr.currentScreen);

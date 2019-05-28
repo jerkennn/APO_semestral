@@ -20,9 +20,9 @@ extern "C"
 
 typedef struct period_st
 {
-    double periodON;
-    double periodOFF;
-    double periodAnime;
+    short periodON;
+    short periodOFF;
+    short periodAnime;
 }period_setting;
 
 typedef struct led_set
