@@ -139,7 +139,15 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 				//printf("***\n");
 				click = 1;
 				if(menu_arr.size==0) menu_arr.currentScreen=btn2/24;
-				else menu_arr.currentScreen=btn2/36;
+				else{
+					if(btn2==24) menu_arr.currentScreen=1;
+					else
+					{
+						btn2-=24;
+						menu_arr.currentScreen=(btn2/36)+1;
+					}
+					
+				}
 				nextscreen = 1;
 				menu_arr.time2=0; 
 				menu_arr.time1 = getMicrotime();
