@@ -18,12 +18,19 @@
 extern "C"
 #endif
 
+typedef struct period_st
+{
+    double periodON;
+    double periodOFF;
+    double periodAnime;
+}period_setting;
+
 typedef struct led_set
 {
     double red;
     double green;
     double blue;
-    double period;
+    period_setting periodSet;
     char simpleLedSetup;
     short staticLight;
 }led_settings;
@@ -40,6 +47,8 @@ typedef struct GUI_set
     long time2;
     int animation;
     int size;
+    unsigned char periodStrip_prev1;
+    unsigned char periodStrip_prev2;
 }GUI_set_menu;
 
 GUI_set_menu menu_arr;
@@ -63,10 +72,11 @@ uint16_t frame[FRAME_H][FRAME_W];
 
 /* GUI_set: obrazovka GUI; barva gui; exit */
 GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button2, int button3, GUI_set_menu menu_arr);
-void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, GUI_set_menu menu_arr);
 
-//double* strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, int convert_lcd);
 GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_menu menu_arr);
+GUI_set_menu stripPeriod(int posuvnik1, int posuvnik2, GUI_set_menu menu_arr);
+
+void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R_rotate, int R_push, GUI_set_menu menu_arr);
 
 #ifdef __cplusplus
 

@@ -198,7 +198,10 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			stripStart = 1;
 			if(btn2==24) {menu_arr.led1.simpleLedSetup = 'h'; menu_arr.led2.simpleLedSetup = 'h'; menu_arr.currentScreen=11;}
 			else if(btn2==48 || btn2==60) {menu_arr.led1.simpleLedSetup = 's'; menu_arr.led2.simpleLedSetup = 's'; menu_arr.currentScreen=11;}
-			else if(btn2==72 || btn2==96) {menu_arr.led1.simpleLedSetup = 'v'; menu_arr.led2.simpleLedSetup = 'v'; menu_arr.currentScreen=11;}
+			else if(btn2==72 && menu_arr.size==0) {menu_arr.led1.simpleLedSetup = 'v'; menu_arr.led2.simpleLedSetup = 'v'; menu_arr.currentScreen=11;}
+			else if(btn2==96 && menu_arr.size==1) {menu_arr.led1.simpleLedSetup = 'v'; menu_arr.led2.simpleLedSetup = 'v'; menu_arr.currentScreen=11;}
+			else if(btn2==96 && menu_arr.size==0) {menu_arr.led1.simpleLedSetup = 'p'; menu_arr.led2.simpleLedSetup = 'p'; menu_arr.currentScreen=12;}
+			else if(btn2==132 && menu_arr.size==1) {menu_arr.led1.simpleLedSetup = 'p'; menu_arr.led2.simpleLedSetup = 'p'; menu_arr.currentScreen=12;}
 			else if(btn2==120 || btn2==168) {menu_arr.currentScreen=0; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
@@ -243,7 +246,20 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			else if(btn2==96 && menu_arr.size==1) menu_arr.led2.staticLight=!menu_arr.led2.staticLight;
 			else if(btn2==96 && menu_arr.size==0) {menu_arr.currentScreen=1; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
 			else if(btn2==132 && menu_arr.size==1) {menu_arr.currentScreen=1; nextscreen=1; menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
-			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=0;}
+			else {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=1;}
+			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
+			}
+		}
+	}
+	else if(menu_arr.currentScreen==12) // periods
+	{
+		if(menu_arr.size==0) string2frame_menu("Back", 24, 40, color1, color2);
+		else string2frame_menu_big("Back", 24, 40, color1, color2);
+		if(button2==1) {
+		menu_arr.time2 = getMicrotime();
+		if(menu_arr.time2>=menu_arr.time1+300000) {
+			stripStart = 1;
+			if(btn2==24) {menu_arr.led1.simpleLedSetup=' '; menu_arr.led2.simpleLedSetup=' '; stripStart=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
@@ -269,8 +285,8 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			if(btn2==24) menu_arr.led1 = menu_arr.led2;
-			else if(btn2==48 || btn2==60) menu_arr.led2 = menu_arr.led1;
+			if(btn2==24) menu_arr.led2 = menu_arr.led1;
+			else if(btn2==48 || btn2==60) menu_arr.led1 = menu_arr.led2;
 			else if(btn2==120 || btn2==168) {menu_arr.currentScreen=0; nextscreen=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
@@ -394,79 +410,101 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 
 GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_menu menu_arr)
 {
-	for(int i=0; i<480; i++)
+	if(menu_arr.led1.simpleLedSetup!='p' && menu_arr.led2.simpleLedSetup!='p')
 	{
-		for(int j=0; j<200; j++)
+		for(int i=0; i<480; i++)
 		{
-			if(menu_arr.colourGui==1) frame[j][i] = 0xFFFF;
-			else frame[j][i] = 0;
+			for(int j=0; j<200; j++)
+			{
+				if(menu_arr.colourGui==1) frame[j][i] = 0xFFFF;
+				else frame[j][i] = 0;
+			}
+		}
+
+		posuvnik1 = (int)(((double)posuvnik1/255)*360);
+		posuvnik2 = (int)(((double)posuvnik2/255)*360);
+
+		if(menu_arr.animation==0) led1_hsv = RGB_to_HSV(menu_arr.led1.red, menu_arr.led1.green, menu_arr.led1.blue);
+		
+		int x,y;
+		for(y=0; y<15; y++)
+		{
+			for(x=0; x<460; x++)
+			{
+				if(menu_arr.led1.simpleLedSetup=='h') rgb1 = HSV_to_RGB(((double)x/460)*360, 1, 1);
+				else if(menu_arr.led1.simpleLedSetup=='s') rgb1 = HSV_to_RGB(led1_hsv[0], ((double)x/460) , 1);
+				else if(menu_arr.led1.simpleLedSetup=='v') rgb1 = HSV_to_RGB(led1_hsv[0], 1, ((double)x/460) );
+				else {
+					if(menu_arr.colourGui==1) frame[yrow + y][xcolumn + x] = 0xFFFF;
+					else frame[yrow + y][xcolumn + x] = 0;
+				}
+				if(menu_arr.led1.simpleLedSetup!=' ')
+				{
+					hex1 = RGB_to_hex(rgb1[0], rgb1[1], rgb1[2]);
+					if((int)(((double)x/460)*360) >= posuvnik1-1 && (int)(((double)x/460)*360) <= posuvnik1+1)
+					{
+					if(menu_arr.led1.simpleLedSetup=='v') frame[yrow + y][xcolumn + x] = 0xFFFF;
+					else frame[yrow + y][xcolumn + x] = 0;
+					}
+					else frame[yrow + y][xcolumn + x] = hex1;
+					if((int)(((double)x/460)*360)==posuvnik1) {
+						menu_arr.led1.red = rgb1[0];
+						menu_arr.led1.green = rgb1[1];
+						menu_arr.led1.blue = rgb1[2];
+					}
+				}
+			}	
+		}
+
+		if(menu_arr.animation==0) led2_hsv = RGB_to_HSV(menu_arr.led2.red, menu_arr.led2.green, menu_arr.led2.blue);
+
+		for(y=0; y<15; y++)
+		{
+			for(x=0; x<460; x++)
+			{
+				if(menu_arr.led2.simpleLedSetup=='h') rgb2 = HSV_to_RGB(((double)x/460)*360, 1, 1);
+				else if(menu_arr.led2.simpleLedSetup=='s') rgb2 = HSV_to_RGB(led2_hsv[0], ((double)x/460) , 1);
+				else if(menu_arr.led2.simpleLedSetup=='v') rgb2 = HSV_to_RGB(led2_hsv[0], 1, ((double)x/460) );
+				else {
+					if(menu_arr.colourGui==1) frame[yrow+16 + y][xcolumn + x] = 0xFFFF;
+					else frame[yrow+16 + y][xcolumn + x] = 0;
+				}
+				if(menu_arr.led2.simpleLedSetup!=' ')
+				{
+					hex2 = RGB_to_hex(rgb2[0], rgb2[1], rgb2[2]);
+					if((int)(((double)x/460)*360) >= posuvnik2-1 && (int)(((double)x/460)*360) <= posuvnik2+1)
+					{
+					if(menu_arr.led2.simpleLedSetup=='v') frame[yrow+16 + y][xcolumn + x] = 0xFFFF;
+					else frame[yrow+16 + y][xcolumn + x] = 0;
+					}
+					else frame[yrow+16 + y][xcolumn + x] = hex2;
+					if((int)(((double)x/460)*360)==posuvnik2) {
+						menu_arr.led2.red = rgb2[0];
+						menu_arr.led2.green = rgb2[1];
+						menu_arr.led2.blue = rgb2[2];
+					}
+				}
+			}	
 		}
 	}
+	return menu_arr;
+}
 
-	posuvnik1 = (int)(((double)posuvnik1/255)*360);
-	posuvnik2 = (int)(((double)posuvnik2/255)*360);
-
-	if(menu_arr.animation==0) led1_hsv = RGB_to_HSV(menu_arr.led1.red, menu_arr.led1.green, menu_arr.led1.blue);
-	
-	int x,y;
-	for(y=0; y<15; y++)
+GUI_set_menu stripPeriod(int posuvnik1, int posuvnik2, GUI_set_menu menu_arr)
+{
+	if(menu_arr.led1.simpleLedSetup=='p' && menu_arr.led2.simpleLedSetup=='p')
 	{
-		for(x=0; x<460; x++)
-		{
-			if(menu_arr.led1.simpleLedSetup=='h') rgb1 = HSV_to_RGB(((double)x/460)*360, 1, 1);
-			else if(menu_arr.led1.simpleLedSetup=='s') rgb1 = HSV_to_RGB(led1_hsv[0], ((double)x/460) , 1);
-			else if(menu_arr.led1.simpleLedSetup=='v') rgb1 = HSV_to_RGB(led1_hsv[0], 1, ((double)x/460) );
-			else {
-				if(menu_arr.colourGui==1) frame[yrow + y][xcolumn + x] = 0xFFFF;
-				else frame[yrow + y][xcolumn + x] = 0;
-			}
-			if(menu_arr.led1.simpleLedSetup!=' ')
-			{
-				hex1 = RGB_to_hex(rgb1[0], rgb1[1], rgb1[2]);
-				if((int)(((double)x/460)*360) >= posuvnik1-1 && (int)(((double)x/460)*360) <= posuvnik1+1)
-				{
-				 if(menu_arr.led1.simpleLedSetup=='v') frame[yrow + y][xcolumn + x] = 0xFFFF;
-				 else frame[yrow + y][xcolumn + x] = 0;
-				}
-				else frame[yrow + y][xcolumn + x] = hex1;
-				if((int)(((double)x/460)*360)==posuvnik1) {
-					menu_arr.led1.red = rgb1[0];
-					menu_arr.led1.green = rgb1[1];
-					menu_arr.led1.blue = rgb1[2];
-				}
-			}
-		}	
-	}
-
-	if(menu_arr.animation==0) led2_hsv = RGB_to_HSV(menu_arr.led2.red, menu_arr.led2.green, menu_arr.led2.blue);
-
-	for(y=0; y<15; y++)
-	{
-		for(x=0; x<460; x++)
-		{
-			if(menu_arr.led2.simpleLedSetup=='h') rgb2 = HSV_to_RGB(((double)x/460)*360, 1, 1);
-			else if(menu_arr.led2.simpleLedSetup=='s') rgb2 = HSV_to_RGB(led2_hsv[0], ((double)x/460) , 1);
-			else if(menu_arr.led2.simpleLedSetup=='v') rgb2 = HSV_to_RGB(led2_hsv[0], 1, ((double)x/460) );
-			else {
-				if(menu_arr.colourGui==1) frame[yrow+16 + y][xcolumn + x] = 0xFFFF;
-				else frame[yrow+16 + y][xcolumn + x] = 0;
-			}
-			if(menu_arr.led2.simpleLedSetup!=' ')
-			{
-				hex2 = RGB_to_hex(rgb2[0], rgb2[1], rgb2[2]);
-				if((int)(((double)x/460)*360) >= posuvnik2-1 && (int)(((double)x/460)*360) <= posuvnik2+1)
-				{
-				 if(menu_arr.led2.simpleLedSetup=='v') frame[yrow+16 + y][xcolumn + x] = 0xFFFF;
-				 else frame[yrow+16 + y][xcolumn + x] = 0;
-				}
-				else frame[yrow+16 + y][xcolumn + x] = hex2;
-				if((int)(((double)x/460)*360)==posuvnik2) {
-					menu_arr.led2.red = rgb2[0];
-					menu_arr.led2.green = rgb2[1];
-					menu_arr.led2.blue = rgb2[2];
-				}
-			}
-		}	
+		int color1=0;
+		int color2=0;
+		char str[100];
+		if(menu_arr.colourGui==1) {color1=0x0000; color2=0xFFFF;}
+		else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
+		menu_arr.led1.periodSet.periodON += ((posuvnik1-menu_arr.periodStrip_prev1)/10);
+		sprintf(str, "%f", menu_arr.led1.periodSet.periodON);
+		string2frame_menu("     ", 300, 300, color1, color2);
+		string2frame_menu(str, 300, 300, color1, color2);
+		menu_arr.periodStrip_prev1=posuvnik1;
+		menu_arr.periodStrip_prev2=posuvnik2;
 	}
 	return menu_arr;
 }
