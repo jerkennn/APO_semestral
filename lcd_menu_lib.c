@@ -214,7 +214,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	{
 		if(menu_arr.size==0)
 		{
-			string2frame_menu("Animation", 24, 40, color1, color2);
+			string2frame_menu("Animation on/off", 24, 40, color1, color2);
 			string2frame_menu(" -- ", 48, 40, color1, color2);
 			string2frame_menu(" -- ", 72, 40, color1, color2);
 			string2frame_menu(" -- ", 96, 40, color1, color2);
@@ -222,7 +222,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		}
 		else
 		{
-			string2frame_menu_big("Animation", 24, 40, color1, color2);
+			string2frame_menu_big("Animation on/off", 24, 40, color1, color2);
 			string2frame_menu_big(" -- ", 60, 40, color1, color2);
 			string2frame_menu_big(" -- ", 96, 40, color1, color2);
 			string2frame_menu_big(" -- ", 132, 40, color1, color2);
