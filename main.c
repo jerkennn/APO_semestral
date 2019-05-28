@@ -110,12 +110,19 @@ int main(int argc, char *argv[])
 	menu_arr.led1.red = 255;
 	menu_arr.led1.green = 0;
 	menu_arr.led1.blue = 0;
+	menu_arr.led1.periodSet.periodOFF = 0;
+	menu_arr.led1.periodSet.periodON = 0;
+	menu_arr.led1.periodSet.periodAnime = 0;
+	
 	
 	menu_arr.led2.red = 255;
 	menu_arr.led2.green = 0;
 	menu_arr.led2.blue = 0;
+	menu_arr.led2.periodSet.periodOFF = 0;
+	menu_arr.led2.periodSet.periodON = 0;
+	menu_arr.led2.periodSet.periodAnime = 0;
 	
-	
+
 	
 	data.rgb_1.red = 0;
 	data.rgb_1.green = 0;
@@ -124,6 +131,9 @@ int main(int argc, char *argv[])
 	data.rgb_2.red = 0;
 	data.rgb_2.green = 0;
 	data.rgb_2.blue = 0;
+
+	menu_arr.periodStrip_prev1 = 0;
+	menu_arr.periodStrip_prev2 = 0;
 
 	pthread_mutex_init(&mtx, NULL);
 	pthread_t threads[3];
@@ -183,8 +193,8 @@ void *leds_thread(void *d){
 		}
 		if(menu_arr.animation)
 		{
-			led1_animation(led_1, h_1, h_2, period, startTime, 100*1000, 100*1000);
-			led2_animation(led_2, h_2, h_1, period, startTime, 200*1000, 200*1000);
+			led1_animation(led_1, h_1, h_2, period, startTime, 0, 0);
+			led2_animation(led_2, h_2, h_1, period, startTime, 0, 0);
 			//*led_2 = color_1;
 		}
 		else if(!menu_arr.led1.staticLight && !staticLight1 && !menu_arr.led2.staticLight && !staticLight2)
@@ -276,6 +286,7 @@ void *display_thread(void *d){
 		pthread_mutex_lock(&mtx);
 		menu_arr = strip(200, 10, data->rk, data->bk, menu_arr); // !!!!!!
 		
+		
 		data->rgb_1.red = menu_arr.led1.red;
 		data->rgb_1.green = menu_arr.led1.green;
 		data->rgb_1.blue = menu_arr.led1.blue;
@@ -287,6 +298,8 @@ void *display_thread(void *d){
 		down_control_panel(0, 0, 0, 0, 0, 0, menu_arr); // !!!!
 		
 		menu_arr = menu(data->rk, data->gk, data->bk, data->rb, data->gb, data->bb, menu_arr);
+		
+		menu_arr = getPeriod(data->rk, data->bk, menu_arr);
 		pthread_mutex_unlock(&mtx);
 		
 		//printf("%d\n", menu_arr.currentScreen);
@@ -305,7 +318,7 @@ void *server_thread(void *d){
 	data_t *data = (data_t *)d;
 	int sockfd; 
     char buffer[MAXLINE]; 
-    char *hello = "Hello from server"; 
+	//char *hello = "Hello from server"; 
     struct sockaddr_in servaddr, cliaddr; 
       
     // Creating socket file descriptor 
@@ -340,7 +353,7 @@ void *server_thread(void *d){
     int len, n;
     bool q = false;
     while(!q){
-	    n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr,  &len); 
+	    n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, (struct sockaddr *) &cliaddr,  &len); 
 	    buffer[n] = '\0'; 
 	    printf("Client : %s\n", buffer);
 	    q = data->quit;
@@ -348,13 +361,13 @@ void *server_thread(void *d){
     
 	return NULL;
 }
-*/
-/*
+
+
 void *client_thread(void *d)
 {
 	data_t *data = (data_t *)d;
 	int sockfd; 
-    char buffer[MAXLINE]; 
+    //char buffer[MAXLINE]; 
     char *hello = "Hello from client"; 
     struct sockaddr_in     servaddr; 
   
@@ -378,7 +391,7 @@ void *client_thread(void *d)
     servaddr.sin_port = htons(PORT); 
     servaddr.sin_addr.s_addr = INADDR_BROADCAST; 
       
-    int n, len; 
+    //int n, len; 
     
     bool q = false;
     while(!q){
@@ -391,4 +404,5 @@ void *client_thread(void *d)
   
     close(sockfd); 
     return NULL;
-}*/
+}
+*/
