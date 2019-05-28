@@ -83,7 +83,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 				case 26 ... 30:
 					btn2 = 24+5*36;
 					if(menu_arr.currentScreen==0) btn2=24;
-					else if(menu_arr.currentScreen==1) btn2=24;
+					else if(menu_arr.currentScreen==1 || menu_arr.currentScreen==2 || menu_arr.currentScreen==3) btn2=24;
 					else if(menu_arr.currentScreen==4) btn2=24+2*36;
 					else if(menu_arr.currentScreen==5) btn2=24+36;
 					break;
@@ -120,7 +120,10 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	}
 	else
 	{
-		for(int i=0;i<6;i++) string2frame_menu_big("   ", i*36+24, 10, color1, color2);
+		for(int i=0;i<6;i++) 
+		{
+			if(i==5) string2frame_menu_big("   ", i*36+20, 10, color1, color2);
+			else string2frame_menu_big("   ", i*36+24, 10, color1, color2);
 		string2frame_menu_big(">", btn2, 10, color1, color2);
 	}
 	
@@ -198,6 +201,15 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	}
 	else if(menu_arr.currentScreen==11) // changing colors
 	{
+		for(int i=0; i<480; i++)
+		{
+			for(int j=0; j<204; j++)
+			{
+				if(menu_arr.colourGui==1) frame[j][i] = 0xFFFF;
+				else frame[j][i] = 0;
+			}
+		}
+
 		if(menu_arr.size=0) string2frame_menu("Back", 24, 40, color1, color2);
 		else string2frame_menu_big("Back", 24, 40, color1, color2);
 		if(button2==1) {
@@ -227,13 +239,12 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			string2frame_menu_big(" -- ", 60, 40, color1, color2);
 			string2frame_menu_big(" -- ", 96, 40, color1, color2);
 			string2frame_menu_big(" -- ", 132, 40, color1, color2);
-			string2frame_menu_big(" -- ", 168, 40, color1, color2);
-			string2frame_menu_big("Back", 204, 40, color1, color2);
+			string2frame_menu_big("Back", 168, 40, color1, color2);
 		}
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			if(btn2==144 || btn2==204) {menu_arr.currentScreen=0; nextscreen=1;}
+			if(btn2==144 || btn2==168) {menu_arr.currentScreen=0; nextscreen=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
@@ -255,13 +266,12 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 			string2frame_menu_big(" -- ", 60, 40, color1, color2);
 			string2frame_menu_big(" -- ", 96, 40, color1, color2);
 			string2frame_menu_big(" -- ", 132, 40, color1, color2);
-			string2frame_menu_big(" -- ", 168, 40, color1, color2);
-			string2frame_menu_big("Back", 204, 40, color1, color2);
+			string2frame_menu_big("Back", 168, 40, color1, color2);
 		}
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
-			if(btn2==144 || btn2==204) {menu_arr.currentScreen=0; nextscreen=1;}
+			if(btn2==144 || btn2==168) {menu_arr.currentScreen=0; nextscreen=1;}
 			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
 		}
@@ -360,7 +370,7 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 {
 	for(int i=0; i<480; i++)
 	{
-		for(int j=0; j<200; j++)
+		for(int j=0; j<204; j++)
 		{
 			if(menu_arr.colourGui==1) frame[j][i] = 0xFFFF;
 			else frame[j][i] = 0;
@@ -370,7 +380,7 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 	posuvnik1 = (int)(((double)posuvnik1/255)*360);
 	posuvnik2 = (int)(((double)posuvnik2/255)*360);
 
-	led1_hsv = RGB_to_HSV(menu_arr.led1.red, menu_arr.led1.green, menu_arr.led1.blue);
+	if(menu_arr.animation==0) led1_hsv = RGB_to_HSV(menu_arr.led1.red, menu_arr.led1.green, menu_arr.led1.blue);
 	
 	int x,y;
 	for(y=0; y<15; y++)
@@ -402,7 +412,8 @@ GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_
 		}	
 	}
 
-	led2_hsv = RGB_to_HSV(menu_arr.led2.red, menu_arr.led2.green, menu_arr.led2.blue);
+	if(menu_arr.animation==0) led2_hsv = RGB_to_HSV(menu_arr.led2.red, menu_arr.led2.green, menu_arr.led2.blue);
+	
 	for(y=0; y<15; y++)
 	{
 		for(x=0; x<460; x++)
