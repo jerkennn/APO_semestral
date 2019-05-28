@@ -339,8 +339,8 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 
 GUI_set_menu strip(int yrow, int xcolumn, int posuvnik1, int posuvnik2, GUI_set_menu menu_arr)
 {
-	posuvnik1 = (int)(((double)posuvnik1/255)*460);
-	posuvnik2 = (int)(((double)posuvnik2/255)*460);
+	posuvnik1 = (int)(((double)posuvnik1/255)*360);
+	posuvnik2 = (int)(((double)posuvnik2/255)*360);
 
 	led1_hsv = RGB_to_HSV(menu_arr.led1.red, menu_arr.led1.green, menu_arr.led1.blue);
 	
