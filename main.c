@@ -61,6 +61,7 @@ typedef struct{
 void *leds(void *d);
 void *buttons(void *d);
 void *display(void *d);
+void *ethernet(void *d);
 
 
 
@@ -166,8 +167,8 @@ void *leds(void *d){
 		}
 		if(animation)
 		{
-			led_animation(led_1, h_1, h_2, period, startTime, 0, 0);
-			led_animation(led_2, h_2, h_1, period, startTime, 0, 0);
+			led1_animation(led_1, h_1, h_2, period, startTime, 0, 0);
+			led2_animation(led_2, h_2, h_1, period, startTime, 0, 0);
 			//*led_2 = color_1;
 		}
 		
@@ -175,6 +176,7 @@ void *leds(void *d){
 		
 		}
 		*led_1 = 0;
+		*led_2 = 0;
 	return NULL;
 }
 

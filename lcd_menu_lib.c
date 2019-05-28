@@ -198,7 +198,7 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	}
 	else if(menu_arr.currentScreen==11) // changing colors
 	{
-		if(menu_arr.size=0) string2frame_menu("Back", 24, 40, color1, color2);
+		if(menu_arr.size==0) string2frame_menu("Back", 24, 40, color1, color2);
 		else string2frame_menu_big("Back", 24, 40, color1, color2);
 		if(button2==1) {
 		menu_arr.time2 = getMicrotime();
@@ -432,10 +432,10 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 	if(menu_arr.colourGui==1) {color1=0x0000; color2=0xFFFF;}
 	else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
 
-	int posun=0;
+	//int posun=0;
 	char str[255];
 	for(int i=0; i<480; i++) {frame[234][i] = color1; frame[235][i] = color1; frame[236][i] = color1;}
-	
+	/*
 	if(menu_arr.animation==0 && menu_arr.currentScreen==11 && menu_arr.size==0 &&0)
 	{
 		posun = -12+3*string2frame_menu("Led 1 (r, g, b): ", 237, 0, color1, color2);
@@ -484,7 +484,7 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 		string2frame_menu_big("    ", 253, 260, color1, color2);
 		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 253, 260, color1, color2);
 	}
-
+*/
 
 	sprintf(str, "%d", L_push);
 	string2frame_menu("    ", 270, 80, color1, color2);
