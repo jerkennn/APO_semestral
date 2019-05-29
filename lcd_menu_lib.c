@@ -713,24 +713,45 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 253, 260, color1, color2);
 	}*/
 
+	if(menu_arr.size==0)
+	{
+		if(menu_arr.currentScreen==11) // changing colors
+		{
+			string2frame_menu("             ", 270, 80, color1, color2);
+			string2frame_menu("Led 1 change", 290, 80, color1, color2);
 
-	sprintf(str, "%d", L_push);
-	string2frame_menu("    ", 270, 80, color1, color2);
-	string2frame_menu(str, 270, 80, color1, color2);
+			string2frame_menu("        ", 270, 200, color1, color2);
+			string2frame_menu("         ", 290, 200, color1, color2);
+			string2frame_menu("Confirm", 270, 200, color1, color2);
+			string2frame_menu("Navigate", 290, 200, color1, color2);
 
-	string2frame_menu("C & N", 280, 200, color1, color2);
-	
-	sprintf(str, "%d", R_push);
-	string2frame_menu("    ", 270, 350, color1, color2);
-	string2frame_menu(str, 270, 350, color1, color2);
+			string2frame_menu("             ", 290, 350, color1, color2);
+			string2frame_menu("Led 2 change", 290, 350, color1, color2);
+		}
+		if(menu_arr.currentScreen==121) // period
+		{
+			string2frame_menu("        ", 270, 80, color1, color2);
+			string2frame_menu("ON-per.", 290, 80, color1, color2);
 
-	sprintf(str, "%d", L_rotate);
-	string2frame_menu("    ", 290, 80, color1, color2);
-	string2frame_menu(str, 290, 80, color1, color2);
-	
-	string2frame_menu_big("C & N", 280, 200, color1, color2);
-	
-	sprintf(str, "%d", R_rotate);
-	string2frame_menu("    ", 290, 350, color1, color2);
-	string2frame_menu(str, 290, 350, color1, color2);
+			string2frame_menu("     ", 270, 200, color1, color2);
+			string2frame_menu("        ", 290, 200, color1, color2);
+			string2frame_menu("Back", 270, 200, color1, color2);
+			string2frame_menu("OFF-per.", 290, 200, color1, color2);
+
+			string2frame_menu("          ", 290, 350, color1, color2);
+			string2frame_menu("Anim-per.", 290, 350, color1, color2);
+		}
+		else
+		{
+			string2frame_menu("        ", 270, 200, color1, color2);
+			string2frame_menu("         ", 290, 200, color1, color2);
+			string2frame_menu("Confirm", 270, 200, color1, color2);
+			string2frame_menu("Navigate", 290, 200, color1, color2);
+		}
+		
+	}
+	else
+	{
+		string2frame_menu_big("C & N", 280, 200, color1, color2);
+	}
 }
