@@ -11,6 +11,15 @@ Po spuštění desky display zobrazí domovský adresář menu (dále Home). Pom
 4) vlastní nastavení aplikace - "KOREK settings"
 5) ukončení programu - "Exit KOREK"
 
+Dolní část displaye vždy zobrazuje aktuální funkci ovladačů (umístění na display odpovídá fyzickému umístění ovladače).
+- Led 1 change (L1 C) - mění LED1
+- Led 2 change (L2 C) - mění LED2
+- Confirm, Navigate (C & N) - potvrdit a navigovat v mennu
+- Back (B) - jít v menu o úroveň výše
+- ON-per. (ON-p) - nastavit periodu svícení
+- OFF-per. (OFFp) - nastavit periodu zhasnutí
+- Anim-per. (Ani-p) - nastavit periodu přechodu barevné animace
+
 ### Change LEDs
 V menu naviguje opět GB.
 První tři položky mění složky HSV pro LED diody. Po potvrzení se v dolní části displaye objeví dva barevné pruhy s posuvníky (aktuální volba). Horní pruh náleží LED1 (výběr pomocí RB), dolní LED2 (výběr pomocí BB). V rámci potvrzení jedné z těchto tří položek je dále v menu možné staticky ovládat LED1, LED2, nebo zapnou animaci barev LED diod, kdy barevný rozsah je určen v položce "Change hue (H)", kdy posuvníky na barevných páscích určují meze barev, mezi kterými se mění animace.
