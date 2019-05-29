@@ -34,9 +34,9 @@ void led1_animation(int *led, double h_1, double h_2, long int period, long int 
 		
 		double c1 = 2*((getMicrotime() - startTime)%(period));
 		double c2 = (double)(period);
-		double absMe = (1-c1/c2); 
-		if(absMe<0){absMe = -absMe;}
-		double coef = 1-absMe;
+		double absVal = (1-c1/c2); 
+		if(absVal<0){absVal = -absVal;}
+		double coef = 1-absVal;
 		double out_h = h_1 + (h_2 - h_1)*coef; 
 		double *rgb_led_1 = HSV_to_RGB(out_h , 1, 1);
 		uint32_t color = createRGB(rgb_led_1[0], rgb_led_1[1], rgb_led_1[2]);
@@ -116,9 +116,9 @@ void led2_animation(int *led, double h_1, double h_2, long int period, long int 
 		if(period==0) period=1;
 		double c1 = 2*((getMicrotime() - startTime)%(period));
 		double c2 = (double)(period);
-		double absMe = (1-c1/c2); 
-		if(absMe<0){absMe = -absMe;}
-		double coef = 1-absMe;
+		double absVal = (1-c1/c2); 
+		if(absVal<0){absVal = -absVal;}
+		double coef = 1-absVal;
 		double out_h = h_1 + (h_2 - h_1)*coef; 
 		double *rgb_led_1 = HSV_to_RGB(out_h , 1, 1);
 		uint32_t color = createRGB(rgb_led_1[0], rgb_led_1[1], rgb_led_1[2]);
