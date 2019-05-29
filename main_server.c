@@ -1,14 +1,9 @@
 /*******************************************************************
-  Simple program to check LCD functionality on MicroZed
-  based MZ_APO board designed by Petr Porazil at PiKRON
+  KOREK program
 
-  mzapo_lcdtest.c       - main and only file
-
-  (C) Copyright 2004 - 2017 by Pavel Pisa
-      e-mail:   pisa@cmp.felk.cvut.cz
-      homepage: http://cmp.felk.cvut.cz/~pisa
-      work:     http://www.pikron.com/
-      license:  any combination of GPL, LGPL, MPL or BSD licenses
+  (C) Copyright 2019 by Vojtech Kozel and Martin Rektoris
+      e-mail:   kozelvo1@fel.cvut.cz; rektomar@fel.cvut.cz
+      license:  MIT license
 
  *******************************************************************/
 
