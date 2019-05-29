@@ -359,15 +359,18 @@ void *display_thread(void *d){
 	return NULL;
 }
 
+/*
+Pri tvorbe sitove komunikace jsme se inspirovali na strance predmetu: https://cw.fel.cvut.cz/wiki/courses/b35apo/tutorials/10/start
+a na strance o computer science: https://www.geeksforgeeks.org/udp-server-client-implementation-c/?fbclid=IwAR0fvmbe-kqIjUn9ES4w1IdBAsyzb7Cq6uubefnFyVjpGvGOgecSjjuOEY8
+*/
+
 void *server_thread(void *d){
 
 	data_t *data = (data_t *)d;
 	int sockfd; 
     char buffer[sizeof(udp_data)]; 
-	//char *hello = "Hello from server"; 
     struct sockaddr_in servaddr, cliaddr; 
       
-    // Creating socket file descriptor 
     if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) { 
         perror("socket creation failed"); 
         exit(EXIT_FAILURE); 
@@ -382,12 +385,10 @@ void *server_thread(void *d){
         exit(1);
     }
       
-    // Filling server information 
-    servaddr.sin_family    = AF_INET; // IPv4 
+    servaddr.sin_family    = AF_INET;
     servaddr.sin_addr.s_addr = INADDR_ANY; 
     servaddr.sin_port = htons(PORT); 
-      
-    // Bind the socket with the server address 
+
     if ( bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr)) < 0 ) 
     { 
         perror("bind failed"); 
@@ -452,7 +453,6 @@ void *client_thread(void *d)
 
     struct sockaddr_in     servaddr; 
   
-    // Creating socket file descriptor 
     if((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) { 
         perror("socket creation failed"); 
         exit(EXIT_FAILURE); 
@@ -462,7 +462,7 @@ void *client_thread(void *d)
 
     int broadcast = 1;
     if (setsockopt(sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast, sizeof broadcast) == -1) {
-        //perror("setsockopt (SO_BROADCAST)");
+        perror("setsockopt (SO_BROADCAST)");
         exit(1);
     }
       
@@ -504,7 +504,6 @@ void *client_thread(void *d)
     	
     	memcpy(buffer, output_data, sizeof(udp_data));
 	    sendto(sockfd, (char *)buffer, STRUCT_SIZE, MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr)); 
-	    //printf("Hello message sent.\n");
 	    q = data->quit;
     }
   	free(output_data);
