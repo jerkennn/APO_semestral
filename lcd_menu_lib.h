@@ -67,9 +67,7 @@ typedef struct GUI_set
 
 GUI_set_menu menu_arr;
 
-// int btn1=0;
 int btn2;
-// int btn3=0;
 
 double *rgb1;
 double *rgb2;
