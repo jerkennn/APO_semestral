@@ -1,3 +1,10 @@
+/*******************************************************************
+  KOREK program
+  (C) Copyright 2019 by Vojtech Kozel and Martin Rektoris
+      e-mail:   kozelvo1@fel.cvut.cz; rektomar@fel.cvut.cz
+      license:  MIT license
+*******************************************************************/
+
 #ifndef _CONVERT_LIB_H_
 #define _CONVERT_LIB_H_
 #include <stdint.h>
