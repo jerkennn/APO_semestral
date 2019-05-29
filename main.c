@@ -43,13 +43,19 @@
 #include <arpa/inet.h> 
 #include <netinet/in.h> 
   
-#define PORT 8090 
+#define PORT 9876 
 
 typedef struct{
-	double red;
-	double green;
-	double blue;
+	double led1_red;
+	double led1_green;
+	double led1_blue;
 	int led1_static;
+	int led1_animation;
+	double led2_red;
+	double led2_green;
+	double led2_blue;
+	int led2_static;
+	int led2_animation;
 } udp_data;
 
 #define STRUCT_SIZE (sizeof(udp_data)+8)
@@ -74,6 +80,7 @@ typedef struct{
 		double blue;
 		} rgb_2;
 	GUI_set_menu menu_arr;
+	int ethernet_mode;  /// -1 for slave, 0 for turned off, 1 for master
 	bool quit;
 	} data_t;
 
@@ -156,16 +163,19 @@ int main(int argc, char *argv[])
 
 	pthread_mutex_init(&mtx, NULL);
 	pthread_t threads[3];
+	//pthread_t threads[5];
 	
 	pthread_create(&threads[0], NULL, buttons_thread, &data);
 	pthread_create(&threads[1], NULL, leds_thread, &data);
 	pthread_create(&threads[2], NULL, display_thread, &data);
 	//pthread_create(&threads[3], NULL, server_thread, &data);
+	//pthread_create(&threads[4], NULL, client_thread, &data);
 	
 	pthread_join(threads[0], NULL);
 	pthread_join(threads[1], NULL);
 	pthread_join(threads[2], NULL);
 	//pthread_join(threads[3], NULL);
+	//pthread_join(threads[4], NULL);
 
 
 	delete_lcd(0);
@@ -386,12 +396,24 @@ void *server_thread(void *d){
     udp_data *input_data = malloc(sizeof(udp_data));
     
     while(!q){
+    	
+    	if(data->ethernet_mode == 0 || data->etherner_mode == 1)
+    	{
+    		q = data->quit;
+    		continue;
+    	}
 	    n = recvfrom(sockfd, (char *)buffer, STRUCT_SIZE, MSG_WAITALL, (struct sockaddr *) &cliaddr, &len);
 	    memcpy(input_data, buffer, sizeof(udp_data));
-	    menu_arr.led1.red = input_data->red;
-	    menu_arr.led1.green = input_data->green; 
-	    menu_arr.led1.blue = input_data->blue; 
+	    menu_arr.led1.red = input_data->led1_red;
+	    menu_arr.led1.green = input_data->led1_green; 
+	    menu_arr.led1.blue = input_data->led1_blue; 
 	    menu_arr.led1.staticLight =  input_data->led1_static;
+	    menu_arra.animation = input_data->led1_animation
+	    menu_arr.led2.red = input_data->led2_red;
+	    menu_arr.led2.green = input_data->led2_green; 
+	    menu_arr.led2.blue = input_data->led2_blue; 
+	    menu_arr.led2.staticLight =  input_data->led2_static;
+	    //menu_arrr ... = input_data->led2_animation;
 	    //buffer[n] = '\0'; 
 	    //printf("Client : %s\n", buffer);
 	    q = data->quit;
@@ -434,6 +456,23 @@ void *client_thread(void *d)
     udp_data *output_data = malloc(sizeof(udp_data));
     
     while(!q){
+    	if(data->ethernet_mode == 0 || data->etherner_mode == -1)
+    	{
+    		q = data->quit;
+    		continue;
+    	}
+    	output_data->led1_red =  menu_arr.led1.red;
+    	output_data->led1_green =  menu_arr.led1.green;
+    	output_data->led1_blue =  menu_arr.led1.blue;
+    	output_data->led1_static = menu_arr.led1.staticLight;
+    	output_data->led1_animation = menu_arr.animation
+    	
+    	output_data->led2_red = menu_arr.led2.red;
+    	output_data->led2_green = menu_arr.led2.green;
+    	output_data->led2_blue = menu_arr.led2.blue;
+    	output_data->led2_static = menu_arr.led1.staticLight;
+    	//	output_data->led2_animation
+    	
     	memcpy(buffer, output_data, sizeof(udp_data));
 	    sendto(sockfd, (char *)buffer, STRUCT_SIZE, MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr)); 
 	    printf("Hello message sent.\n");
