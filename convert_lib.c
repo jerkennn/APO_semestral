@@ -2,6 +2,9 @@
 
 #include "convert_lib.h"
 
+/* zdroj prevodniku barev
+ * https://www.programmingalgorithms.com/algorithm/hsv-to-rgb?lang=C
+ * */
 double* HSV_to_RGB(double h, double s, double v)
 {
 	double r = 0, g = 0, b = 0;

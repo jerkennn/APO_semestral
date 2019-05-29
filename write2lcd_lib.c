@@ -28,6 +28,9 @@ unsigned char *parlcd_mem_base;
 
 uint16_t frame[FRAME_H][FRAME_W];
 
+/*
+ * frame2lcd() prevzato ze cviceni dr. Susta
+*/
 void frame2lcd()
 {
 	parlcd_write_cmd(parlcd_mem_base,0x2c); // to 0,0

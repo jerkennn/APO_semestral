@@ -717,9 +717,9 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 	sprintf(str, "%d", L_push);
 	string2frame_menu("    ", 270, 80, color1, color2);
 	string2frame_menu(str, 270, 80, color1, color2);
-	//sprintf(str, "%d", M_push);
-	//string2frame_menu("    ", 270, 200, color1, color2);
-	string2frame_menu("Confirm", 270, 200, color1, color2);
+
+	string2frame_menu("C & N", 280, 200, color1, color2);
+	
 	sprintf(str, "%d", R_push);
 	string2frame_menu("    ", 270, 350, color1, color2);
 	string2frame_menu(str, 270, 350, color1, color2);
@@ -727,9 +727,9 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 	sprintf(str, "%d", L_rotate);
 	string2frame_menu("    ", 290, 80, color1, color2);
 	string2frame_menu(str, 290, 80, color1, color2);
-	//sprintf(str, "%d", M_rotate);
-	//string2frame_menu("    ", 290, 200, color1, color2);
-	string2frame_menu("Navigate", 290, 200, color1, color2);
+	
+	string2frame_menu_big("C & N", 280, 200, color1, color2);
+	
 	sprintf(str, "%d", R_rotate);
 	string2frame_menu("    ", 290, 350, color1, color2);
 	string2frame_menu(str, 290, 350, color1, color2);

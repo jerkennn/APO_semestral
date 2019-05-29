@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
 	menu_arr.led1.blue = 0;
 	menu_arr.led1.periodSet.periodOFF = 0;
 	menu_arr.led1.periodSet.periodON = 0;
-	menu_arr.led1.periodSet.periodAnime = 1;
+	menu_arr.led1.periodSet.periodAnime = 1200;
 	
 	
 	menu_arr.led2.red = 255;
@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
 	menu_arr.led2.blue = 0;
 	menu_arr.led2.periodSet.periodOFF = 0;
 	menu_arr.led2.periodSet.periodON = 0;
-	menu_arr.led2.periodSet.periodAnime = 1;
+	menu_arr.led2.periodSet.periodAnime = 1200;
 	
 
 	
@@ -235,8 +235,6 @@ void *leds_thread(void *d){
 		}
 		if(menu_arr.animation)
 		{
-			if(menu_arr.led1.periodSet.periodAnime==0) menu_arr.led1.periodSet.periodAnime=1;
-			if(menu_arr.led2.periodSet.periodAnime==0) menu_arr.led2.periodSet.periodAnime=1;
 			led1_animation(led_1, h_1, h_2, 1000*((int)menu_arr.led1.periodSet.periodAnime), startTime, 1000*((int)menu_arr.led1.periodSet.periodON), 1000*((int)menu_arr.led1.periodSet.periodOFF));
 			led2_animation(led_2, h_2, h_1, 1000*((int)menu_arr.led2.periodSet.periodAnime), startTime, 1000*((int)menu_arr.led2.periodSet.periodON), 1000*((int)menu_arr.led2.periodSet.periodOFF));
 			//*led_2 = color_1;
@@ -471,12 +469,12 @@ void *client_thread(void *d)
     	output_data->led1_blue =  menu_arr.led1.blue;
     	output_data->led1_static = menu_arr.led1.staticLight;
     	output_data->led1_animation = menu_arr.animation;
-    	output_data->led1_animation = menu_arr.animation;
+    	//output_data->led1_animation = menu_arr.animation;
     	
     	output_data->led2_red = menu_arr.led2.red;
     	output_data->led2_green = menu_arr.led2.green;
     	output_data->led2_blue = menu_arr.led2.blue;
-    	output_data->led2_static = menu_arr.led1.staticLight;
+    	output_data->led2_static = menu_arr.led2.staticLight;
     	//	output_data->led2_animation
     	
     	memcpy(buffer, output_data, sizeof(udp_data));
