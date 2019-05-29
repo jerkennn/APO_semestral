@@ -736,3 +736,4 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 		
 	}
 }
+
