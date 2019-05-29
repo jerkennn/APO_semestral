@@ -110,6 +110,8 @@ int main(int argc, char *argv[])
 	data.menu_arr.currentScreen = 0;
 	data.menu_arr.colourGui = 0;
 	data.menu_arr.exit = 0;
+	data.ethernet_mode = 0;
+	menu_arr.ethernet_mode = 0;
 	
 	
 	menu_arr.currentScreen = 0; 
@@ -338,6 +340,7 @@ void *display_thread(void *d){
 		down_control_panel(0, 0, 0, 0, 0, 0, menu_arr); // !!!!
 		
 		menu_arr = menu(data->rk, data->gk, data->bk, data->rb, data->gb, data->bb, menu_arr);
+		data->ethernet_mode = menu_arr.ethernet_mode;
 		
 		menu_arr = getPeriod(data->rk, data->gk, data->bk, menu_arr);
 		pthread_mutex_unlock(&mtx);
@@ -443,7 +446,7 @@ void *client_thread(void *d)
 
     int broadcast = 1;
     if (setsockopt(sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast, sizeof broadcast) == -1) {
-        perror("setsockopt (SO_BROADCAST)");
+        //perror("setsockopt (SO_BROADCAST)");
         exit(1);
     }
       
@@ -478,7 +481,7 @@ void *client_thread(void *d)
     	
     	memcpy(buffer, output_data, sizeof(udp_data));
 	    sendto(sockfd, (char *)buffer, STRUCT_SIZE, MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr)); 
-	    printf("Hello message sent.\n");
+	    //printf("Hello message sent.\n");
 	    q = data->quit;
     }
   	free(output_data);

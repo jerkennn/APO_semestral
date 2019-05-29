@@ -345,9 +345,9 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 	{
 		if(menu_arr.size==0)
 		{
-			string2frame_menu(" -- ", 24, 40, color1, color2);
-			string2frame_menu(" -- ", 48, 40, color1, color2);
-			string2frame_menu(" -- ", 72, 40, color1, color2);
+			string2frame_menu("Master", 24, 40, color1, color2);
+			string2frame_menu("Slave", 48, 40, color1, color2);
+			string2frame_menu("Off", 72, 40, color1, color2);
 			string2frame_menu(" -- ", 96, 40, color1, color2);
 			string2frame_menu("Back", 120, 40, color1, color2);
 		}
@@ -363,8 +363,21 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		menu_arr.time2 = getMicrotime();
 		if(menu_arr.time2>=menu_arr.time1+300000) {
 			if(btn2==120 || btn2==168) {menu_arr.currentScreen=0; nextscreen=1;}
-			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
+			else if(btn2 == 24)
+			{
+				menu_arr.ethernet_mode = 1;
+				//printf()
+			}
+			else if(btn2 == 48)
+			{
+				menu_arr.ethernet_mode = -1;
+			}
+			else if(btn2 == 72)
+			{
+				menu_arr.ethernet_mode = 0;
+			}
+			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 		}
 	}
 	else if(menu_arr.currentScreen==4) // KOREK settings

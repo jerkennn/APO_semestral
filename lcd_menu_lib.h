@@ -52,6 +52,7 @@ typedef struct GUI_set
     int periodStrip_prev1;
     int periodStrip_prev2;
     int periodStrip_prev3;
+    int ethernet_mode;
 }GUI_set_menu;
 
 GUI_set_menu menu_arr;

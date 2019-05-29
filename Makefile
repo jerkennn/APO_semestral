@@ -10,11 +10,11 @@ SOURCES = main.c mzapo_phys.c mzapo_parlcd.c
 SOURCES += lcd_menu_lib.c write2lcd_lib.c led_effects.c convert_lib.c
 SOURCES += font_prop14x16.c font_rom8x16.c
 TARGET_EXE = main
-TARGET_IP ?= 192.168.202.183
+TARGET_IP ?= 192.168.202.213
 ifeq ($(TARGET_IP)$(filter run,$(MAKECMDGOALS)),run)
 $(warning The target IP address is not set)
 $(warning Run as "TARGET_IP=192.168.202.xxx make run" or modify Makefile)
-TARGET_IP ?= 192.168.202.183
+TARGET_IP ?= 192.168.202.213
 endif
 TARGET_DIR ?= /tmp/$(shell whoami)
 TARGET_USER ?= root
