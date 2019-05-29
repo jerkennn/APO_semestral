@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
 	pthread_join(threads[0], NULL);
 	pthread_join(threads[1], NULL);
 	pthread_join(threads[2], NULL);
-	pthread_cancel(threads[3], NULL);
+	pthread_cancel(threads[3]);
 	pthread_join(threads[4], NULL);
 
 
@@ -431,7 +431,7 @@ void *server_thread(void *d){
 	    menu_arr.led2.red = input_data->led2_red;
 	    menu_arr.led2.green = input_data->led2_green; 
 	    menu_arr.led2.blue = input_data->led2_blue; 
-	    menu_arr.led2.staticLight =  input_data->led2_static;
+	    menu_arr.led2.staticLight = input_data->led2_static;
 		menu_arr.led2.periodSet.periodON = input_data->led2_on;
     	menu_arr.led2.periodSet.periodOFF = input_data->led2_off;
     	menu_arr.led2.periodSet.periodAnime = input_data->animation2_period;
@@ -487,15 +487,16 @@ void *client_thread(void *d)
     	output_data->led1_blue =  menu_arr.led1.blue;
     	output_data->led1_static = menu_arr.led1.staticLight;
     	output_data->led1_animation = menu_arr.animation;
-    	output_data->led2_on = menu_arr.led1.periodSet.periodON;
-    	output_data->led2_off = menu_arr.led1.periodSet.periodOFF;
-    	output_data->animation2_period = menu_arr.led1.periodSet.periodAnime;
+    	output_data->led1_on = menu_arr.led1.periodSet.periodON;
+    	output_data->led1_off = menu_arr.led1.periodSet.periodOFF;
+    	output_data->animation1_period = menu_arr.led1.periodSet.periodAnime;
     	//output_data->led1_animation = menu_arr.animation;
     	
     	output_data->led2_red = menu_arr.led2.red;
     	output_data->led2_green = menu_arr.led2.green;
     	output_data->led2_blue = menu_arr.led2.blue;
     	output_data->led2_static = menu_arr.led2.staticLight;
+    	output_data->led2_animation = menu_arr.animation;
     	output_data->led2_on = menu_arr.led2.periodSet.periodON;
     	output_data->led2_off = menu_arr.led2.periodSet.periodOFF;
     	output_data->animation2_period = menu_arr.led2.periodSet.periodAnime;
