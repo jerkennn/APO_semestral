@@ -14,7 +14,7 @@ Po spuštění desky display zobrazí domovský adresář menu (dále Home). Pom
 Dolní část displaye vždy zobrazuje aktuální funkci ovladačů (umístění na display odpovídá fyzickému umístění ovladače).
 - Led 1 change (L1 C) - mění LED1
 - Led 2 change (L2 C) - mění LED2
-- Confirm, Navigate (C & N) - potvrdit a navigovat v mennu
+- Confirm, Navigate (C & N) - potvrdit a navigovat v menu
 - Back (B) - jít v menu o úroveň výše
 - ON-per. (ON-p) - nastavit periodu svícení
 - OFF-per. (OFFp) - nastavit periodu zhasnutí
