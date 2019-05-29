@@ -727,9 +727,9 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 		{
 			string2frame_menu_big("ON-p", 280, 20, color1, color2);
 
-			string2frame_menu_big("B & OFFp", 280, 200, color1, color2);
+			string2frame_menu_big("B & OFFp", 280, 170, color1, color2);
 
-			string2frame_menu_big("Ani-p", 280, 330, color1, color2);
+			string2frame_menu_big("Ani-p", 280, 360, color1, color2);
 		}
 		else
 		{
