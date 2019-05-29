@@ -162,20 +162,20 @@ int main(int argc, char *argv[])
 	sleep(2);
 
 	pthread_mutex_init(&mtx, NULL);
-	pthread_t threads[3];
-	//pthread_t threads[5];
+	//pthread_t threads[3];
+	pthread_t threads[5];
 	
 	pthread_create(&threads[0], NULL, buttons_thread, &data);
 	pthread_create(&threads[1], NULL, leds_thread, &data);
 	pthread_create(&threads[2], NULL, display_thread, &data);
-	//pthread_create(&threads[3], NULL, server_thread, &data);
-	//pthread_create(&threads[4], NULL, client_thread, &data);
+	pthread_create(&threads[3], NULL, server_thread, &data);
+	pthread_create(&threads[4], NULL, client_thread, &data);
 	
 	pthread_join(threads[0], NULL);
 	pthread_join(threads[1], NULL);
 	pthread_join(threads[2], NULL);
-	//pthread_join(threads[3], NULL);
-	//pthread_join(threads[4], NULL);
+	pthread_join(threads[3], NULL);
+	pthread_join(threads[4], NULL);
 
 
 	delete_lcd(0);
@@ -352,7 +352,8 @@ void *display_thread(void *d){
 		q = q || data->quit;
 		}
 	return NULL;
-}/*
+}
+
 void *server_thread(void *d){
 
 	data_t *data = (data_t *)d;
@@ -388,8 +389,8 @@ void *server_thread(void *d){
         exit(EXIT_FAILURE); 
     } 
       
-    int len;
-    int n;
+    int len = STRUCT_SIZE;
+    int n = STRUCT_SIZE;
     
     bool q = false;
     
@@ -397,18 +398,19 @@ void *server_thread(void *d){
     
     while(!q){
     	
-    	if(data->ethernet_mode == 0 || data->etherner_mode == 1)
+    	if(data->ethernet_mode == 0 || data->ethernet_mode == 1)
     	{
     		q = data->quit;
     		continue;
     	}
 	    n = recvfrom(sockfd, (char *)buffer, STRUCT_SIZE, MSG_WAITALL, (struct sockaddr *) &cliaddr, &len);
+	    if(n == len);
 	    memcpy(input_data, buffer, sizeof(udp_data));
 	    menu_arr.led1.red = input_data->led1_red;
 	    menu_arr.led1.green = input_data->led1_green; 
 	    menu_arr.led1.blue = input_data->led1_blue; 
 	    menu_arr.led1.staticLight =  input_data->led1_static;
-	    menu_arra.animation = input_data->led1_animation
+	    menu_arr.animation = input_data->led1_animation;
 	    menu_arr.led2.red = input_data->led2_red;
 	    menu_arr.led2.green = input_data->led2_green; 
 	    menu_arr.led2.blue = input_data->led2_blue; 
@@ -421,8 +423,8 @@ void *server_thread(void *d){
     free(input_data);
 	return NULL;
 }
-*/
-/*
+
+
 void *client_thread(void *d)
 {
 	data_t *data = (data_t *)d;
@@ -456,7 +458,7 @@ void *client_thread(void *d)
     udp_data *output_data = malloc(sizeof(udp_data));
     
     while(!q){
-    	if(data->ethernet_mode == 0 || data->etherner_mode == -1)
+    	if(data->ethernet_mode == 0 || data->ethernet_mode == -1)
     	{
     		q = data->quit;
     		continue;
@@ -465,7 +467,8 @@ void *client_thread(void *d)
     	output_data->led1_green =  menu_arr.led1.green;
     	output_data->led1_blue =  menu_arr.led1.blue;
     	output_data->led1_static = menu_arr.led1.staticLight;
-    	output_data->led1_animation = menu_arr.animation
+    	output_data->led1_animation = menu_arr.animation;
+    	output_data->led1_animation = menu_arr.animation;
     	
     	output_data->led2_red = menu_arr.led2.red;
     	output_data->led2_green = menu_arr.led2.green;
@@ -481,4 +484,4 @@ void *client_thread(void *d)
   	free(output_data);
     close(sockfd); 
     return NULL;
-}*/
+}
