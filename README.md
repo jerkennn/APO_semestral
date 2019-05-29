@@ -31,8 +31,8 @@ Postupně umožňuje tyto volby: invertování barev menu ("Invert color of GUI"
 Volbou složky "Exit KOREK" a potvrzením položky "Confirm exit" je ukončen program KOREK.
 
 ## Dokumentace Hardware
-MICROZED EVALUATION KIT.
-ADSAES-Z7MB-7Z010-G.
+- MICROZED EVALUATION KIT.
+- ADSAES-Z7MB-7Z010-G.
 Xylinx Zynq 7Z010.
 Základní čip: Xilinx Zynq-7000 All Programmable SoC.
 Typ: Z-7010, součástka XC7Z010.
