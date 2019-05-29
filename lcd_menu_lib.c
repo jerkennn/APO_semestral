@@ -353,31 +353,31 @@ GUI_set_menu menu(int rotate1, int rotate2, int rotate3, int button1, int button
 		}
 		else
 		{
-			string2frame_menu_big(" -- ", 24, 40, color1, color2);
-			string2frame_menu_big(" -- ", 60, 40, color1, color2);
-			string2frame_menu_big(" -- ", 96, 40, color1, color2);
+			string2frame_menu_big("Master", 24, 40, color1, color2);
+			string2frame_menu_big("Slave", 60, 40, color1, color2);
+			string2frame_menu_big("Off", 96, 40, color1, color2);
 			string2frame_menu_big(" -- ", 132, 40, color1, color2);
 			string2frame_menu_big("Back", 168, 40, color1, color2);
 		}
 		if(button2==1) {
-		menu_arr.time2 = getMicrotime();
-		if(menu_arr.time2>=menu_arr.time1+300000) {
-			if(btn2==120 || btn2==168) {menu_arr.currentScreen=0; nextscreen=1;}
+			menu_arr.time2 = getMicrotime();
+			if(menu_arr.time2>=menu_arr.time1+300000) {
+				if(btn2==120 || btn2==168) {menu_arr.currentScreen=0; nextscreen=1;}
+				else if(btn2 == 24)
+				{
+					menu_arr.ethernet_mode = 1;
+					//printf()
+				}
+				else if(btn2 == 48 || btn2==60)
+				{
+					menu_arr.ethernet_mode = -1;
+				}
+				else if(btn2 == 72 || (btn2==96 && menu_arr.size==1))
+				{
+					menu_arr.ethernet_mode = 0;
+				}
+				menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 			}
-			else if(btn2 == 24)
-			{
-				menu_arr.ethernet_mode = 1;
-				//printf()
-			}
-			else if(btn2 == 48)
-			{
-				menu_arr.ethernet_mode = -1;
-			}
-			else if(btn2 == 72)
-			{
-				menu_arr.ethernet_mode = 0;
-			}
-			menu_arr.time2=0; menu_arr.time1 = getMicrotime();
 		}
 	}
 	else if(menu_arr.currentScreen==4) // KOREK settings
@@ -665,88 +665,48 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 	char str[255];
 	for(int i=0; i<480; i++) {frame[234][i] = color1; frame[235][i] = color1; frame[236][i] = color1;}
 	
-	/*
-	if(menu_arr.animation==0 && menu_arr.currentScreen==11 && menu_arr.size==0 &&0)
-	{
-		posun = -12+3*string2frame_menu("Led 1 (r, g, b): ", 237, 0, color1, color2);
-		sprintf(str, "%d", (int)menu_arr.led1.red);
-		string2frame_menu("    ", 237, 160, color1, color2);
-		posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 160, color1, color2);
-		sprintf(str, "%d", (int)menu_arr.led1.green);
-		string2frame_menu("    ", 237, 210, color1, color2);
-		posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 210, color1, color2);
-		sprintf(str, "%d", (int)menu_arr.led1.blue);
-		string2frame_menu("    ", 237, 260, color1, color2);
-		posun = posun + 9 - 12 + 3*string2frame_menu(str, 237, 260, color1, color2);
-		posun = -12+3*string2frame_menu("Led 2 (r, g, b): ", 253, 0, color1, color2);
-		sprintf(str, "%d", (int)menu_arr.led2.red);
-		string2frame_menu("    ", 253, 160, color1, color2);
-		posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 160, color1, color2);
-		sprintf(str, "%d", (int)menu_arr.led2.green);
-		string2frame_menu("    ", 253, 210, color1, color2);
-		posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 210, color1, color2);
-		sprintf(str, "%d", (int)menu_arr.led2.blue);
-		string2frame_menu("    ", 253, 260, color1, color2);
-		posun = posun + 9 - 12 + 3*string2frame_menu(str, 253, 260, color1, color2);
-	}
-	else if(menu_arr.animation==0 && menu_arr.currentScreen==11 && menu_arr.size==1 &&0)
-	{
-		posun = -12+3*string2frame_menu_big("Led 1 (r, g, b): ", 237, 0, color1, color2);
-		sprintf(str, "%d", (int)menu_arr.led1.red);
-		string2frame_menu_big("    ", 237, 160, color1, color2);
-		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 237, 160, color1, color2);
-		sprintf(str, "%d", (int)menu_arr.led1.green);
-		string2frame_menu_big("    ", 237, 210, color1, color2);
-		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 237, 210, color1, color2);
-		sprintf(str, "%d", (int)menu_arr.led1.blue);
-		string2frame_menu_big("    ", 237, 260, color1, color2);
-		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 237, 260, color1, color2);
-		posun = -12+3*string2frame_menu_big("Led 2 (r, g, b): ", 253, 0, color1, color2);
-		sprintf(str, "%d", (int)menu_arr.led2.red);
-		string2frame_menu_big("    ", 253, 160, color1, color2);
-		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 253, 160, color1, color2);
-		sprintf(str, "%d", (int)menu_arr.led2.green);
-		string2frame_menu_big("    ", 253, 210, color1, color2);
-		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 253, 210, color1, color2);
-		sprintf(str, "%d", (int)menu_arr.led2.blue);
-		string2frame_menu_big("    ", 253, 260, color1, color2);
-		posun = posun + 9 - 12 + 3*string2frame_menu_big(str, 253, 260, color1, color2);
-	}*/
 
 	if(menu_arr.size==0)
 	{
 		if(menu_arr.currentScreen==11) // changing colors
 		{
-			string2frame_menu("             ", 270, 80, color1, color2);
-			string2frame_menu("Led 1 change", 290, 80, color1, color2);
+			string2frame_menu("             ", 270, 20, color1, color2);
+			string2frame_menu("Led 1 change", 290, 20, color1, color2);
 
-			string2frame_menu("        ", 270, 200, color1, color2);
-			string2frame_menu("         ", 290, 200, color1, color2);
-			string2frame_menu("Confirm", 270, 200, color1, color2);
-			string2frame_menu("Navigate", 290, 200, color1, color2);
+			string2frame_menu("             ", 270, 140, color1, color2);
+			string2frame_menu("             ", 290, 140, color1, color2);
+			string2frame_menu("Confirm", 270, 140, color1, color2);
+			string2frame_menu("Navigate", 290, 140, color1, color2);
 
-			string2frame_menu("             ", 290, 350, color1, color2);
-			string2frame_menu("Led 2 change", 290, 350, color1, color2);
+			string2frame_menu("             ", 290, 290, color1, color2);
+			string2frame_menu("Led 2 change", 290, 290, color1, color2);
 		}
 		if(menu_arr.currentScreen==121) // period
 		{
-			string2frame_menu("        ", 270, 80, color1, color2);
-			string2frame_menu("ON-per.", 290, 80, color1, color2);
+			string2frame_menu("         ", 270, 20, color1, color2);
+			string2frame_menu("ON-per.", 290, 20, color1, color2);
 
-			string2frame_menu("     ", 270, 200, color1, color2);
-			string2frame_menu("        ", 290, 200, color1, color2);
-			string2frame_menu("Back", 270, 200, color1, color2);
-			string2frame_menu("OFF-per.", 290, 200, color1, color2);
+			string2frame_menu("         ", 270, 140, color1, color2);
+			string2frame_menu("         ", 290, 140, color1, color2);
+			string2frame_menu("Back", 270, 140, color1, color2);
+			string2frame_menu("OFF-per.", 290, 140, color1, color2);
 
-			string2frame_menu("          ", 290, 350, color1, color2);
-			string2frame_menu("Anim-per.", 290, 350, color1, color2);
+			string2frame_menu("          ", 290, 290, color1, color2);
+			string2frame_menu("Anim-per.", 290, 290, color1, color2);
 		}
 		else
 		{
-			string2frame_menu("        ", 270, 200, color1, color2);
-			string2frame_menu("         ", 290, 200, color1, color2);
-			string2frame_menu("Confirm", 270, 200, color1, color2);
-			string2frame_menu("Navigate", 290, 200, color1, color2);
+			string2frame_menu("             ", 270, 20, color1, color2);
+			
+			string2frame_menu("             ", 270, 140, color1, color2);
+			string2frame_menu("             ", 290, 140, color1, color2);
+
+			string2frame_menu("             ", 290, 290, color1, color2);
+
+			string2frame_menu("             ", 270, 140, color1, color2);
+			string2frame_menu("             ", 290, 140, color1, color2);
+			string2frame_menu("Confirm", 270, 140, color1, color2);
+			string2frame_menu("Navigate", 290, 140, color1, color2);
 		}
 		
 	}
