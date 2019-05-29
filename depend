@@ -383,3 +383,4 @@ font_rom8x16.o: font_rom8x16.c \
  /opt/OSELAS.Toolchain-2016.06.1/arm-cortexa8-linux-gnueabihf/gcc-5.4.0-glibc-2.23-binutils-2.26-kernel-4.6-sanitized/sysroot-arm-cortexa8-linux-gnueabihf/usr/include/gnu/stubs.h \
  /opt/OSELAS.Toolchain-2016.06.1/arm-cortexa8-linux-gnueabihf/gcc-5.4.0-glibc-2.23-binutils-2.26-kernel-4.6-sanitized/sysroot-arm-cortexa8-linux-gnueabihf/usr/include/gnu/stubs-hard.h \
  /opt/OSELAS.Toolchain-2016.06.1/arm-cortexa8-linux-gnueabihf/gcc-5.4.0-glibc-2.23-binutils-2.26-kernel-4.6-sanitized/sysroot-arm-cortexa8-linux-gnueabihf/usr/include/bits/wchar.h
+
