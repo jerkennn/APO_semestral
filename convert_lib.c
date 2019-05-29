@@ -94,9 +94,11 @@ uint16_t RGB_to_hex(double r, double g, double b)
 	return ((((int)(r*249+1014))>>11)<<11) + ((((int)(g*253+505))>>10)<<5) + (((int)(b*249+1014))>>11);
 }
 
+/*
+* source of function for taking time (by sevko): https://gist.github.com/sevko/d23646ba07c77c15fde9
+*/
 long getMicrotime(){
 	struct timeval currentTime;
 	gettimeofday(&currentTime, NULL);
 	return currentTime.tv_sec * (int)1e6 + currentTime.tv_usec;
 }
-
