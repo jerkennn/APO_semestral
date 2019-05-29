@@ -36,7 +36,6 @@ long getMicrotime();
 
 #ifdef __cplusplus
 
-
 #endif
 
 #endif
