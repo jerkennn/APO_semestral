@@ -29,7 +29,6 @@ uint32_t createRGB(int r, int g, int b)
 void led1_animation(int *led, double h_1, double h_2, long int period, long int startTime, int on_time, int off_time){
 		
 		static long int start_time;
-		//long int current_time = 0;
 		if(period==0) period=1;
 		
 		double c1 = 2*((getMicrotime() - startTime)%(period));
@@ -50,7 +49,6 @@ void led1_animation(int *led, double h_1, double h_2, long int period, long int 
 			if(first_1_a)
 			{
 				start_time = getMicrotime();
-				//printf("time set\n");
 				*led = color;
 				first_1_a = 0;
 			}
@@ -62,7 +60,6 @@ void led1_animation(int *led, double h_1, double h_2, long int period, long int 
 			else if(on_1_a && (getMicrotime() - start_time < on_time))
 			{
 				*led = color;
-				//printf("run\n");
 			}
 			else if(!on_1_a && (getMicrotime() - start_time >= on_time + off_time))
 			{
@@ -75,8 +72,6 @@ void led1_animation(int *led, double h_1, double h_2, long int period, long int 
 	
 void led1_static(int *led, int red, int green, int blue, int on_time, int off_time){ //led1_static(led1, r, g ,b, 0, 0)
 	static long int start_time;
-	//long int current_time = 0;
-	//if(period==0) period=1;
 	uint32_t color = createRGB(red, green, blue);
 	if(on_time == 0 || off_time == 0)
 	{
@@ -112,7 +107,6 @@ void led1_static(int *led, int red, int green, int blue, int on_time, int off_ti
 void led2_animation(int *led, double h_1, double h_2, long int period, long int startTime, int on_time, int off_time){
 		
 		static long int start_time;
-		//long int current_time = 0;
 		if(period==0) period=1;
 		double c1 = 2*((getMicrotime() - startTime)%(period));
 		double c2 = (double)(period);
@@ -155,7 +149,6 @@ void led2_animation(int *led, double h_1, double h_2, long int period, long int 
 	
 void led2_static(int *led, int red, int green, int blue, int on_time, int off_time){
 	static long int start_time = 0;
-	//long int current_time = 0;
 	uint32_t color = createRGB(red, green, blue);
 	if(on_time == 0 || off_time == 0)
 	{
