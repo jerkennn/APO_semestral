@@ -51,6 +51,9 @@ double* HSV_to_RGB(double h, double s, double v)
 	return rgb;
 }
 
+/* zdroj prevodniku barev
+ * https://www.programmingalgorithms.com/algorithm/rgb-to-hsv?lang=C
+ * */
 double* RGB_to_HSV(double r, double g, double b)
 {
 	double delta, min;
