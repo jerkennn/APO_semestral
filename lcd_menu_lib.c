@@ -677,8 +677,6 @@ void down_control_panel(int L_rotate, int L_push, int M_rotate, int M_push,int R
 	if(menu_arr.colourGui==1) {color1=0x0000; color2=0xFFFF;}
 	else if(menu_arr.colourGui==0) {color1=0xFFFF; color2=0x0000;}
 
-	//int posun=0;
-//	char str[255];
 	for(int i=0; i<480; i++) {frame[234][i] = color1; frame[235][i] = color1; frame[236][i] = color1;}
 	
 	for(int i=270; i<320; i++)
