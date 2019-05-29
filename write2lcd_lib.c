@@ -1,17 +1,3 @@
-/*******************************************************************
-  Simple program to check LCD functionality on MicroZed
-  based MZ_APO board designed by Petr Porazil at PiKRON
-
-  mzapo_lcdtest.c       - main and only file
-
-  (C) Copyright 2004 - 2017 by Pavel Pisa
-      e-mail:   pisa@cmp.felk.cvut.cz
-      homepage: http://cmp.felk.cvut.cz/~pisa
-      work:     http://www.pikron.com/
-      license:  any combination of GPL, LGPL, MPL or BSD licenses
-
- *******************************************************************/
-
 #define _POSIX_C_SOURCE 200112L
 
 #include "mzapo_parlcd.h"
@@ -29,7 +15,7 @@ unsigned char *parlcd_mem_base;
 uint16_t frame[FRAME_H][FRAME_W];
 
 /*
- * frame2lcd() prevzato ze cviceni dr. Susta
+ * frame2lcd() Function was taken from practical exercise APO (by Ing. Susta, Ph.D.)
 */
 void frame2lcd()
 {
