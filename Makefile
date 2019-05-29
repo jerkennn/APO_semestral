@@ -78,3 +78,4 @@ debug: copy-executable $(TARGET_EXE)
 	ddd --debugger gdb-multiarch -x connect.gdb $(TARGET_EXE)
 
 -include depend
+
