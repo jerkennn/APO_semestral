@@ -1,3 +1,13 @@
+/*******************************************************************
+  KOREK program
+
+  (C) Copyright 2019 by Vojtech Kozel and Martin Rektoris
+      e-mail:   kozelvo1@fel.cvut.cz; rektomar@fel.cvut.cz
+      license:  MIT license
+
+ *******************************************************************/
+
+
 #ifndef _LCD_MENU_LIB_H_
 #define _LCD_MENU_LIB_H_
 #include <stdint.h>
