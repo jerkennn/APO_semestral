@@ -5,11 +5,11 @@ Aplikace KOREK realizuje Distribuované řízení osvětlení (zjednodušeno na 
 
 ## Orientace v textové menu, v němž lze volit jednotlivé funkce.
 Po spuštění desky display zobrazí domovský adresář menu (dále Home). Pomocí otáčení GB lze vybírat jednotlivé složky menu a stisknutím GB se výběr potvrdí. Jedná se o:
-1) základní nastavení LED diod - "Change LEDs"
-2) pokročilé nastavení LED diod - "Special effects"
-3) nastavení síťové komunikace - "Ethernet settings"
-4) vlastní nastavení aplikace - "KOREK settings"
-5) ukončení programu - "Exit KOREK"
+1) Základní nastavení LED diod - "Change LEDs"
+2) Pokročilé nastavení LED diod - "Special effects"
+3) Nastavení síťové komunikace - "Ethernet settings"
+4) Vlastní nastavení aplikace - "KOREK settings"
+5) Ukončení programu - "Exit KOREK"
 
 Dolní část displaye vždy zobrazuje aktuální funkci ovladačů (umístění na display odpovídá fyzickému umístění ovladače).
 - Led 1 change (L1 C) - mění LED1
