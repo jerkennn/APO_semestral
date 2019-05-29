@@ -56,7 +56,6 @@ typedef struct{
 	int led2_static;
 	int led2_animation;
 	int animation2_period;
-	//int animation2_period;
 	int led2_on;
 	int led2_off;
 	
@@ -168,7 +167,6 @@ int main(int argc, char *argv[])
 	sleep(2);
 
 	pthread_mutex_init(&mtx, NULL);
-	//pthread_t threads[3];
 	pthread_t threads[5];
 	
 	pthread_create(&threads[0], NULL, buttons_thread, &data);
@@ -211,7 +209,6 @@ void *leds_thread(void *d){
 	volatile double *hsv_1;
 	volatile double *hsv_2;
 	int prev_animation = 1;
-	//long int period = 8*1000*1000;
 	double h_1 = 0;
 	double h_2 = 0;
 	short staticLight1 = 0;
@@ -220,19 +217,13 @@ void *leds_thread(void *d){
 	int first = 1;
 	
 	while(!q){
-		/*if(data->rb == 1  && menu_arr.animation == 1)
-		{
-			animation = 0;
-			menu_arr.animation=0;
-		}*/
 		if(menu_arr.animation != prev_animation) first = 1;
 		if(menu_arr.animation == 1 && first == 1)
 		{
 			hsv_1 = RGB_to_HSV(data->rgb_1.red, data->rgb_1.green, data->rgb_1.blue);
 			h_1 = hsv_1[0];
 			hsv_2 = RGB_to_HSV(data->rgb_2.red, data->rgb_2.green, data->rgb_2.blue);
-			h_2 = hsv_2[0];
-			//animation = 1; 	
+			h_2 = hsv_2[0];	
 			menu_arr.animation=1;
 			startTime = getMicrotime();
 			first = 0;
@@ -241,7 +232,6 @@ void *leds_thread(void *d){
 		{
 			led1_animation(led_1, h_1, h_2, 1000*((int)menu_arr.led1.periodSet.periodAnime), startTime, 1000*((int)menu_arr.led1.periodSet.periodON), 1000*((int)menu_arr.led1.periodSet.periodOFF));
 			led2_animation(led_2, h_2, h_1, 1000*((int)menu_arr.led2.periodSet.periodAnime), startTime, 1000*((int)menu_arr.led2.periodSet.periodON), 1000*((int)menu_arr.led2.periodSet.periodOFF));
-			//*led_2 = color_1;
 		}
 		else if(!menu_arr.led1.staticLight && !staticLight1 && !menu_arr.led2.staticLight && !staticLight2)
 		{
@@ -323,12 +313,11 @@ void *display_thread(void *d){
 	data_t *data = (data_t *)d;
 	
 	bool q = false;
-	//double *rgb_leds;
 	
 	while(!q)
 	{
 		pthread_mutex_lock(&mtx);
-		menu_arr = strip(200, 10, data->rk, data->bk, menu_arr); // !!!!!!
+		menu_arr = strip(200, 10, data->rk, data->bk, menu_arr);
 		
 		
 		data->rgb_1.red = menu_arr.led1.red;
@@ -339,7 +328,7 @@ void *display_thread(void *d){
 		data->rgb_2.green = menu_arr.led2.green;
 		data->rgb_2.blue = menu_arr.led2.blue;
 	
-		down_control_panel(0, 0, 0, 0, 0, 0, menu_arr); // !!!!
+		down_control_panel(0, 0, 0, 0, 0, 0, menu_arr);
 		
 		menu_arr = menu(data->rk, data->gk, data->bk, data->rb, data->gb, data->bb, menu_arr);
 		data->ethernet_mode = menu_arr.ethernet_mode;
@@ -347,8 +336,6 @@ void *display_thread(void *d){
 		menu_arr = getPeriod(data->rk, data->gk, data->bk, menu_arr);
 		pthread_mutex_unlock(&mtx);
 		
-		//printf("%d\n", menu_arr.currentScreen);
-		//printf("%d\n", menu_arr.exit);
 		q = (menu_arr.exit==1 ? true : false);
 		data->quit = q;
 		frame2lcd();
