@@ -1,3 +1,11 @@
+/*******************************************************************
+  KOREK program
+
+  (C) Copyright 2019 by Vojtech Kozel and Martin Rektoris
+      e-mail:   kozelvo1@fel.cvut.cz; rektomar@fel.cvut.cz
+      license:  MIT license
+
+*******************************************************************/
 
 #define _POSIX_C_SOURCE 200112L
 #define _DEFAULT_SOURCE
@@ -38,11 +46,20 @@ typedef struct{
 	double led1_blue;
 	int led1_static;
 	int led1_animation;
+	int animation1_period;
+	int led1_on;
+	int led1_off;
+	
 	double led2_red;
 	double led2_green;
 	double led2_blue;
 	int led2_static;
 	int led2_animation;
+	int animation2_period;
+	//int animation2_period;
+	int led2_on;
+	int led2_off;
+	
 } udp_data;
 
 #define STRUCT_SIZE (sizeof(udp_data)+8)
@@ -163,7 +180,7 @@ int main(int argc, char *argv[])
 	pthread_join(threads[0], NULL);
 	pthread_join(threads[1], NULL);
 	pthread_join(threads[2], NULL);
-	pthread_join(threads[3], NULL);
+	pthread_cancel(threads[3], NULL);
 	pthread_join(threads[4], NULL);
 
 
@@ -391,21 +408,35 @@ void *server_thread(void *d){
     		q = data->quit;
     		continue;
     	}
+    	
 	    n = recvfrom(sockfd, (char *)buffer, STRUCT_SIZE, MSG_WAITALL, (struct sockaddr *) &cliaddr, &len);
-	    if(n == len);
+	    if(n < 0)
+		{
+			perror("Receive from ");
+			}
+	    
 	    memcpy(input_data, buffer, sizeof(udp_data));
+	    
+	    //pthread_mutex_lock(&mtx);
 	    menu_arr.led1.red = input_data->led1_red;
 	    menu_arr.led1.green = input_data->led1_green; 
 	    menu_arr.led1.blue = input_data->led1_blue; 
 	    menu_arr.led1.staticLight =  input_data->led1_static;
 	    menu_arr.animation = input_data->led1_animation;
+	    menu_arr.led1.periodSet.periodON = input_data->led1_on;
+    	menu_arr.led1.periodSet.periodOFF = input_data->led1_off;
+    	menu_arr.led1.periodSet.periodAnime = input_data->animation1_period;
+	    
+	    
 	    menu_arr.led2.red = input_data->led2_red;
 	    menu_arr.led2.green = input_data->led2_green; 
 	    menu_arr.led2.blue = input_data->led2_blue; 
 	    menu_arr.led2.staticLight =  input_data->led2_static;
-	    //menu_arrr ... = input_data->led2_animation;
-	    //buffer[n] = '\0'; 
-	    //printf("Client : %s\n", buffer);
+		menu_arr.led2.periodSet.periodON = input_data->led2_on;
+    	menu_arr.led2.periodSet.periodOFF = input_data->led2_off;
+    	menu_arr.led2.periodSet.periodAnime = input_data->animation2_period;
+	    
+	    //pthread_mutex_unlock(&mtx);
 	    q = data->quit;
     }
     free(input_data);
@@ -456,12 +487,18 @@ void *client_thread(void *d)
     	output_data->led1_blue =  menu_arr.led1.blue;
     	output_data->led1_static = menu_arr.led1.staticLight;
     	output_data->led1_animation = menu_arr.animation;
+    	output_data->led2_on = menu_arr.led1.periodSet.periodON;
+    	output_data->led2_off = menu_arr.led1.periodSet.periodOFF;
+    	output_data->animation2_period = menu_arr.led1.periodSet.periodAnime;
     	//output_data->led1_animation = menu_arr.animation;
     	
     	output_data->led2_red = menu_arr.led2.red;
     	output_data->led2_green = menu_arr.led2.green;
     	output_data->led2_blue = menu_arr.led2.blue;
     	output_data->led2_static = menu_arr.led2.staticLight;
+    	output_data->led2_on = menu_arr.led2.periodSet.periodON;
+    	output_data->led2_off = menu_arr.led2.periodSet.periodOFF;
+    	output_data->animation2_period = menu_arr.led2.periodSet.periodAnime;
     	//	output_data->led2_animation
     	
     	memcpy(buffer, output_data, sizeof(udp_data));
