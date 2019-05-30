@@ -73,7 +73,7 @@ double* RGB_to_HSV(double r, double g, double b)
 */
 uint16_t RGB_to_hex(double r, double g, double b)
 {
-	return (((r & 0xf8)<<8) + ((g & 0xfc)<<3)+(b>>3));
+	return ((((int)r & 0xf8)<<8) + (((int)g & 0xfc)<<3)+((int)b>>3));
 }
 
 /*
