@@ -13,10 +13,8 @@ double* HSV_to_RGB(double h, double s, double v)
 	{
 		int i;
 		double f, p, q, t;
-		if (h == 360)
-			h = 0;
-		else
-			h = h / 60;
+		if (h == 360) h = 0;
+		else h /= 60;
 
 		i = (int)trunc(h);
 		f = h - i;
@@ -25,27 +23,12 @@ double* HSV_to_RGB(double h, double s, double v)
 		q = v * (1.0 - (s * f));
 		t = v * (1.0 - (s * (1.0 - f)));
 
-		switch (i)
-		{
-			case 0:
-				r = v; g = t; b = p;
-				break;
-			case 1:
-				r = q; g = v; b = p;
-				break;
-			case 2:
-				r = p; g = v; b = t;
-				break;
-			case 3:
-				r = p; g = q; b = v;
-				break;
-			case 4:
-				r = t; g = p; b = v;
-				break;
-			default:
-				r = v; g = p; b = q;
-				break;
-		}
+		if(i==0) {r = v; g = t; b = p;}
+		else if(i==1) {r = q; g = v; b = p;}
+		else if(i==2) {r = p; g = v; b = t;}
+		else if(i==3) {r = p; g = q; b = v;}
+		else if(i==4) {r = t; g = p; b = v;}
+		else {r = v; g = p; b = q;}
 	}
 	rgb[0] = r * 255; rgb[1] = g * 255; rgb[2] = b * 255;
 	return rgb;
@@ -63,27 +46,21 @@ double* RGB_to_HSV(double r, double g, double b)
 	v = MAX(MAX(r, g), b);
 	delta = v - min;
 
-	if (v == 0.0)
-		s = 0;
-	else
-		s = delta / v;
+	if (v == 0.0) s = 0;
+	else s = delta / v;
 
-	if (s == 0)
-		h = 0.0;
+	if (s == 0) h = 0.0;
 
 	else
 	{
-		if (r == v)
-			h = (g - b) / delta;
-		else if (g == v)
-			h = 2 + (b - r) / delta;
-		else if (b == v)
-			h = 4 + (r - g) / delta;
+		if (r == v) h = (g - b) / delta;
+		else if (g == v) h = 2 + (b - r) / delta;
+		else if (b == v) h = 4 + (r - g) / delta;
 
 		h *= 60;
 
 		if (h < 0.0)
-			h = h + 360;
+			h += 360;
 	}
 	hsv[0] = h; hsv[1] = s; hsv[2] = v / 255;
 	return hsv;
