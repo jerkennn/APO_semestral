@@ -31,7 +31,7 @@ void frame2lcd()
 /*
  * string2frame_menu() The function was compiled on the basis of knowledge gained from practical exercise APO (by Ing. Susta, Ph.D.)
 */
-int string2frame_menu(char *s, int yrow, int xcolumn, uint16_t forecolor, uint16_t backcolor)
+int string2frame_menu(char *s, int row, int column, uint16_t forecolor, uint16_t backcolor)
 {
 	int w = 0;
 	int p = 0;
@@ -45,7 +45,7 @@ int string2frame_menu(char *s, int yrow, int xcolumn, uint16_t forecolor, uint16
 		const uint16_t * ptr = font_winFreeSystem14x16.bits+cix*16;
 		
 		int x, y;
-		xcolumn = xcolumn + w;
+		column += w;
 		w = font_winFreeSystem14x16.width[cix]; 
 		for(y=0; y<16; y++)
 		{
@@ -53,7 +53,7 @@ int string2frame_menu(char *s, int yrow, int xcolumn, uint16_t forecolor, uint16
 			
 			for(x=0; x<w+4; x++)
 			{
-				frame[yrow + y][xcolumn + x] = (mask & 0x8000) ? forecolor : backcolor;
+				frame[row + y][column + x] = (mask & 0x8000) ? forecolor : backcolor;
 				mask <<= 1;
 			}
 		}
@@ -63,7 +63,7 @@ int string2frame_menu(char *s, int yrow, int xcolumn, uint16_t forecolor, uint16
 	return p;
 }
 
-int string2frame_menu_big(char *s, int yrow, int xcolumn, uint16_t forecolor, uint16_t backcolor)
+int string2frame_menu_big(char *s, int row, int column, uint16_t forecolor, uint16_t backcolor)
 {
 	int w = 0;
 	int p = 0;
@@ -76,7 +76,7 @@ int string2frame_menu_big(char *s, int yrow, int xcolumn, uint16_t forecolor, ui
 		const uint16_t * ptr = font_winFreeSystem14x16.bits+cix*16;
 		
 		int x, y;
-		xcolumn = xcolumn + w;
+		column += w;
 		w = font_winFreeSystem14x16.width[cix]*2; 
 		for(y=0; y<32; y+=2)
 		{
@@ -84,10 +84,10 @@ int string2frame_menu_big(char *s, int yrow, int xcolumn, uint16_t forecolor, ui
 			
 			for(x=0; x<w+4; x+=2)
 			{
-				frame[yrow + y][xcolumn + x] = (mask & 0x8000) ? forecolor : backcolor;
-				frame[yrow + y][xcolumn + x +1] = (mask & 0x8000) ? forecolor : backcolor;
-				frame[yrow + y+1][xcolumn + x] = (mask & 0x8000) ? forecolor : backcolor;
-				frame[yrow + y+1][xcolumn + x +1] = (mask & 0x8000) ? forecolor : backcolor;
+				frame[row + y][column + x] = (mask & 0x8000) ? forecolor : backcolor;
+				frame[row + y][column + x +1] = (mask & 0x8000) ? forecolor : backcolor;
+				frame[row + y+1][column + x] = (mask & 0x8000) ? forecolor : backcolor;
+				frame[row + y+1][column + x +1] = (mask & 0x8000) ? forecolor : backcolor;
 				mask <<= 1;
 			}
 		}
