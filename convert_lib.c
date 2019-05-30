@@ -66,9 +66,14 @@ double* RGB_to_HSV(double r, double g, double b)
 	return hsv;
 }
 
+/*
+* Informace o prevodniku 565 rgb do hex jsme nastudovali ze stranek:
+* http://www.barth-dev.de/online/rgb565-color-picker/
+* https://forum.arduino.cc/index.php?topic=285303.0
+*/
 uint16_t RGB_to_hex(double r, double g, double b)
 {
-	return ((((int)(r*249+1014))>>11)<<11) + ((((int)(g*253+505))>>10)<<5) + (((int)(b*249+1014))>>11);
+	return (((red & 0xf8)<<8) + ((green & 0xfc)<<3)+(blue>>3));
 }
 
 /*
