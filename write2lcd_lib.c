@@ -15,7 +15,7 @@ unsigned char *parlcd_mem_base;
 uint16_t frame[FRAME_H][FRAME_W];
 
 /*
- * frame2lcd() Function was taken from practical exercise APO (by Ing. Susta, Ph.D.)
+ * frame2lcd() The function was compiled on the basis of knowledge gained from practical exercise APO (by Ing. Susta, Ph.D.)
 */
 void frame2lcd()
 {
@@ -28,6 +28,9 @@ void frame2lcd()
     for(i=0; i<(320*480)/2; i++) *dest = *ptr++;
 }
 
+/*
+ * string2frame_menu() Function was taken from practical exercise APO (by Ing. Susta, Ph.D.)
+*/
 int string2frame_menu(char *s, int yrow, int xcolumn, uint16_t forecolor, uint16_t backcolor)
 {
 	int w = 0;
