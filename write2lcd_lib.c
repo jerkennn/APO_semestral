@@ -35,12 +35,13 @@ int string2frame_menu(char *s, int yrow, int xcolumn, uint16_t forecolor, uint16
 {
 	int w = 0;
 	int p = 0;
+	int c = 0;
+	int cix = 0;
 	int strlen_ = strlen(s);
 	for(int c_i=0; c_i < strlen_; c_i++)
 	{
-		int c=s[c_i];
-		int cix = c-' ';
-		
+		c=s[c_i];
+		cix = c-' ';
 		const uint16_t * ptr = font_winFreeSystem14x16.bits+cix*16;
 		
 		int x, y;
